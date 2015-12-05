@@ -108,18 +108,18 @@ dashboardappApp
                 return {
                     'w': element.width(),
                     'h': element.height()
-                };
-            };
+                }
+            }
             scope.$watch(scope.getElDimensions, function (newValue, oldValue) {
                 if(typeof oFH != 'undefined') {
-                    oFH._fnUpdateClones( true );
-                    oFH._fnUpdatePositions();
+                    oFH._fnUpdateClones( true )
+                    oFH._fnUpdatePositions()
                 }
-            }, true);
+            }, true)
             w.bind('resize', function () {
-                scope.$apply();
-            });
-        };
+                scope.$apply()
+            })
+        }
     }])
 
     // ng-repeat after render callback
@@ -157,10 +157,10 @@ dashboardappApp
                 elem.on('load', function () {
                     var w = !scope.isHighDensity() ? $(this).width() : $(this).width()/2,
                         h = !scope.isHighDensity() ? $(this).height() : $(this).height()/2;
-                    $(this).attr('width',w).attr('height',h);
-                });
+                    $(this).attr('width',w).attr('height',h)
+                })
             }
-        };
+        }
     })
 
     // 
