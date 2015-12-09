@@ -291,21 +291,21 @@ dashboardappApp
         })
       }
 
-      this.prevAndNextNames = function(name, fn){
-        if(! $localStorage.entries.length )
-        {
-          api.get('/v1/names').success(function(resp){
-            $localStorage.entries = resp
-          })
-        }
-
-        return $timeout(function(){
-          // find the index of the current name in the names
-          var index = _.findIndex($localStorage.entries, { name: name }),
+      var getPrevAndNextNames = function(name, fn) {
+        var index = _.findIndex($localStorage.entries, { name: name }),
              prev = $localStorage.entries[index - 1],
              next = $localStorage.entries[index + 1]
           return fn(prev, next)
-        }, 2500)
+      }
+
+      this.prevAndNextNames = function(name, fn){
+        if( $localStorage.entries && $localStorage.entries.length ) return getPrevAndNextNames(name, fn)
+        else {
+          return api.get('/v1/names').success(function(resp){
+            $localStorage.entries = resp
+            return getPrevAndNextNames(name, fn)
+          })
+        }
       }
 
       var cacheNames = function(){
@@ -315,15 +315,13 @@ dashboardappApp
       }
 
       this.getCachedNames = function(fn){
-        if(! $localStorage.entries.length )
-        {
-          api.get('/v1/names').success(function(resp){
+        if($localStorage.entries && $localStorage.entries.length ) return fn($localStorage.entries)
+        else {
+          return api.get('/v1/names').success(function(resp){
             $localStorage.entries = resp
+            return fn($localStorage.entries)
           })
         }
-        return $timeout(function(){
-          return fn($localStorage.entries)
-        }, 500)
       }
 
       /**
