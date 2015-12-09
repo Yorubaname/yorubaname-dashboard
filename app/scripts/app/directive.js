@@ -176,19 +176,28 @@ dashboardappApp
 
     .directive('etymology', function() {
         return {
+            //replace: true,
             restrict:'E',
             templateUrl: 'tmpls/names/directives/etymology.html',
             link: function(scope, element, attrs) {
               if (!scope.name) return;
-              if (!scope.name.etymology) scope.name.etymology = [{ part:'', meaning:'' }]
+              if (!scope.name.etymology || !scope.name.etymology.length) {
+                scope.name.etymology = []
+                scope.name.etymology.push({ part:'', meaning:'' })
+              }
               scope.add_etymology = function() {
                 return scope.name.etymology.push({ part:'', meaning:'' })
               }
 
               scope.remove_etymology = function(index) {
-                if (scope.name.etymology.length > 1)
-                return scope.name.etymology.splice(index, 1)
+                scope.name.etymology.splice(index, 1)
+                if ( scope.name.etymology.length < 1 )
+                return scope.name.etymology.push({ part:'', meaning:'' })
               }
+
+              scope.$watch('name.etymology', function(val) {
+                scope.form.$dirty = true;
+              }, true)
             }
         }
     })
@@ -209,5 +218,64 @@ dashboardappApp
             }
         }
     }])
+
+    /* Courtesy: Chris Tesene 
+       http://christesene.com/angular-js-directive-to-allow-a-select-all-checkbox-also-provide-all-checked-and-none-checked-if-needed/
+     */
+
+    .directive('selectAllCheckbox', function () {
+        return {
+            replace: true,
+            restrict: 'E',
+            scope: {
+                checkboxes: '='
+            },
+            template: '<input type="checkbox" ng-model="master" ng-change="masterChange()">',
+            controller: function ($scope, $element) {
+
+                $scope.masterChange = function () {
+                    if ($scope.master) {
+                        angular.forEach($scope.checkboxes, function (cb, index) {
+                            cb.isSelected = true;
+                        })
+                    } else {
+                        angular.forEach($scope.checkboxes, function (cb, index) {
+                            cb.isSelected = false;
+                        })
+                    }
+                }
+
+                $scope.$watch('checkboxes', function () {
+                    var allSet = true,
+                        allClear = true;
+                    angular.forEach($scope.checkboxes, function (cb, index) {
+                        if (cb.isSelected) {
+                            allClear = false;
+                        } else {
+                            allSet = false;
+                        }
+                    })
+
+                    if ($scope.allselected !== undefined) {
+                        $scope.allselected = allSet;
+                    }
+                    if ($scope.allclear !== undefined) {
+                        $scope.allclear = allClear;
+                    }
+
+                    $element.prop('indeterminate', false);
+                    if (allSet) {
+                        $scope.master = true;
+                    } else if (allClear) {
+                        $scope.master = false;
+                    } else {
+                        $scope.master = false;
+                        $element.prop('indeterminate', true)
+                    }
+
+                }, true)
+            }
+        }
+    })
 
 ;

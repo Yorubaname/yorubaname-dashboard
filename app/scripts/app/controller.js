@@ -155,7 +155,6 @@ dashboardappApp
                     theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
                     theAnimation.start()
                 })
-
             })
 
             api.countNames('suggested', function(num){
@@ -166,7 +165,6 @@ dashboardappApp
                     theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
                     theAnimation.start()
                 })
-
             })
 
             api.countNames('all', function(num){
@@ -177,7 +175,6 @@ dashboardappApp
                     theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
                     theAnimation.start()
                 })
-
             })
 
             $scope.latestNames = []
@@ -186,7 +183,6 @@ dashboardappApp
                     $scope.latestNames.push(name)
                 })
             })
-
         }
     ])
 
@@ -246,8 +242,9 @@ dashboardappApp
         '$scope',
         'namesApi',
         '$stateParams',
+        '$window',
         'toastr',
-        function($scope, api, $stateParams, toastr) {
+        function($scope, api, $stateParams, $window, toastr) {
 
             $scope.namesList = []
 
@@ -262,14 +259,22 @@ dashboardappApp
                 console.log(response)
             })
 
+            $scope.$on('onRepeatLast', function(){
+                $('#names_table').trigger('footable_resize').data('footable').redraw()
+            })
+
             $scope.delete = function(entry){
 
-                if (entry && $window.confirm('Are you sure you want to delete '+ entry.name + '?')) {
-                    return api.deleteSuggestedName(entry.name)
+                if (entry) {
+                    if ( $window.confirm('Are you sure you want to delete '+ entry.name + '?') )
+                      api.deleteSuggestedName(entry.name, function(){
+                        $scope.namesList.splice( $scope.namesList.indexOf(entry), 1 )
+                      })
+                    return 
                 }
 
-                var entries = $.map( $('input[name="selected_name"]:checked') , function(elem){
-                    return  $scope.namesList[ $(elem).val() ]
+                var entries = $.map( $scope.namesList , function(elem){
+                    if (elem.isSelected == true) return elem
                 })
 
                 if (!entries.length) return toastr.warning('Select names to delete');
@@ -296,10 +301,9 @@ dashboardappApp
             }
 
             $scope.indexNames = function(action){
-                var entries = $.map( $('input[name="selected_name"]:checked') , function(elem){
-                    return  $scope.namesList[ $(elem).val() ]
+                var entries = $.map( $scope.namesList , function(elem){
+                    if (elem.isSelected == true) return elem
                 })
-
                 if (entries.length > 0) {
 
                     (!action || action == 'add') ? api.addNamesToIndex(entries).success(function(response){
@@ -318,11 +322,7 @@ dashboardappApp
                         toastr.error('Selected names could not be removed from index')
                     })
 
-                    // then deselect all
-                    return $('input[name="selected_name"]:checked').removeAttr('checked')
-
                 }
-
                 else toastr.warning('No names selected')
             }
 
@@ -347,7 +347,9 @@ dashboardappApp
                 if (!$.isEmptyObject(name)) {
                   return api.addName(name, function () {
                     // Name added then delete from the suggested name store
-                    return api.deleteSuggestedName(name.name)
+                    return api.deleteSuggestedName(name.name, function(){
+                        $scope.namesList.splice( $scope.namesList.indexOf(entry), 1 )
+                      })
                   })
                 }
               }

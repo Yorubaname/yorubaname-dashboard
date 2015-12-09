@@ -12,18 +12,18 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <table class="table table-yuk2 toggle-arrow-tiny" id="users_table" data-filter="#textFilter" data-page-size="10">
+        <table class="table table-yuk2" id="users_table" data-filter="#textFilter" data-page-size="10">
             <thead>
                 <tr>
-                    <th data-toggle="true">Username</th>
+                    <th><select-all-checkbox checkboxes="usersList"></select-all-checkbox> Username</th>
                     <th>Email Address</th>
                     <th>Role</th>
                     <th>Date Created</th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="user in usersList">
-                    <td>{{user.username}}</td>
+                <tr ng-repeat="user in usersList" on-last-repeat ng-class="user.isSelected ? 'bg-info' : '' ">
+                    <td><input type="checkbox" value="{{$index}}" ng-model="user.isSelected" name="selected_name"> {{user.username}}</td>
                     <td><strong>{{user.email}}</strong></td>
                     <td>{{user.roles}}</td>
                     <td>{{user.createdAt|toDateString}}</td>

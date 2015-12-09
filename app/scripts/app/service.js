@@ -99,7 +99,7 @@ dashboardappApp
         return $http({
             method: 'POST',
             url: endpoint,
-            //type: 'json',
+            //type: 'text',
             data: data ? data : ''
         })
     }
@@ -234,13 +234,29 @@ dashboardappApp
 
 dashboardappApp
 
-  .service('usersApi', ['api', '$state', 'toastr', function(api, $state, toastr){
+  .service('usersApi', ['api', '$http', '$state', 'toastr', function(api, $http, $state, toastr){
 
     this.getUser = function(userId){
       return api.get('/v1/users/'+userId)
     }
 
     this.addUser = function(user){
+
+      return $http({
+            method: 'POST',
+            url: "/v1/auth/create",
+            type: 'text',
+            data: user
+        }).success(function(resp) {
+          console.log(resp)
+          toastr.success('User account with email '+user.email+' successfully created.')
+       })
+       .error(function(resp) {
+         console.log(resp)
+         toastr.error('User account could not be created. Try again.')
+       })
+
+
       return api.postJson("/v1/auth/create", user)
                .success(function(resp) {
                   toastr.success('User account with email '+user.email+' successfully created.')
@@ -283,7 +299,7 @@ dashboardappApp
         name.submittedBy = $localStorage.email;
         name.geoLocation = JSON.parse( name.geoLocation || '{}' )
         return api.postJson("/v1/names", name).success(function(resp){
-          toastr.success(name.name + ' was successfully added. <br>Add another name')
+          toastr.success(name.name + ' was successfully added. Add another name')
           fn()
           cacheNames()
         }).error(function(resp){
@@ -316,12 +332,10 @@ dashboardappApp
 
       this.getCachedNames = function(fn){
         if($localStorage.entries && $localStorage.entries.length ) return fn($localStorage.entries)
-        else {
-          return api.get('/v1/names').success(function(resp){
-            $localStorage.entries = resp
-            return fn($localStorage.entries)
-          })
-        }
+        else return api.get('/v1/names').success(function(resp){
+          $localStorage.entries = resp
+          return fn($localStorage.entries)
+        })
       }
 
       /**
@@ -378,10 +392,11 @@ dashboardappApp
         })
       }
 
-      this.deleteSuggestedName = function(name) {
+      this.deleteSuggestedName = function(name, fn) {
         return api.delete("/v1/suggest/" + name).success(function(resp){
           toastr.success(name + ' has been deleted successfully')
           //$state.go('auth.names.suggested')
+          fn()
         }).error(function(resp){
           toastr.error(name + ' could not be deleted. Please try again.')
         })
