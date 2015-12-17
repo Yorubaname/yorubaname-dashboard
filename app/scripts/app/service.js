@@ -234,29 +234,13 @@ dashboardappApp
 
 dashboardappApp
 
-  .service('usersApi', ['api', '$http', '$state', 'toastr', function(api, $http, $state, toastr){
+  .service('usersApi', ['api', '$state', 'toastr', function(api, $state, toastr){
 
     this.getUser = function(userId){
       return api.get('/v1/users/'+userId)
     }
 
     this.addUser = function(user){
-
-      return $http({
-            method: 'POST',
-            url: "/v1/auth/create",
-            type: 'text',
-            data: user
-        }).success(function(resp) {
-          console.log(resp)
-          toastr.success('User account with email '+user.email+' successfully created.')
-       })
-       .error(function(resp) {
-         console.log(resp)
-         toastr.error('User account could not be created. Try again.')
-       })
-
-
       return api.postJson("/v1/auth/create", user)
                .success(function(resp) {
                   toastr.success('User account with email '+user.email+' successfully created.')
@@ -286,9 +270,27 @@ dashboardappApp
 
 dashboardappApp
 
-  .service('namesApi', ['api', 'toastr', '$state', '$localStorage', '$timeout', '_', function(api, toastr, $state, $localStorage, $timeout, _) {
+  .service('namesApi', ['api', 'toastr', '$state', '$localStorage', '$timeout', '_', '$filter', function(api, toastr, $state, $localStorage, $timeout, _, $filter) {
 
       var _this = this;
+
+      var formatName = function(name) {
+        name.geoLocation = JSON.parse( name.geoLocation || '{}' )
+        name.pronunciation = $filter('aToString')(name.pronunciation,'-')
+        name.syllables = $filter('aToString')(name.syllables,'-')
+        name.morphology = $filter('aToString')(name.morphology,'-')
+        name.ipaNotation = $filter('aToString')(name.ipaNotation,'-')
+        return name;
+      }
+
+      var deformatName = function(name) {
+        name.geoLocation = JSON.stringify( name.geoLocation )
+        name.pronunciation = $filter('sToArray')(name.pronunciation,'-')
+        name.syllables = $filter('sToArray')(name.syllables,'-')
+        name.morphology = $filter('sToArray')(name.morphology,'-')
+        name.ipaNotation = $filter('sToArray')(name.ipaNotation,'-')
+        return name;
+      }
 
       /**
       * Adds a name to the database;
@@ -297,8 +299,7 @@ dashboardappApp
       this.addName = function (name, fn) {
         // include logged in user's details
         name.submittedBy = $localStorage.email;
-        name.geoLocation = JSON.parse( name.geoLocation || '{}' )
-        return api.postJson("/v1/names", name).success(function(resp){
+        return api.postJson("/v1/names", formatName(name)).success(function(resp){
           toastr.success(name.name + ' was successfully added. Add another name')
           fn()
           cacheNames()
@@ -344,8 +345,7 @@ dashboardappApp
       */
       this.updateName = function(originalName, nameEntry){
         nameEntry = angular.copy( nameEntry )
-        nameEntry.geoLocation = JSON.parse( nameEntry.geoLocation || '{}' )
-        return api.putJson("/v1/names/" + originalName, nameEntry).success(function(resp){
+        return api.putJson("/v1/names/" + originalName,  formatName(nameEntry)).success(function(resp){
           toastr.success(nameEntry.name + ' was successfully updated.')
           cacheNames()
         }).error(function(resp){
@@ -371,8 +371,10 @@ dashboardappApp
        * Get a name
        * returns the one or zero result
        */
-      this.getName = function (name, duplicate) {
-        return api.get('/v1/names/' + name, { duplicates: duplicate })
+      this.getName = function (name, duplicate, fn) {
+        return api.get('/v1/names/' + name, { duplicates: duplicate }).success(function(resp){
+          return fn ( deformatName(resp) )
+        })
       }
 
       this.getNames = function (filter) {

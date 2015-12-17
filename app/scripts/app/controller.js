@@ -180,7 +180,7 @@ dashboardappApp
             $scope.latestNames = []
             api.getNames(1,5).success(function(responseData){
                 responseData.forEach(function(name) {
-                    $scope.latestNames.push(name)
+                    $scope.latestNames.unshift(name)
                 })
             })
         }
@@ -220,10 +220,10 @@ dashboardappApp
                 $scope.next = next
             })
 
-            api.getName($stateParams.entry).success(function(resp){
+            api.getName($stateParams.entry, false, function(resp){
+                console.log(resp)
                 $scope.name = resp
                 originalName = resp.name
-                $scope.name.geoLocation = JSON.stringify( $scope.name.geoLocation )
             })
 
             $scope.submit = function(){
@@ -250,17 +250,21 @@ dashboardappApp
 
             $scope.status = $stateParams.status;
 
-            api.getNames($stateParams).success(function(responseData) {
-                $scope.namesListItems = responseData.length;
+            api.countNames('all', function(num){
+                console.log(num)
+                 $scope.namesListItems = num;
+            })
+
+            api.getNames($stateParams, $scope.pageNum, $scope.pageLength).success(function(responseData) {               
                 responseData.forEach(function(name) {
-                    $scope.namesList.push(name)
+                    $scope.namesList.unshift(name)
                 })
             }).error(function(response) {
                 console.log(response)
             })
 
             $scope.$on('onRepeatLast', function(){
-                $('#names_table').trigger('footable_resize').data('footable').redraw()
+                //$('#names_table').trigger('footable_resize').data('footable').redraw()
             })
 
             $scope.delete = function(entry){

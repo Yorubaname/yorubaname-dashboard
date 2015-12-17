@@ -6,7 +6,7 @@ dashboardappApp
  * Filter to parse delimated string to arrays
  */
 
-  .filter('sToArrays', function() {
+  .filter('sToArray', function() {
     return function(text, delimeter) {
       if (!text || !delimeter) return text;
       return text.split(delimeter)
@@ -19,12 +19,14 @@ dashboardappApp
 
   .filter('aToString', function() {
     return function(inputArray, delimeter) {
+      if (!inputArray.length) return "";
+      inputArray = inputArray.reverse()
       var val = "";
       for (var i = inputArray.length - 1; i >= 0; i--) {
-            val += inputArray[i].text
-            if (i != 0) {
-                val += delimeter
-            }
+        val += inputArray[i].text
+        if (i != 0) {
+            val += delimeter
+        }
       }
       return val
     }

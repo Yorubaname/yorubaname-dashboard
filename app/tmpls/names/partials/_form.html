@@ -16,7 +16,7 @@
         <div class="form-group">
             <label for="syllables" class="required">Syllable breakdown</label>
             <!--input type="text" id="syllables" class="form-control" ng-model="name.syllables" required-->
-            <tags-input ng-model="name.syllables" id="syllables" required></tags-input>
+            <tags-input ng-model="name.syllables" id="syllables" add-on-space="true" min-length="1" required></tags-input>
         </div>
         <div class="form-group">
             <label for="geolocation" class="required">Geolocation</label>
@@ -32,12 +32,12 @@
         <div class="form-group">
             <label for="ipa">IPA Notation</label>
             <!--input type="text" id="ipa" class="form-control" ng-model="name.ipaNotation"-->
-            <tags-input ng-model="name.ipaNotation" id="ipa"></tags-input>
+            <tags-input ng-model="name.ipaNotation" id="ipa" add-on-space="true" min-length="1"></tags-input>
         </div>
         <div class="form-group">
             <label for="pronunciation">Pronunciation</label>
             <!--input type="text" id="pronunciation" class="form-control" ng-model="name.pronunciation"-->
-            <tags-input ng-model="name.pronunciation" id="pronunciation"></tags-input>
+            <tags-input ng-model="name.pronunciation" id="pronunciation" add-on-space="true" min-length="1"></tags-input>
         </div>
 
     </div>
@@ -47,7 +47,7 @@
         <div class="form-group">
             <label for="morphology">Morphology</label>
             <!--input type="text" id="morphology" class="form-control" ng-model="name.morphology"-->
-            <tags-input ng-model="name.morphology" id="morphology"></tags-input>
+            <tags-input ng-model="name.morphology" id="morphology" add-on-space="true" min-length="1"></tags-input>
         </div>
 
         <div class="form-group">
