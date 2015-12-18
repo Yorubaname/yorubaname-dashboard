@@ -326,14 +326,14 @@ dashboardappApp
       }
 
       var cacheNames = function(){
-        return api.get('/v1/names').success(function(resp){
+        return api.get('/v1/names?all=true').success(function(resp){
           $localStorage.entries = resp
         })
       }
 
       this.getCachedNames = function(fn){
         if($localStorage.entries && $localStorage.entries.length ) return fn($localStorage.entries)
-        else return api.get('/v1/names').success(function(resp){
+        else return api.get('/v1/names?all=true').success(function(resp){
           $localStorage.entries = resp
           return fn($localStorage.entries)
         })
@@ -385,6 +385,7 @@ dashboardappApp
         // filter.page = page || 1
         // filter.count = count || 10
         filter.orderBy = 'createdAt'
+        filter.all = true
         return api.get('/v1/names', filter)
       }
 
