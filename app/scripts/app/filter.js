@@ -19,7 +19,7 @@ dashboardappApp
 
   .filter('aToString', function() {
     return function(inputArray, delimeter) {
-      if (!inputArray.length) return "";
+      if (!inputArray) return "";
       inputArray = inputArray.reverse()
       var val = "";
       for (var i = inputArray.length - 1; i >= 0; i--) {
