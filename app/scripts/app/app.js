@@ -2,7 +2,7 @@
 
 angular.module('underscore', []).factory('_', function() { return window._ })
 
-var dashboardappApp = angular.module('dashboardappApp', [ 'ui.router', 'ngAnimate', 'ui.load', 'ngSanitize', 'ngStorage', 'ngTagsInput', 'ui.bootstrap', 'ncy-angular-breadcrumb', 'ngRetina', 'toastr', 'NgSwitchery', 'textAngular', 'angularFileUpload', 'angular-md5', 'underscore']);
+var dashboardappApp = angular.module('dashboardappApp', [ 'ui.router', 'ngAnimate', 'ui.load', 'ngSanitize', 'ngStorage', 'ngTagsInput', 'ui.bootstrap', 'ncy-angular-breadcrumb', 'ngRetina', 'toastr', 'NgSwitchery', 'textAngular', 'angularFileUpload', 'underscore','angularUtils.directives.dirPagination']);
 
 dashboardappApp
    

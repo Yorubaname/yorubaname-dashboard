@@ -7,7 +7,7 @@
        <a ng-hide="!next" class="btn btn-sm btn-info pull-right" ui-sref="auth.names.edit_entries({entry:next.name})">Next: <b>{{next.name|capitalize}}</b> &gt; </a>
     </div>
     <div class="col-xs-12" style="margin-top:20px;">
-       <div class="heading_a"><span class="heading_text">Update Name Entry</span></div>
+       <div class="heading_a"><span class="heading_text">Update Name Entry: {{name.name}}</span> <feedback name="{{ name.name }}"></feedback> </div>
     </div>
 </div>
 

@@ -128,7 +128,7 @@ dashboardappApp
 
             if (!scope.$last) return false;
 
-            var footableTable = element.parents('table')
+            /*var footableTable = element.parents('table')
 
             if ( footableTable.length ) 
                 
@@ -139,7 +139,7 @@ dashboardappApp
                 footableTable.trigger('footable_initialized')
                 footableTable.trigger('footable_resize')
                 footableTable.data('footable').redraw()
-            })
+            })*/
 
             if (scope.$last) {
                 $timeout(function () {
@@ -277,5 +277,42 @@ dashboardappApp
             }
         }
     })
+
+    .directive('feedback', ['namesApi', '$modal', 'toastr', function(api, $modal, toastr){
+        return {
+            restrict: 'E',
+            templateUrl: 'tmpls/names/feedbacks.html',
+            link: function (scope, element, attributes) {
+
+              scope.showFeedbacks = function () {
+                return api.getFeedback(attributes['name'], function (resp) {
+                  //scope.feedbacks = resp
+                  if (!resp.length > 0) return toastr.info("There are no feedbacks")
+                    
+                  $modal.open({
+                        templateUrl: 'tmpls/names/partials/feedbackModal.html',
+                        size: 'lg',
+                        controller: function ($scope, $modalInstance) {
+                            $scope.modalTitle = 'Feedbacks on ' + attributes['name']
+                            $scope.feedbacks = resp
+                            $scope.deleteFeedback = function () {
+                                api.deleteFeedback(attributes['name'], function () {
+                                  $modalInstance.close()
+                                })
+                            }
+                            $scope.cancel = function () {
+                                $modalInstance.dismiss('cancel')
+                            }
+                        }
+                    })
+                  
+                })
+              }
+
+              
+
+            }
+        }
+    }])
 
 ;

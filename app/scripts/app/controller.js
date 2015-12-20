@@ -221,7 +221,6 @@ dashboardappApp
             })
 
             api.getName($stateParams.entry, false, function(resp){
-                console.log(resp)
                 $scope.name = resp
                 originalName = resp.name
             })
@@ -235,6 +234,7 @@ dashboardappApp
                     return api.deleteName($scope.name)
                 }
             }
+
         }
     ])
 
@@ -250,22 +250,30 @@ dashboardappApp
 
             $scope.status = $stateParams.status;
 
-            api.countNames('all', function(num){
-                console.log(num)
-                 $scope.namesListItems = num;
+            api.countNames($stateParams.status, function(num){
+                $scope.namesListItems = num
             })
 
-            api.getNames($stateParams, $scope.pageNum, $scope.pageLength).success(function(responseData) {               
-                responseData.forEach(function(name) {
-                    $scope.namesList.unshift(name)
+            $scope.pagination = {
+                current: 1
+            }
+
+            $scope.sort = function(keyname){
+              $scope.sortKey = keyname;   //set the sortKey to the param passed
+              $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+            }
+
+            $scope.fetch = function(newPageNumber){
+                return api.getNames({ status: $stateParams.status, page: newPageNumber || 1, count: $scope.itemsPerPage || 50 }).success(function(responseData) {
+                    responseData.forEach(function(name) {
+                        $scope.namesList.unshift(name)
+                    })
+                }).error(function(response) {
+                    console.log(response)
                 })
-            }).error(function(response) {
-                console.log(response)
-            })
+            }
 
-            $scope.$on('onRepeatLast', function(){
-                //$('#names_table').trigger('footable_resize').data('footable').redraw()
-            })
+            $scope.fetch()
 
             $scope.delete = function(entry){
 
@@ -285,15 +293,6 @@ dashboardappApp
 
                 if (!$window.confirm('Are you sure you want to delete the selected name/s?')) return;
                 
-            }
-
-            $scope.clearFilters = function() {
-                $('.filter-status').val('')
-                $('#names_table').trigger('footable_clear_filter')
-            }
-
-            $scope.filterTable = function(userStatus) {
-                $('#names_table').data('footable-filter').filter( $('#textFilter').val() )
             }
 
             $scope.indexName = function(entry){
@@ -403,28 +402,35 @@ dashboardappApp
 
     .controller('userListCtrl', [
         '$scope',
-        'api',
+        'usersApi',
         '$window',
         function ($scope, api, $window) {
             $scope.usersList = []
 
-            api.get("/v1/auth/users").success(function(response) {
-                $scope.usersListItems = response.length;
-                response.forEach(function(user) {
-                    $scope.usersList.push(user)
-                })
-            }).error(function(response) {
-                console.log(response)
+            $scope.sort = function(keyname){
+              $scope.sortKey = keyname;   //set the sortKey to the param passed
+              $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+            }
+
+            $scope.pagination = {
+                current: 1
+            }
+
+            api.countUsers(function(num){
+                $scope.usersListItems = num || 50;
             })
 
-            $scope.clearFilters = function() {
-                $('.filter-status').val('')
-                $('#users_table').trigger('footable_clear_filter')
+            $scope.fetch = function(newPageNumber){
+                return api.getUsers({ page:newPageNumber || 1, count:50 }).success(function(response) {
+                    response.forEach(function(user) {
+                        $scope.usersList.push(user)
+                    })
+                }).error(function(response) {
+                    console.log(response)
+                })
             }
 
-            $scope.filterTable = function(userStatus) {
-                $('#users_table').data('footable-filter').filter( $('#textFilter').val() )
-            }
+            $scope.fetch()
         }
     ])
 

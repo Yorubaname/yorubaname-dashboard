@@ -1,10 +1,6 @@
 /* Services */
 angular.module('ui.load', [])
-    .service('uiLoad', [
-        '$document',
-        '$q',
-        '$timeout',
-        function ($document, $q, $timeout) {
+    .service('uiLoad', ['$document','$q','$timeout', function ($document, $q, $timeout) {
             var loaded = [
             ];
             var promise = false;
@@ -264,6 +260,16 @@ dashboardappApp
                })
     }
 
+    this.countUsers = function(fn){
+      return api.get('/v1/users/meta', { count: true }).success(function(resp){
+        return fn(resp.count)
+      })
+    }
+
+    this.getUsers = function(params){
+      return api.get("/v1/auth/users", params)
+    }
+
   }])
 
 /* Names API Endpoint Service, Extension for API requests for Name Entries resources only. Adapted from code base */
@@ -280,7 +286,7 @@ dashboardappApp
         name.syllables = $filter('aToString')(name.syllables,'-')
         name.morphology = $filter('aToString')(name.morphology,'-')
         name.ipaNotation = $filter('aToString')(name.ipaNotation,'-')
-        return name;
+        return name
       }
 
       var deformatName = function(name) {
@@ -289,7 +295,7 @@ dashboardappApp
         name.syllables = $filter('sToArray')(name.syllables,'-')
         name.morphology = $filter('sToArray')(name.morphology,'-')
         name.ipaNotation = $filter('sToArray')(name.ipaNotation,'-')
-        return name;
+        return name
       }
 
       /**
@@ -379,19 +385,22 @@ dashboardappApp
 
       this.getNames = function (filter) {
         filter = !isEmptyObj(filter) ? filter : {}
+        filter.page = filter.page || 1
+        filter.count = filter.count || 50
+        filter.orderBy = 'createdAt'
+
         if (filter.status == 'suggested') return api.get('/v1/suggest')
         if (filter.status == 'published') filter.indexed = true;
-        // page, count, 
-        // filter.page = page || 1
-        // filter.count = count || 10
-        filter.orderBy = 'createdAt'
-        filter.all = true
+      
         return api.get('/v1/names', filter)
       }
 
       this.countNames = function(status, fn){
-        return _this.getNames({ status: status }).success(function(resp){
-          return fn(resp.length)
+        var endpoint = '/v1/names/meta'
+        if (status == 'published') endpoint = '/v1/search/meta'
+        if (status == 'suggested') endpoint = '/v1/suggest/meta'
+        return api.get(endpoint, { count: true }).success(function(resp){
+          return fn(resp.count)
         })
       }
 
@@ -421,11 +430,16 @@ dashboardappApp
         return api.deleteJson('/v1/search/indexes/batch', names)
       }
 
-      this.getFeedback = function(name) {
-        return api.get('/v1/names/'+name+'/', { feedback: true })
+      this.getFeedback = function(name, fn) {
+        return api.get('/v1/names/'+name+'/', { feedback: true }).success(function(resp){
+          return fn( resp.feedback )
+        })
       }
-      this.deleteFeedback = function(name) {
-        return api.deleteJson('/v1/'+name+'/feedback')
+
+      this.deleteFeedback = function(name, fn) {
+        return api.deleteJson('/v1/'+name+'/feedback').success(fn).error(function(){
+          return toastr.error('Feedbacks on ' + name + ' were not deleted. Please try again.')
+        })
       }
 
       this.getGeoLocations = function(){
@@ -512,7 +526,7 @@ dashboardappApp
         successCallback(response)
         //console.log('after running cb');
         fileItem.remove()
-        $state.go("auth.names.list_entries", {status:'all'})
+        //$state.go("auth.names.list_entries", {status:'all'})
       }
       uploader.onCompleteAll = function () {
         console.info('onCompleteAll');
