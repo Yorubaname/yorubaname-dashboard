@@ -40,7 +40,7 @@
                     <td ng-show="!isAdmin"><strong>{{entry.name}}</strong></td>
                     <td>{{entry.syllables}}</td>
                     <td>{{entry.geoLocation.place}}</td>
-                    <td ng-hide="!isAdmin"><a class="btn btn-xs" ng-class="entry.indexed ? 'btn-default' : 'btn-success'" ng-click="indexName(entry)">{{entry.indexed ? 'Remove from Index' : 'Add to Index'}}</a></td>
+                    <td ng-hide="!isAdmin"><a class="btn btn-xs" ng-class="entry.indexed ? 'btn-default' : 'btn-success'" ng-click="indexName(entry)">{{entry.indexed ? 'Unpublish' : 'Publish'}}</a></td>
                     <td>{{entry.submittedBy}}</td>
                     <td>{{entry.createdAt|toDateString}}</td>
                 </tr>
@@ -66,8 +66,8 @@
             </tfoot>
         </table>
 
-        <a ng-show="isAdmin" ng-click="indexNames('add')" class="btn btn-success btn-sm">Index Selected</a>
-        <a ng-show="isAdmin" ng-click="indexNames('remove')" class="btn btn-default btn-sm">Remove Selected from Index</a>
+        <a ng-show="isAdmin" ng-click="indexNames('add')" class="btn btn-success btn-sm">Publish Selected</a>
+        <a ng-show="isAdmin" ng-click="indexNames('remove')" class="btn btn-default btn-sm">Unpublish Selected</a>
     </div>
 </div>
 

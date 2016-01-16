@@ -311,18 +311,18 @@ dashboardappApp
 
                     (!action || action == 'add') ? api.addNamesToIndex(entries).success(function(response){
                         $.map(entries, function(entry) { entry.indexed = true })
-                        toastr.success(entries.length + ' names have been added to index')
+                        toastr.success(entries.length + ' names have been published')
                     }).error(function(){
-                        toastr.error('Selected names could not be added to index')
+                        toastr.error('Selected names could not be published')
                     })
 
                     :
 
                     api.removeNamesFromIndex(entries).success(function(response){
                         $.map(entries, function(entry) { entry.indexed = false })
-                        toastr.success(entries.length + ' names have been removed from index')
+                        toastr.success(entries.length + ' names unpublished')
                     }).error(function(){
-                        toastr.error('Selected names could not be removed from index')
+                        toastr.error('Selected names could not be unpublished')
                     })
 
                 }
