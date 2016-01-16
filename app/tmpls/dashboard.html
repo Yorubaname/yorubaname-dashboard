@@ -42,17 +42,17 @@
             </a>
         </div>
     </div>
-    <!--div class="col-sm-2 col-xs-4">
+    <div class="col-sm-3 col-xs-4">
         <div class="info_box_var_1 box_bg_c">
             <div class="info_box_body">
-                <span class="countUpMe" data-endVal="13">13</span>
+                <span class="countUpMe unpublished_names" data-endVal="count_unpublished_names">{{count_unpublished_names || '0'}}</span>
             </div>
-            <a class="info_box_footer" ui-sref="auth.names.list_entries({status:'correct'})">
-                Needs Attention
+            <a class="info_box_footer" ui-sref="auth.names.list_entries({status:'unpublished'})">
+                Unpublished Names
             </a>
         </div>
     </div>
-    <div class="col-sm-2 col-xs-4">
+    <!--div class="col-sm-2 col-xs-4">
         <div class="info_box_var_1">
             <div class="info_box_body">
                 <span class="countUpMe" data-endVal="6">6</span>
@@ -85,24 +85,60 @@
     
 </div>
 <div class="row">
-    <div class="col-sm-7">
-        <div class="heading_a"><span class="heading_text">Latest Entries</span></div>
+    <div class="col-sm-4">
+        <div class="heading_a"><span class="heading_text">Recently Added Names Entries</span></div>
         
         <table class="table table-yuk">
             <thead>
                 <tr>
                     <th>Name</th>
                     <th>Syllables</th>
-                    <th>Status</th>
-                    <th>Date</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="entry in latestNames">
                     <td><a ui-sref="auth.names.edit_entries({entry:entry.name})">{{entry.name}}</a></td>
                     <td>{{entry.syllables}}</td>
-                    <td>{{entry.indexed ? 'Indexed' : 'Not indexed'}}</td>
-                    <td>{{entry.createdAt|toDateString}}</td>
+                </tr>
+            </tbody>
+        </table>
+            
+    </div>
+
+    <div class="col-sm-4">
+        <div class="heading_a"><span class="heading_text">Recently Published Names Entries</span></div>
+        
+        <table class="table table-yuk">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Syllables</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="entry in latestNames">
+                    <td><a ui-sref="auth.names.edit_entries({entry:entry.name})">{{entry.name}}</a></td>
+                    <td>{{entry.syllables}}</td>
+                </tr>
+            </tbody>
+        </table>
+            
+    </div>
+
+    <div class="col-sm-4">
+        <div class="heading_a"><span class="heading_text">Most Recent Names Feedbacks</span></div>
+        
+        <table class="table table-yuk">
+            <thead>
+                <tr>
+                    <th>Feedback</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="entry in latestNames">
+                    <td><a ui-sref="auth.names.edit_entries({entry:entry.name})">{{entry.name}}</a></td>
+                    <td>{{entry.syllables}}</td>
                 </tr>
             </tbody>
         </table>

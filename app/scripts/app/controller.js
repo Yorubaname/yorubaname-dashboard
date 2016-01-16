@@ -175,6 +175,15 @@ dashboardappApp
                     theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
                     theAnimation.start()
                 })
+
+                // try if this hacks unpublished names count
+                $('.countUpMe .unpublished_names').each(function() {
+                    var target = this,
+                    endVal = num - $scope.count_published_names,
+                    theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
+                    $scope.count_unpublished_names = endVal;
+                    theAnimation.start()
+                })
             })
 
             $scope.latestNames = []
