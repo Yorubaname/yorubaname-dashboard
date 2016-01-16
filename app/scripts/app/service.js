@@ -205,6 +205,7 @@ dashboardappApp
             $localStorage.id = null;
             $rootScope.user = null;
             $rootScope.isAuthenticated = false;
+            $rootScope.isLexicographer = false;
             $rootScope.isAdmin = false;
             toastr.error(response.message, 'Sign In Error')
         })
@@ -215,7 +216,9 @@ dashboardappApp
       $localStorage.isAuthenticated = false;
       $localStorage.isAdmin = false;
       $rootScope.isAuthenticated = false;
+      $localStorage.isLexicographer = false;
       $rootScope.isAdmin = false;
+      $rootScope.isLexicographer = false;
       $rootScope.user = null;
       $localStorage.user = null;
       $timeout(function(){
