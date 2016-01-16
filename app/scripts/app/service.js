@@ -394,6 +394,7 @@ dashboardappApp
 
         if (filter.status == 'suggested') return api.get('/v1/suggest')
         if (filter.status == 'published') filter.indexed = true;
+        if (filter.status == 'unpublished') filter.indexed = false;
       
         return api.get('/v1/names', filter)
       }

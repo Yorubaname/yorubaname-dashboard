@@ -210,8 +210,9 @@ dashboardappApp
     .controller('namesEditEntryCtrl', [
         '$scope',
         '$stateParams',
+        '$state',
         'namesApi',
-        function($scope, $stateParams, api) {
+        function($scope, $stateParams, $state, api) {
 
             var originalName = null
 
@@ -224,6 +225,11 @@ dashboardappApp
                 $scope.name = resp
                 originalName = resp.name
             })
+
+            $scope.goto = function(entry){
+                api.updateName(originalName, $scope.name)
+                return $state.go('auth.names.edit_entries', {entry: entry})
+            }
 
             $scope.submit = function(){
                 return api.updateName(originalName, $scope.name)
@@ -324,6 +330,19 @@ dashboardappApp
                     }).error(function(){
                         toastr.error('Selected names could not be unpublished')
                     })
+
+                }
+                else toastr.warning('No names selected')
+            }
+
+            // Accept Suggested Name/s
+            $scope.acceptNames = function(entry){
+                var entries = $.map( $scope.namesList , function(elem){
+                    if (elem.isSelected == true) return elem
+                })
+                if (!entry && entries.length > 0) {
+
+                    
 
                 }
                 else toastr.warning('No names selected')

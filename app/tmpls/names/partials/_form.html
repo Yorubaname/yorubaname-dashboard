@@ -15,12 +15,13 @@
         </div>
         <div class="form-group">
             <label for="syllables" class="required">Syllable breakdown</label>
+            <span class="help-block">Enter syllable breakdown by using the tab  key to separate each syllable.</span>
             <!--input type="text" id="syllables" class="form-control" ng-model="name.syllables" required-->
             <tags-input ng-model="name.syllables" id="syllables" add-on-space="true" min-length="1" required></tags-input>
         </div>
         <div class="form-group">
             <label for="geolocation" class="required">Geolocation</label>
-            <span class="help-block">Where is this name most commonly used?</span>
+            <span class="help-block">Where is this name most commonly used? Select "Others/Don't Know" or "General" if you are not sure of the specific origin of this name</span>
             <select geolocation id="geolocation" class="form-control" placeholder="Select geolocation..." ng-model="name.geoLocation" required>
                 <option ng-repeat="location in geoLocations" value="{{location}}">{{location.place}}</option>
             </select>
@@ -31,11 +32,13 @@
         </div>
         <div class="form-group">
             <label for="ipa">IPA Notation</label>
+            <span class="help-block">Enter IPA Notation by using the tab  key to separate each part.</span>
             <!--input type="text" id="ipa" class="form-control" ng-model="name.ipaNotation"-->
             <tags-input ng-model="name.ipaNotation" id="ipa" add-on-space="true" min-length="1"></tags-input>
         </div>
         <div class="form-group">
             <label for="pronunciation">Pronunciation</label>
+            <span class="help-block">Enter pronunciation by using the tab key to separate each part.</span>
             <!--input type="text" id="pronunciation" class="form-control" ng-model="name.pronunciation"-->
             <tags-input ng-model="name.pronunciation" id="pronunciation" add-on-space="true" min-length="1"></tags-input>
         </div>
@@ -46,12 +49,14 @@
 
         <div class="form-group">
             <label for="morphology">Morphology</label>
+            <span class="help-block">Enter morphology by using the tab  key to separate each part.</span>
             <!--input type="text" id="morphology" class="form-control" ng-model="name.morphology"-->
             <tags-input ng-model="name.morphology" id="morphology" add-on-space="true" min-length="1"></tags-input>
         </div>
 
         <div class="form-group">
             <h5>Etymology</h5>
+            <span class="help-block">Enter the composite part of this name and its meaning.</span>
             <etymology></etymology>
         </div>
 

@@ -6,6 +6,7 @@
         <div class="btn-group btn-sm">
             <a ui-sref="auth.names.list_entries({status:'all'})" class="btn btn-sm btn-default" ng-class="status == 'all' ? 'btn-primary' : ''">All Names</a>
             <a ui-sref="auth.names.list_entries({status:'published'})" class="btn btn-sm btn-default" ng-class="status == 'published' ? 'btn-primary' : ''">Published Names</a>
+            <a ui-sref="auth.names.list_entries({status:'unpublished'})" class="btn btn-sm btn-default" ng-class="status == 'unpublished' ? 'btn-primary' : ''">Unpublished Names</a>
             <a ui-sref="auth.names.list_entries({status:'suggested'})" class="btn btn-sm btn-default" ng-class="status == 'suggested' ? 'btn-primary' : ''">Suggested Names</a>
         </div>
     </div>
@@ -36,8 +37,7 @@
             </thead>
             <tbody>
                 <tr dir-paginate="entry in namesList|orderBy:sortKey:reverse|filter:search|itemsPerPage:50" total-items="namesListItems" current-page="pagination.current" ng-class="entry.isSelected ? 'bg-info' : '' ">
-                    <td ng-hide="!isAdmin || !isLexicographer"><input type="checkbox" ng-model="entry.isSelected"> <a ui-sref="auth.names.edit_entries({entry:entry.name})"> <strong>{{entry.name}}</strong></a></td>
-                    <td ng-show="!isAdmin || !isLexicographer"><strong>{{entry.name}}</strong></td>
+                    <td><input type="checkbox" ng-model="entry.isSelected" ng-hide="!isAdmin || !isLexicographer"> <a ui-sref="auth.names.edit_entries({entry:entry.name})"> <strong>{{entry.name}}</strong></a></td>
                     <td>{{entry.syllables}}</td>
                     <td>{{entry.geoLocation.place}}</td>
                     <td ng-hide="!isAdmin || !isLexicographer"><a class="btn btn-xs" ng-class="entry.indexed ? 'btn-default' : 'btn-success'" ng-click="indexName(entry)">{{entry.indexed ? 'Unpublish' : 'Publish'}}</a></td>
@@ -54,6 +54,9 @@
                 </tr>
             </tbody>
             <tfoot>
+                <tr ng-hide="!namesList.length">
+                    <td colspan="7"><select-all-checkbox checkboxes="namesList"></select-all-checkbox> Select all</td>
+                </tr>
                 <tr>
                     <td colspan="7">
                         <dir-pagination-controls
@@ -98,10 +101,13 @@
                     <td>{{entry.geoLocation.place}}</td>
                     <td>{{entry.email}}</td>
                     <td>{{entry.createdAt|toDateString}}</td>
-                    <td ng-hide="!isAdmin || !isLexicographer"><a class="btn btn-xs btn-danger" ng-click="delete(entry)">Delete</a></td>
+                    <td ng-hide="!isAdmin || !isLexicographer"><a class="btn btn-xs btn-success" ng-click="accept(entry)">Accept</a><a class="btn btn-xs btn-danger" ng-click="delete(entry)">Delete</a></td>
                 </tr>
             </tbody>
             <tfoot>
+                <tr ng-hide="!namesList.length">
+                    <td colspan="6"><select-all-checkbox checkboxes="namesList"></select-all-checkbox> Select all</td>
+                </tr>
                 <tr>
                     <td colspan="6">
                         <dir-pagination-controls
@@ -113,6 +119,8 @@
                 </tr>
             </tfoot>
         </table>
+
+        <a ng-click="accept()" ng-hide="!namesList.length || !isAdmin || !isLexicographer" class="btn btn-danger btn-sm">Accept Selected</a>
 
         <a ng-click="delete()" ng-hide="!namesList.length || !isAdmin || !isLexicographer" class="btn btn-danger btn-sm">Delete Selected</a>
 </div>
