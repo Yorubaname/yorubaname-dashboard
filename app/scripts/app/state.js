@@ -134,7 +134,7 @@ dashboardappApp
                     controller: 'namesSearchCtrl'
                 })
                 
-                // Pages (parent state)
+                /*// Pages (parent state)
                 .state('auth.profile', {
                     abstract: true,
                     url: '/profile',
@@ -161,7 +161,7 @@ dashboardappApp
                     url: '/edit',
                     templateUrl: 'tmpls/profile/edit.html',
                     controller: 'profileEditCtrl'
-                })
+                })*/
 
                 // Pages (parent state)
                 .state('auth.users', {
