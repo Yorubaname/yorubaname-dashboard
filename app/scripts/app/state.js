@@ -41,8 +41,7 @@ dashboardappApp
                     url: "",
                     templateUrl: 'tmpls/authenticated.html',
                     data:{
-                      requiresLogin:true,
-                      requiresAdminPriviledge:true
+                      requiresLogin:true
                     }
                 })
                 // Dashboard
@@ -55,14 +54,20 @@ dashboardappApp
                     ncyBreadcrumb: {
                         label: 'Home'
                     },
-                    controller: 'dashboardCtrl'
+                    controller: 'dashboardCtrl',
+                    data:{
+                      requiresBasicPriviledge:true
+                    }
                 })
                 // Names (parent state)
                 .state('auth.names', {
                     // With abstract set to true, that means this state can not be explicitly activated.
                     abstract: true,
                     url: '/names',
-                    template: '<div ui-view autoscroll="false" class="mainView-animate"></div>'
+                    template: '<div ui-view autoscroll="false" class="mainView-animate"></div>',
+                    data:{
+                      requiresBasicPriviledge:true
+                    }
                 })
                 // Names > New Entries
                 .state('auth.names.add_entries', {
@@ -98,7 +103,7 @@ dashboardappApp
                     controller: 'namesListEntriesCtrl'
                 })
 
-                .state('auth.names.own_entries', {
+                /*.state('auth.names.own_entries', {
                     page_title: 'Yoruba Names - Admin - Own Name Entries',
                     ncyBreadcrumb: {
                         label: 'Your Entries'
@@ -162,7 +167,10 @@ dashboardappApp
                 .state('auth.users', {
                     abstract: true,
                     url: '/users',
-                    template: '<div ui-view autoscroll="false" class="mainView-animate"></div>'
+                    template: '<div ui-view autoscroll="false" class="mainView-animate"></div>',
+                    data:{
+                      requiresAdminPriviledge:true
+                    }
                 })
 
                 // Pages > Faq/Help > Categories

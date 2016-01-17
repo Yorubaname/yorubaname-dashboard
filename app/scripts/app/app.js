@@ -83,8 +83,8 @@ dashboardappApp
 
     /* Run Block */
     .run(
-    [ '$rootScope', '$state', '$stateParams', '$localStorage', 
-        function ($rootScope, $state, $stateParams, $localStorage) {
+    [ '$rootScope', '$state', '$stateParams', '$localStorage', 'toastr',
+        function ($rootScope, $state, $stateParams, $localStorage, toastr) {
 
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
@@ -119,18 +119,31 @@ dashboardappApp
 
                 var requiresLogin = toState.data.requiresLogin,
                     requiresAdminPriviledge = toState.data.requiresAdminPriviledge,
+                    requiresBasicPriviledge = toState.data.requiresBasicPriviledge,
+                    requiresLexicographerPriviledge = toState.data.requiresLexicographerPriviledge,
                     requiresLogout = toState.data.requiresLogout;
 
                 if (requiresLogin === true && !is_logged_in()) {
                     event.preventDefault()
                     $state.go('login')
+                    toastr.warning("You have to log in to continue...")
+                }
+
+                else if (requiresAdminPriviledge && !$rootScope.isAdmin) {
+                    event.preventDefault()
+                    $state.go('auth.home')
+                    toastr.warning("You are not authorised to view the requested resource")
+                }
+
+                else if (requiresLexicographerPriviledge && $rootScope.isBasic) {
+                    event.preventDefault()
+                    $state.go('auth.home')
+                    toastr.warning("You are not authorised to view the requested resource")
                 }
                 
                 else if (requiresLogout === true && is_logged_in()) {
                     event.preventDefault()
-                    // log him out
-                    // then go to sign
-                    $state.go('login') // auth.home
+                    $state.go('login')
                 }
 
                 // remove datatables fixedHeader from DOM
