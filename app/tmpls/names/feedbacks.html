@@ -1,1 +1,1 @@
-<button class="btn btn-sm btn-warning pull-right" ng-click="showFeedbacks()">Show Feedbacks</button>
+<button class="btn btn-sm btn-warning pull-right" ng-click="showFeedbacks()" ng-disabled="{{!feedbacks.length}}">Has {{ feedbacks.length || '0'}} Feedbacks</button>

@@ -280,36 +280,32 @@ dashboardappApp
 
     .directive('feedback', ['namesApi', '$modal', 'toastr', function(api, $modal, toastr){
         return {
-            restrict: 'E',
+            restrict: 'EA',
             templateUrl: 'tmpls/names/feedbacks.html',
             link: function (scope, element, attributes) {
-
-              scope.showFeedbacks = function () {
-                return api.getFeedback(attributes['name'], function (resp) {
-                  //scope.feedbacks = resp
-                  if (!resp.length > 0) return toastr.info("There are no feedbacks")
-                    
-                  $modal.open({
-                        templateUrl: 'tmpls/names/partials/feedbackModal.html',
-                        size: 'lg',
-                        controller: function ($scope, $modalInstance) {
-                            $scope.modalTitle = 'Feedbacks on ' + attributes['name']
-                            $scope.feedbacks = resp
-                            $scope.deleteFeedback = function () {
-                                api.deleteFeedback(attributes['name'], function () {
-                                  $modalInstance.close()
-                                })
-                            }
-                            $scope.cancel = function () {
-                                $modalInstance.dismiss('cancel')
-                            }
-                        }
-                    })
-                  
+              setTimeout(function(){
+                api.getFeedback(attributes['name'], function (resp) {
+                    scope.feedbacks = resp
                 })
+              }, 500)
+              scope.showFeedbacks = function () {
+                $modal.open({
+                    templateUrl: 'tmpls/names/partials/feedbackModal.html',
+                    size: 'lg',
+                    controller: function ($scope, $modalInstance) {
+                        $scope.modalTitle = 'Feedbacks on ' + attributes['name']
+                        $scope.feedbacks = scope.feedbacks
+                        $scope.deleteFeedback = function () {
+                            api.deleteFeedback(attributes['name'], function () {
+                              $modalInstance.close()
+                            })
+                        }
+                        $scope.cancel = function () {
+                            $modalInstance.dismiss('cancel')
+                        }
+                    }
+                }) 
               }
-
-              
 
             }
         }
