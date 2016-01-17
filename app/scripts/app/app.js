@@ -76,6 +76,11 @@ dashboardappApp
         })
     })
 
+    /* Prefix ng-storage with application name for new change's sakes */
+    .config(['$localStorageProvider', function ($localStorageProvider) {
+        $localStorageProvider.setKeyPrefix('Yoruba::Dictionary::App::v0.0.1-')
+    }])
+
     /* Run Block */
     .run(
     [ '$rootScope', '$state', '$stateParams', '$localStorage', 
@@ -94,8 +99,9 @@ dashboardappApp
                       id: $localStorage.id
                     }
                     $rootScope.isAuthenticated = true;
-                    $rootScope.isAdmin = $localStorage.isAdmin;
-                    $rootScope.isLexicographer = $localStorage.isLexicographer;
+                    $rootScope.isAdmin = $localStorage.role == "admin";
+                    $rootScope.isLexicographer = $localStorage.role == "lexicographer";
+                    $rootScope.isBasic = $localStorage.role == "basic";
                     $rootScope.baseUrl = $localStorage.baseUrl;
                 }
                 return true;
