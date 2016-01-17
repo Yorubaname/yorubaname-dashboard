@@ -50,19 +50,22 @@ dashboardappApp
                             link: "auth.names.list_entries({status:'published'})"
                         },
                         {
-                            title: 'Suggested Names',
-                            link: "auth.names.list_entries({status:'suggested'})"
+                            title: 'Unpublished Names',
+                            link: "auth.names.list_entries({status:'unpublished'})"
                         },
                         {
-                            title: 'Your Entries',
-                            link: "auth.names.own_entries"
+                            title: 'Suggested Names',
+                            link: "auth.names.list_entries({status:'suggested'})"
                         },
                         {
                             title: 'Search',
                             link: 'auth.names.search'
                         }
                     ]
-                },
+                }
+            ];
+
+            if ($rootScope.isAdmin == true) $scope.sections.push(
                 {
                     id: 2,
                     title: 'Users',
@@ -78,8 +81,7 @@ dashboardappApp
                             link: "auth.users.list_users({role:'all'})"
                         }
                     ]
-                }
-            ];
+                });
 
             // accordion menu
             $(document).off('click', '.side_menu_expanded #main_menu .has_submenu > a').on('click', '.side_menu_expanded #main_menu .has_submenu > a', function () {
