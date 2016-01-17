@@ -27,25 +27,28 @@
         <table class="table table-yuk2" id="names_table" ng-show="namesList.length">
             <thead>
                 <tr>
-                    <th><select-all-checkbox checkboxes="namesList"></select-all-checkbox> Name</th>
+                    <th ng-hide="isBasic"><select-all-checkbox checkboxes="namesList"></select-all-checkbox></th> 
+                    <th>Name</th>
                     <th>Syllables</th>
                     <th>Geolocation</th>
-                    <th ng-show="isAdmin">Status</th>
+                    <th>Status</th>
                     <th>Submitted By</th>
                     <th>Date</th>
                 </tr>
             </thead>
             <tbody>
                 <tr dir-paginate="entry in namesList|orderBy:sortKey:reverse|filter:search|itemsPerPage:50" total-items="namesListItems" current-page="pagination.current" ng-class="entry.isSelected ? 'bg-info' : '' ">
-                    <td><input type="checkbox" ng-model="entry.isSelected" ng-hide="!isAdmin || !isLexicographer"> <a ui-sref="auth.names.edit_entries({entry:entry.name})"> <strong>{{entry.name}}</strong></a></td>
+                    <td ng-hide="isBasic"><input type="checkbox" ng-model="entry.isSelected"></td>
+                    <td><a ui-sref="auth.names.edit_entries({entry:entry.name})"><strong>{{entry.name}}</strong></a></td>
                     <td>{{entry.syllables}}</td>
                     <td>{{entry.geoLocation.place}}</td>
-                    <td ng-hide="!isAdmin || !isLexicographer"><a class="btn btn-xs" ng-class="entry.indexed ? 'btn-default' : 'btn-success'" ng-click="indexName(entry)">{{entry.indexed ? 'Unpublish' : 'Publish'}}</a></td>
+                    <td ng-show="isAdmin || isLexicographer"><a class="btn btn-xs" ng-class="entry.indexed ? 'btn-default' : 'btn-success'" ng-click="indexName(entry)">{{entry.indexed ? 'Unpublish' : 'Publish'}}</a></td>
+                    <td ng-show="isBasic">{{entry.indexed ? 'Published' : 'Pending'}}</td>
                     <td>{{entry.submittedBy}}</td>
                     <td>{{entry.createdAt|toDateString}}</td>
                 </tr>
                 <tr class="text-center" ng-show="!namesList.length">
-                    <td colspan="6">
+                    <td colspan="7">
                         <h1><i class="fa fa-lg fa-smile-o text-muted"></i></h1>
                         <h3 class="text-muted">Nice, there's something to do.</h3>
                         <p class="lead">Get started by adding names either in bulk or one at a time to populate the names database.</p>
@@ -54,13 +57,13 @@
                 </tr>
             </tbody>
             <tfoot>
-                <tr ng-hide="!namesList.length">
-                    <td colspan="7"><select-all-checkbox checkboxes="namesList"></select-all-checkbox> Select all</td>
+                <tr ng-hide="!namesList.length || isBasic">
+                    <td colspan="7"><select-all-checkbox checkboxes="namesList"></select-all-checkbox>  Select all names</td>
                 </tr>
                 <tr>
                     <td colspan="7">
                         <dir-pagination-controls
-                            max-size="5"
+                            max-size="12"
                             direction-links="true"
                             boundary-links="true" on-page-change="fetch(newPageNumber)" >
                         </dir-pagination-controls>
@@ -86,32 +89,32 @@
         <table class="table table-yuk2" id="names_table" ng-show="namesList.length">
             <thead>
                 <tr>
-                    <th><select-all-checkbox checkboxes="namesList"></select-all-checkbox> Name</th>
+                    <th><select-all-checkbox checkboxes="namesList"></select-all-checkbox></th>
+                    <th>Name</th>
                     <th>Details</th>
                     <th>Geolocation</th>
                     <th>Suggested By</th>
-                    <th>Date</th>
-                    <th ng-hide="!isAdmin || !isLexicographer">Date</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr dir-paginate="entry in namesList|orderBy:sortKey:reverse|filter:search|itemsPerPage:50" total-items="namesListItems" current-page="pagination.current" on-last-repeat ng-class="entry.isSelected ? 'bg-info' : '' ">
-                    <td><input type="checkbox" ng-model="entry.isSelected"> <strong>{{entry.name}}</strong></td>
+                    <td><input type="checkbox" ng-model="entry.isSelected"></td>
+                    <td><strong>{{entry.name}}</strong></td>
                     <td>{{entry.details}}</td>
                     <td>{{entry.geoLocation.place}}</td>
                     <td>{{entry.email}}</td>
-                    <td>{{entry.createdAt|toDateString}}</td>
-                    <td ng-hide="!isAdmin || !isLexicographer"><a class="btn btn-xs btn-success" ng-click="accept(entry)">Accept</a><a class="btn btn-xs btn-danger" ng-click="delete(entry)">Delete</a></td>
+                    <td><a class="btn btn-xs btn-success" ng-click="accept(entry)">Accept Name</a> <a class="btn btn-xs btn-default" ng-show="isAdmin" ng-click="delete(entry)">Delete</a></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr ng-hide="!namesList.length">
-                    <td colspan="6"><select-all-checkbox checkboxes="namesList"></select-all-checkbox> Select all</td>
+                    <td colspan="6"><select-all-checkbox checkboxes="namesList"></select-all-checkbox>  Select all suggested names</td>
                 </tr>
                 <tr>
                     <td colspan="6">
                         <dir-pagination-controls
-                            max-size="5"
+                            max-size="12"
                             direction-links="true"
                             boundary-links="true"  on-page-change="fetch(newPageNumber)">
                         </dir-pagination-controls>
@@ -120,7 +123,6 @@
             </tfoot>
         </table>
 
-        <a ng-click="accept()" ng-hide="!namesList.length || !isAdmin || !isLexicographer" class="btn btn-danger btn-sm">Accept Selected</a>
-
-        <a ng-click="delete()" ng-hide="!namesList.length || !isAdmin || !isLexicographer" class="btn btn-danger btn-sm">Delete Selected</a>
+        <a ng-click="accept()" ng-hide="!namesList.length" class="btn btn-success btn-sm">Accept Selected</a> 
+        <a ng-click="delete()" ng-hide="!namesList.length || !isAdmin" class="btn btn-default btn-sm">Delete Selected</a>
 </div>

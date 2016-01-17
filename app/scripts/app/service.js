@@ -289,8 +289,8 @@ dashboardappApp
       * @param nameEntry
       */
       this.addName = function (name, fn) {
-        // include logged in user's details
-        name.submittedBy = $localStorage.username;
+        // include logged in user's details, only if none exist - applies to accepting suggested names
+        if (!name.submittedBy) name.submittedBy = $localStorage.username;
         return api.postJson("/v1/names", formatName(name)).success(function(resp){
           toastr.success(name.name + ' was successfully added. Add another name')
           fn()

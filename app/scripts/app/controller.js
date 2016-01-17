@@ -347,36 +347,31 @@ dashboardappApp
             }
 
             // Accept Suggested Name/s
-            $scope.acceptNames = function(entry){
+            $scope.accept = function(entry){
+                if (entry) return acceptSuggestedName(entry)
                 var entries = $.map( $scope.namesList , function(elem){
                     if (elem.isSelected == true) return elem
                 })
-                if (!entry && entries.length > 0) {
-
-                    
-
+                if (entries.length > 0) {
+                    return entries.forEach(function(entry){
+                        acceptSuggestedName(entry)
+                    })
                 }
-                else toastr.warning('No names selected')
+                else toastr.warning('Please select names to accept.')
             }
 
             /**
              * Adds the suggested name to the list of names eligible to be added to search index
              */
-              $scope.acceptSuggestedName = function (suggestedName) {
-                var name = {}
-                $scope.namesList.some(function (entry) {
-                  if (entry.name === suggestedName) {
-                    name = {
-                      name: entry.name,
-                      meaning: entry.details,
-                      geoLocation: {
-                        place: entry.geoLocation.place
-                      },
-                      submittedBy: entry.email
-                    }
-                    return true // breaks the iteration
-                  }
-                })
+              var acceptSuggestedName = function (entry) {
+                var name = {
+                  name: entry.name,
+                  meaning: entry.details,
+                  geoLocation: JSON.stringify({
+                    place: entry.geoLocation.place
+                  }),
+                  submittedBy: entry.email
+                };
                 if (!$.isEmptyObject(name)) {
                   return api.addName(name, function () {
                     // Name added then delete from the suggested name store
