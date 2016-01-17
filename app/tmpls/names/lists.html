@@ -24,6 +24,11 @@
 
 <div class="row" ng-if="status != 'suggested'">
     <div class="col-md-12">
+        <div class="well well-sm text-center" ng-show="!namesList.length">
+            <h3 class="text-muted">Not an entry here, yet!</h3>
+            <p class="lead">How about getting started by adding a name?</p>
+            <a class="btn btn-md btn-info" ui-sref="auth.names.add_entries">Add Name Entry</a>
+        </div>
         <table class="table table-yuk2" id="names_table" ng-show="namesList.length">
             <thead>
                 <tr>
@@ -47,14 +52,6 @@
                     <td>{{entry.submittedBy}}</td>
                     <td>{{entry.createdAt|toDateString}}</td>
                 </tr>
-                <tr class="text-center" ng-show="!namesList.length">
-                    <td colspan="7">
-                        <h1><i class="fa fa-lg fa-smile-o text-muted"></i></h1>
-                        <h3 class="text-muted">Nice, there's something to do.</h3>
-                        <p class="lead">Get started by adding names either in bulk or one at a time to populate the names database.</p>
-                        <a class="btn btn-success btn-lg" ui-sref="auth.names.add_entries">Add Name Entries</a>
-                    </td>
-                </tr>
             </tbody>
             <tfoot>
                 <tr ng-hide="!namesList.length || isBasic">
@@ -72,8 +69,8 @@
             </tfoot>
         </table>
 
-        <a ng-show="isAdmin || isLexicographer" ng-click="indexNames('add')" class="btn btn-success btn-sm">Publish Selected</a>
-        <a ng-show="isAdmin || isLexicographer" ng-click="indexNames('remove')" class="btn btn-default btn-sm">Unpublish Selected</a>
+        <a ng-show="namesList.length && status != 'published' && isAdmin || isLexicographer" ng-click="indexNames('add')" class="btn btn-success btn-sm">Publish Selected</a>
+        <a ng-show="namesList.length && status != 'unpublished' && isAdmin || isLexicographer" ng-click="indexNames('remove')" class="btn btn-default btn-sm">Unpublish Selected</a>
     </div>
 </div>
 
@@ -81,7 +78,6 @@
 <div class="row" ng-if="status == 'suggested'">
     <div class="col-md-12">
         <div class="well well-sm text-center" ng-show="!namesList.length">
-            <h1><i class="fa fa-3x fa-smile-o text-muted"></i></h1>
             <h3 class="text-muted">Not a thing to do.</h3>
             <p class="lead">Great! It seems you've processed all suggested names. Enjoy your day!</p>
         </div>
