@@ -52,23 +52,13 @@
             </a>
         </div>
     </div>
-    <!--div class="col-sm-2 col-xs-4">
-        <div class="info_box_var_1">
-            <div class="info_box_body">
-                <span class="countUpMe" data-endVal="6">6</span>
-            </div>
-            <a class="info_box_footer" ui-sref="auth.names.list_entries({status:'draft'})">
-                Draft Entries
-            </a>
-        </div>
-    </div-->
 </div>
 <div class="row mHeight" ng-controller="searchCtrl">
     <div class="col-sm-8">
         <div class="heading_a"><span class="heading_text">Find Entry</span></div>
         <form ng-submit="exec_search()">
             <div class="input-group sepH_b">
-                <input class="form-control input-lg" placeholder="Enter name" id="appendedInputButton" type="text" ng-model="search.entry" typeahead="entry.name for entry in names | filter:$viewValue | limitTo:8">
+                <input class="form-control input-lg" placeholder="Enter name" id="appendedInputButton" type="text" ng-model="search.entry" typeahead="entry.name for entry in names | filter:$viewValue | limitTo:8" keyboard>
                 <span class="input-group-btn">
                     <button class="btn btn-success btn-lg" ng-disabled="!search.entry" ng-click="exec_search()" type="button"><i class="fa fa-search"></i> Search</button>
                 </span>
@@ -116,7 +106,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="entry in latestNames">
+                <tr ng-repeat="entry in publishedNames">
                     <td><a ui-sref="auth.names.edit_entries({entry:entry.name})">{{entry.name}}</a></td>
                     <td>{{entry.syllables}}</td>
                 </tr>
@@ -136,9 +126,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="entry in latestNames">
+                <tr ng-repeat="entry in feedbacks">
                     <td><a ui-sref="auth.names.edit_entries({entry:entry.name})">{{entry.name}}</a></td>
-                    <td>{{entry.syllables}}</td>
+                    <td>{{entry.feedback}}</td>
                 </tr>
             </tbody>
         </table>

@@ -316,4 +316,30 @@ dashboardappApp
         }
     }])
 
+    .directive('keyboard', function(){
+        return {
+            replace: true,
+            restrict: 'EA',
+            link: function(scope, element, attributes){
+              element.keyboard({
+                layout: 'custom',
+                customLayout: {
+                    'normal': [
+                        'à á è é ẹ̀ ẹ ẹ́ ì í',
+                        'ò ó ọ̀ ọ ọ́ ṣ ù ú',
+                    ],
+                    'shift': [
+                        'Ň W Ĕ R T Ž Ú Å S D Í Ò',
+                        'Ý J Ŵ P Ț X Ç V Õ',
+                    ]
+                },
+                autoAccept   : true,
+                autoAcceptOnEsc : true,
+                appendTo: 'body',
+                usePreview   : false,
+              })
+            }
+        }
+    })
+
 ;

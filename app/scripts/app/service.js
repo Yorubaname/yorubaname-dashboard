@@ -401,6 +401,10 @@ dashboardappApp
         })
       }
 
+      this.getRecentlyIndexedNames = function(fn){
+        return api.get('/v1/search/activity?q=index').success(fn)
+      }
+
       this.addNameToIndex = function (name) {
         return api.postJson('/v1/search/indexes/' + name)
       }
