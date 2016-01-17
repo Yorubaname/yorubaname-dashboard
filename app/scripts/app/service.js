@@ -336,7 +336,6 @@ dashboardappApp
       */
       this.updateName = function(originalName, nameEntry){
         nameEntry = angular.copy( nameEntry )
-        nameEntry.indexed = false;
         return api.putJson("/v1/names/" + originalName,  formatName(nameEntry)).success(function(resp){
           toastr.success(nameEntry.name + ' was successfully updated.')
           cacheNames()
@@ -378,6 +377,7 @@ dashboardappApp
         if (filter.status == 'suggested') return api.get('/v1/suggest')
         if (filter.status == 'published') filter.indexed = true;
         if (filter.status == 'unpublished') filter.indexed = false;
+        if (filter.status == 'modified') filter.state = 'MODIFIED';
       
         return api.get('/v1/names', filter)
       }

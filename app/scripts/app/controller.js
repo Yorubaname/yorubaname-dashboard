@@ -204,7 +204,8 @@ dashboardappApp
 
             $scope.feedbacks = []
             api.getRecentFeedbacks(function(responseData){
-                responseData.forEach(function(n) {
+                responseData.slice(0,4).forEach(function(n) {
+                    if (n !== undefined)
                     $scope.feedbacks.push(n)
                 })
             })
