@@ -2,14 +2,12 @@
     <button type="button" class="close" ng-click="cancel()"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
     <h4 class="modal-title">{{modalTitle}}</h4>
 </div>
-
 <div class="modal-body">
-	<ul style="list-style:none">
+	<ul style="list-style:decimal">
 	  <li ng-repeat="feedback in feedbacks"> {{feedback.feedback}}</li>
 	</ul>
 </div>
-
 <div class="modal-footer">
     <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Close</button>
-    <button type="button" class="btn btn-danger btn-sm" ng-click="deleteFeedback()">Delete All</button>
+    <button type="button" class="btn btn-danger btn-sm" ng-click="deleteFeedback()" ng-disabled="!isAdmin">Delete All</button>
 </div>

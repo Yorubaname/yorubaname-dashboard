@@ -174,17 +174,19 @@ dashboardappApp
         }
     }])
 
-    .directive('etymology', function() {
+    .directive('etymology', ['$timeout', function($timeout) {
         return {
-            //replace: true,
+            replace: true,
             restrict:'E',
             templateUrl: 'tmpls/names/directives/etymology.html',
             link: function(scope, element, attrs) {
-              if (!scope.name) return;
-              if (!scope.name.etymology || !scope.name.etymology.length) {
-                scope.name.etymology = []
-                scope.name.etymology.push({ part:'', meaning:'' })
-              }
+              $timeout(function(){
+                if (!scope.name.etymology) {
+                    scope.name.etymology = []
+                    scope.name.etymology.push({ part:'', meaning:'' })
+                  }
+              }, 500)
+              
               scope.add_etymology = function() {
                 return scope.name.etymology.push({ part:'', meaning:'' })
               }
@@ -198,9 +200,10 @@ dashboardappApp
               scope.$watch('name.etymology', function(val) {
                 scope.form.$dirty = true;
               }, true)
+
             }
         }
-    })
+    }])
 
     .directive('avatar', ['$localStorage', function($localStorage) {
         return {
@@ -278,12 +281,13 @@ dashboardappApp
         }
     })
 
-    .directive('feedback', ['namesApi', '$modal', 'toastr', function(api, $modal, toastr){
+    .directive('feedback', ['namesApi', '$modal', '$timeout', '$rootScope',  function(api, $modal, $timeout, $rootScope){
         return {
+            //replace: true,
             restrict: 'EA',
             templateUrl: 'tmpls/names/feedbacks.html',
             link: function (scope, element, attributes) {
-              setTimeout(function(){
+              $timeout(function(){
                 api.getFeedback(attributes['name'], function (resp) {
                     scope.feedbacks = resp
                 })
@@ -291,10 +295,11 @@ dashboardappApp
               scope.showFeedbacks = function () {
                 $modal.open({
                     templateUrl: 'tmpls/names/partials/feedbackModal.html',
-                    size: 'lg',
+                    size: 'md',
                     controller: function ($scope, $modalInstance) {
                         $scope.modalTitle = 'Feedbacks on ' + attributes['name']
                         $scope.feedbacks = scope.feedbacks
+                        $scope.isAdmin = $rootScope.isAdmin
                         $scope.deleteFeedback = function () {
                             api.deleteFeedback(attributes['name'], function () {
                               $modalInstance.close()
