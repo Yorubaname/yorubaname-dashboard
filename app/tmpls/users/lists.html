@@ -15,7 +15,7 @@
         <table class="table table-yuk2" id="users_table">
             <thead>
                 <tr>
-                    <th><select-all-checkbox checkboxes="usersList"></select-all-checkbox> Username</th>
+                    <!--th><select-all-checkbox checkboxes="usersList"></select-all-checkbox> Username</th-->
                     <th ng-click="sort('email')">
                       Email Address
                       <span class="glyphicon sort-icon" ng-show="sortKey=='email'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
@@ -24,25 +24,25 @@
                       Role
                       <span class="glyphicon sort-icon" ng-show="sortKey=='roles'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                     </th>
-                    <th ng-click="sort('createdAt')">
+                    <!--th ng-click="sort('createdAt')">
                       Date Created
                       <span class="glyphicon sort-icon" ng-show="sortKey=='createdAt'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                    </th>
+                    </th-->
                 </tr>
             </thead>
             <tbody>
                 <tr dir-paginate="user in usersList|orderBy:sortKey:reverse|filter:search|itemsPerPage:50" total-items="usersListItems" current-page="pagination.current" ng-class="user.isSelected ? 'bg-info' : '' ">
-                    <td><input type="checkbox" value="{{$index}}" ng-model="user.isSelected" name="selected_name"> {{user.username}}</td>
+                    <!--td><input type="checkbox" value="{{$index}}" ng-model="user.isSelected" name="selected_name"> {{user.username}}</td-->
                     <td><strong>{{user.email}}</strong></td>
                     <td>{{user.roles}}</td>
-                    <td>{{user.createdAt|toDateString}}</td>
+                    <!--td>{{user.createdAt|toDateString}}</td-->
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="4">
+                    <td colspan="2">
                         <dir-pagination-controls
-                            max-size="5"
+                            max-size="12"
                             direction-links="true"
                             boundary-links="true"  on-page-change="fetch(newPageNumber)">
                         </dir-pagination-controls>
