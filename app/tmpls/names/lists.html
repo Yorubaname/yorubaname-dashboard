@@ -6,7 +6,7 @@
         <div class="btn-group btn-sm">
             <a ui-sref="auth.names.list_entries({status:'all'})" class="btn btn-sm btn-default" ng-class="status == 'all' ? 'btn-primary' : ''">All Names</a>
             <a ui-sref="auth.names.list_entries({status:'published'})" class="btn btn-sm btn-default" ng-class="status == 'published' ? 'btn-primary' : ''">Published Names</a>
-            <a ui-sref="auth.names.list_entries({status:'modified'})" class="btn btn-sm btn-default" ng-class="status == 'modified' ? 'btn-primary' : ''">Modified Names</a>
+            <a ui-sref="auth.names.list_entries({status:'modified'})" class="btn btn-sm btn-default" ng-class="status == 'modified' ? 'btn-primary' : ''" ng-show="isAdmin">Modified Names</a>
             <a ui-sref="auth.names.list_entries({status:'unpublished'})" class="btn btn-sm btn-default" ng-class="status == 'unpublished' ? 'btn-primary' : ''">Unpublished Names</a>
             <a ui-sref="auth.names.list_entries({status:'suggested'})" class="btn btn-sm btn-default" ng-class="status == 'suggested' ? 'btn-primary' : ''">Suggested Names</a>
         </div>
