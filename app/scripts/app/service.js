@@ -73,7 +73,7 @@ angular.module('ui.load', [])
 
 dashboardappApp
 
-  .service('api', ['$http', '$rootScope', function($http, $rootScope) {
+  .service('api', ['$http', function($http) {
 
     this.get = function(endpoint, data, headers) {
         return $http({
@@ -95,7 +95,6 @@ dashboardappApp
         return $http({
             method: 'POST',
             url: endpoint,
-            //type: 'text',
             data: data ? data : ''
         })
     }
@@ -268,19 +267,19 @@ dashboardappApp
 
       var formatName = function(name) {
         name.geoLocation = JSON.parse( name.geoLocation || '{}' )
-        name.pronunciation = $filter('aToString')(name.pronunciation,'-')
+        /*name.pronunciation = $filter('aToString')(name.pronunciation,'-')
         name.syllables = $filter('aToString')(name.syllables,'-')
         name.morphology = $filter('aToString')(name.morphology,'-')
-        name.ipaNotation = $filter('aToString')(name.ipaNotation,'-')
+        name.ipaNotation = $filter('aToString')(name.ipaNotation,'-')*/
         return name
       }
 
       var deformatName = function(name) {
         name.geoLocation = JSON.stringify( name.geoLocation )
-        name.pronunciation = $filter('sToArray')(name.pronunciation,'-')
+        /*name.pronunciation = $filter('sToArray')(name.pronunciation,'-')
         name.syllables = $filter('sToArray')(name.syllables,'-')
         name.morphology = $filter('sToArray')(name.morphology,'-')
-        name.ipaNotation = $filter('sToArray')(name.ipaNotation,'-')
+        name.ipaNotation = $filter('sToArray')(name.ipaNotation,'-')*/
         return name
       }
 
@@ -337,7 +336,7 @@ dashboardappApp
       */
       this.updateName = function(originalName, nameEntry){
         nameEntry = angular.copy( nameEntry )
-        nameEntry.indexed = false
+        nameEntry.indexed = false;
         return api.putJson("/v1/names/" + originalName,  formatName(nameEntry)).success(function(resp){
           toastr.success(nameEntry.name + ' was successfully updated.')
           cacheNames()
