@@ -421,6 +421,10 @@ dashboardappApp
         return api.deleteJson('/v1/search/indexes/batch', names)
       }
 
+      this.getRecentFeedbacks = function(fn){
+        return api.get('/v1/names/feedbacks').success(fn)
+      }
+
       this.getFeedback = function(name, fn) {
         return api.get('/v1/names/'+name+'/', { feedback: true }).success(function(resp){
           return fn( resp.feedback )

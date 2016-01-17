@@ -79,12 +79,6 @@
         <div class="heading_a"><span class="heading_text">Recently Added Names Entries</span></div>
         
         <table class="table table-yuk">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Syllables</th>
-                </tr>
-            </thead>
             <tbody>
                 <tr ng-repeat="entry in latestNames">
                     <td><a ui-sref="auth.names.edit_entries({entry:entry.name})">{{entry.name}}</a></td>
@@ -99,16 +93,9 @@
         <div class="heading_a"><span class="heading_text">Recently Published Names Entries</span></div>
         
         <table class="table table-yuk">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Syllables</th>
-                </tr>
-            </thead>
             <tbody>
                 <tr ng-repeat="entry in publishedNames">
-                    <td><a ui-sref="auth.names.edit_entries({entry:entry.name})">{{entry.name}}</a></td>
-                    <td>{{entry.syllables}}</td>
+                    <td><a ui-sref="auth.names.edit_entries({entry:entry})">{{entry}}</a></td>
                 </tr>
             </tbody>
         </table>
@@ -119,12 +106,6 @@
         <div class="heading_a"><span class="heading_text">Most Recent Names Feedbacks</span></div>
         
         <table class="table table-yuk">
-            <thead>
-                <tr>
-                    <th>Feedback</th>
-                    <th>Name</th>
-                </tr>
-            </thead>
             <tbody>
                 <tr ng-repeat="entry in feedbacks">
                     <td><a ui-sref="auth.names.edit_entries({entry:entry.name})">{{entry.name}}</a></td>

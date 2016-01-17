@@ -189,9 +189,23 @@ dashboardappApp
             })
 
             $scope.latestNames = []
-            api.getNames({ page:1, count:10, status:'all' }).success(function(responseData){
+            api.getNames({ page:1, count:5, status:'all' }).success(function(responseData){
                 responseData.forEach(function(name) {
                     $scope.latestNames.unshift(name)
+                })
+            })
+
+            $scope.publishedNames = []
+            api.getRecentlyIndexedNames(function(responseData){
+                responseData.forEach(function(name) {
+                    $scope.publishedNames.push(name)
+                })
+            })
+
+            $scope.feedbacks = []
+            api.getRecentFeedbacks(function(responseData){
+                responseData.forEach(function(n) {
+                    $scope.feedbacks.push(n)
                 })
             })
         }
