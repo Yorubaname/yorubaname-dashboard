@@ -110,3 +110,7 @@ form .etymology .remove {
 form .etymology:hover .remove {
   display: block;
 }
+
+span.help-block {
+  margin-bottom: 10px;
+}
