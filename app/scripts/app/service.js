@@ -162,33 +162,24 @@ dashboardappApp
         //console.log(authData)
         return api.authenticate(authData).success(function(response) {
             $localStorage.isAuthenticated = true;
-            $rootScope.isAuthenticated = true;
             $localStorage.id = response.id;
             $localStorage.username = response.username;
             $localStorage.email = response.email;
-            $rootScope.username = $localStorage.username;
-            // TODO maybe not. This is a security loop hole
             $localStorage.token = authData;
-
-            $rootScope.user = {
-              username: $localStorage.username,
-              email: $localStorage.email,
-              id: $localStorage.id
-            }
-
-            $rootScope.baseUrl = baseUrl;
             $localStorage.baseUrl = baseUrl;
 
             response.roles.some(function(role) {
                 // Check ROLE_ADMIN first, since it supercedes all
                 if (role === "ROLE_ADMIN") {
-                    $localStorage.isAdmin = true;
-                    $rootScope.isAdmin = true;
+                    $localStorage.role = "admin";
                     return true
                 }
                 else if (role === "ROLE_LEXICOGRAPHER") {
-                    $localStorage.isLexicographer = true;
-                    $rootScope.isLexicographer = true;
+                    $localStorage.role = "lexicographer";
+                    return true
+                }
+                else if (role === "ROLE_BASIC") {
+                    $localStorage.role = "basic";
                     return true
                 }
             })
@@ -196,31 +187,23 @@ dashboardappApp
             $rootScope.msg = {}
             $timeout(function(){
               $state.go('auth.home')
-              toastr.success( "Hey " + $rootScope.username + ", you are now successfully logged in.", 'Login Successful!')
+              toastr.success( "Hey " + $localStorage.username + ", you are now successfully logged in.", 'Login Successful!')
             }, 200)
         }).error(function(response) {
-            $localStorage.isAuthenticated = false;
-            $localStorage.isAdmin = false;
-            $localStorage.isLexicographer = false;
-            $localStorage.id = null;
-            $rootScope.user = null;
-            $rootScope.isAuthenticated = false;
-            $rootScope.isLexicographer = false;
-            $rootScope.isAdmin = false;
             toastr.error(response.message, 'Sign In Error')
         })
     }
 
     // Log out function
     this.logout = function(){
-      $localStorage.isAuthenticated = false;
-      $localStorage.isAdmin = false;
-      $rootScope.isAuthenticated = false;
-      $localStorage.isLexicographer = false;
-      $rootScope.isAdmin = false;
-      $rootScope.isLexicographer = false;
+      delete $localStorage.isAuthenticated;
+      delete $localStorage.role;
+      delete $localStorage.username;
+      delete $localStorage.email;
+      delete $localStorage.id;
+      delete $localStorage.token;
+      delete $localStorage.baseUrl;
       $rootScope.user = null;
-      $localStorage.user = null;
       $timeout(function(){
         $state.go('login')
         toastr.info('You are now logged out.')
@@ -307,7 +290,7 @@ dashboardappApp
       */
       this.addName = function (name, fn) {
         // include logged in user's details
-        name.submittedBy = $localStorage.email;
+        name.submittedBy = $localStorage.username;
         return api.postJson("/v1/names", formatName(name)).success(function(resp){
           toastr.success(name.name + ' was successfully added. Add another name')
           fn()
@@ -354,6 +337,7 @@ dashboardappApp
       */
       this.updateName = function(originalName, nameEntry){
         nameEntry = angular.copy( nameEntry )
+        nameEntry.indexed = false
         return api.putJson("/v1/names/" + originalName,  formatName(nameEntry)).success(function(resp){
           toastr.success(nameEntry.name + ' was successfully updated.')
           cacheNames()
