@@ -100,8 +100,8 @@ dashboardappApp
                     }
                     $rootScope.isAuthenticated = true;
                     $rootScope.isAdmin = $localStorage.role == "admin";
-                    $rootScope.isLexicographer = $localStorage.role == "lexicographer";
-                    $rootScope.isBasic = $localStorage.role == "basic";
+                    $rootScope.isLexicographer = $localStorage.role == "lex_pro";
+                    $rootScope.isBasic = $localStorage.role == "lex_basic";
                     $rootScope.baseUrl = $localStorage.baseUrl;
                 }
                 return true;
@@ -160,7 +160,7 @@ dashboardappApp
                 }
                 // remove select2-hidden-accessible
                 if($(".select2-hidden-accessible").length) {
-                    $('.select2-hidden-accessible').remove()
+                    $(".select2-hidden-accessible").remove()
                 }
 
             })

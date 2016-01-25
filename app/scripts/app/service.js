@@ -169,16 +169,16 @@ dashboardappApp
 
             response.roles.some(function(role) {
                 // Check ROLE_ADMIN first, since it supercedes all
-                if (role === "ROLE_ADMIN") {
+                if (role === "ADMIN") {
                     $localStorage.role = "admin";
                     return true
                 }
-                else if (role === "ROLE_LEXICOGRAPHER") {
-                    $localStorage.role = "lexicographer";
+                else if (role === "PRO_LEXICOGRAPHER") {
+                    $localStorage.role = "lex_pro";
                     return true
                 }
-                else if (role === "ROLE_BASIC") {
-                    $localStorage.role = "basic";
+                else if (role === "BASIC_LEXICOGRAPHER") {
+                    $localStorage.role = "lex_basic";
                     return true
                 }
             })
