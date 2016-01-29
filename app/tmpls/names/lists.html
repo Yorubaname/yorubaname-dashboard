@@ -57,7 +57,7 @@
             <tfoot>
                 <tr ng-hide="!namesList.length || isBasic">
                     <td colspan="2"><select-all-checkbox checkboxes="namesList"></select-all-checkbox>  Select all names</td>
-                    <td colspan="5">Show <select ng-model="count" ng-options="n for n in [ 10, 20, 50, 100, 250, 500 ]" ng-change="fetch(pagination.current, count)"></select> names</td>
+                    <td colspan="5">Show <select ng-model="count" ng-options="n for n in [ 10, 20, 50, 100, 250, 500 ]" ng-change="fetch(1, count)"></select> names</td>
                 </tr>
                 <tr>
                     <td colspan="7">
@@ -93,7 +93,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr dir-paginate="entry in namesList|orderBy:sortKey:reverse|filter:search|itemsPerPage:50" total-items="namesListItems" current-page="pagination.current" on-last-repeat ng-class="entry.isSelected ? 'bg-info' : '' ">
+                <tr dir-paginate="entry in namesList|orderBy:sortKey:reverse|filter:search|itemsPerPage:count" total-items="namesListItems" current-page="pagination.current" on-last-repeat ng-class="entry.isSelected ? 'bg-info' : '' ">
                     <td><input type="checkbox" ng-model="entry.isSelected"></td>
                     <td><strong>{{entry.name}}</strong></td>
                     <td>{{entry.details}}</td>
@@ -105,7 +105,7 @@
             <tfoot>
                 <tr ng-hide="!namesList.length">
                     <td colspan="2"><select-all-checkbox checkboxes="namesList"></select-all-checkbox>  Select all suggested names</td>
-                    <td colspan="4">Show <select ng-model="count" ng-options="n for n in [ 10, 20, 50, 100, 250, 500 ]" ng-change="fetch(pagination.current, count)"></select> names</td>
+                    <td colspan="4">Show <select ng-model="count" ng-options="n for n in [ 10, 20, 50, 100, 250, 500 ]" ng-change="fetch(1, count)"></select> names</td>
                 </tr>
                 <tr>
                     <td colspan="6">

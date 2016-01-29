@@ -334,11 +334,12 @@ dashboardappApp
       * Updates an existing name in the database;
       * @param nameEntry
       */
-      this.updateName = function(originalName, nameEntry){
+      this.updateName = function(originalName, nameEntry, fn){
         nameEntry = angular.copy( nameEntry )
         return api.putJson("/v1/names/" + originalName,  nameEntry).success(function(resp){
           toastr.success(nameEntry.name + ' was successfully updated.')
           cacheNames()
+          if (fn) return fn(resp)
         }).error(function(resp){
           toastr.error(nameEntry.name + ' could not be updated. Please try again.')
         })

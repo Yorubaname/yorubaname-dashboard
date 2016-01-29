@@ -76,7 +76,7 @@
 </div>
 <div class="row">
     <div class="col-sm-4">
-        <div class="heading_a"><span class="heading_text">Recently Added Names Entries</span></div>
+        <div class="heading_a"><span class="heading_text">Recently Added Entries</span></div>
         
         <table class="table table-yuk">
             <tbody>
@@ -85,15 +85,18 @@
                     <td>{{entry.syllables}}</td>
                 </tr>
             </tbody>
-            <tfoot ng-if="!latestNames.length">
-                <tr>There are no recently added names</tr>
+            <tfoot ng-show="latestNames.length">
+                <tr class="text-right"><td colspan="2"><a ui-sref="auth.names.list_entries({status:'unpublished'})">Sell all recently added names</a></td></tr>
+            </tfoot>
+            <tfoot ng-hide="latestNames.length">
+                <tr class="warning"><td colspan="2">There are no recently added names</td></tr>
             </tfoot>
         </table>
             
     </div>
 
-    <div class="col-sm-2">
-        <div class="heading_a"><span class="heading_text">Recently Published Names Entries</span></div>
+    <div class="col-sm-3">
+        <div class="heading_a"><span class="heading_text">Recently Published Names</span></div>
         
         <table class="table table-yuk">
             <tbody>
@@ -101,15 +104,18 @@
                     <td><a ui-sref="auth.names.edit_entries({entry:entry})">{{entry}}</a></td>
                 </tr>
             </tbody>
-            <tfoot ng-if="!publishedNames.length">
-                <tr>There are no Published names</tr>
+            <tfoot ng-show="publishedNames.length">
+                <tr class="text-right"><td><a ui-sref="auth.names.list_entries({status:'published'})">Sell all published names</a></td></tr>
+            </tfoot>
+            <tfoot ng-hide="publishedNames.length">
+                <tr class="warning"><td>There are no Published names</td></tr>
             </tfoot>
         </table>
             
     </div>
 
-    <div class="col-sm-6">
-        <div class="heading_a"><span class="heading_text">Most Recent Names Feedbacks</span></div>
+    <div class="col-sm-5">
+        <div class="heading_a"><span class="heading_text">Recent Names Feedbacks</span></div>
         
         <table class="table table-yuk">
             <tbody>
@@ -119,8 +125,11 @@
                     <td>{{entry.submittedAt|toDateString}}</td>
                 </tr>
             </tbody>
-            <tfoot ng-if="!feedbacks.length">
-                <tr>There are no feedbacks on names</tr>
+            <tfoot ng-show="feedbacks.length">
+                <tr class="text-right"><td colspan="3"><a href="">Sell all feedbacks</a></td></tr>
+            </tfoot>
+            <tfoot ng-hide="feedbacks.length">
+                <tr class="warning"><td colspan="3">There are no feedbacks on names</td></tr>
             </tfoot>
         </table>
             

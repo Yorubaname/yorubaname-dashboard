@@ -224,10 +224,7 @@ dashboardappApp
             $scope.new = true
             $scope.name = {}
 
-
-
             $scope.submit = function(){
-                console.log($scope.name.geoLocation)
                 return api.addName($scope.name, function(){
                     // reset the form models fields
                     $scope.name = {}
@@ -242,7 +239,8 @@ dashboardappApp
         '$stateParams',
         '$state',
         'namesApi',
-        function($scope, $stateParams, $state, api) {
+        'toastr',
+        function($scope, $stateParams, $state, api, toastr) {
 
             var originalName = null
 
@@ -258,9 +256,14 @@ dashboardappApp
 
             $scope.publish = function(){
                 // update name first, then publish
-                api.updateName(originalName, $scope.name, function(){
-                    // then publish names here...
-
+                return api.updateName(originalName, $scope.name, function(name){
+                    // first remove name from index
+                    return api.removeNameFromIndex(name.name).success(function(){
+                        // then add name back to index
+                        return api.addNameToIndex(name.name).success(function(){
+                            toastr.info(name.name + ' has been published successfully')
+                        })
+                    })
                 })
             }
 
@@ -396,9 +399,9 @@ dashboardappApp
                 var name = {
                   name: entry.name,
                   meaning: entry.details,
-                  geoLocation: JSON.stringify({
+                  geoLocation: {
                     place: entry.geoLocation.place
-                  }),
+                  },
                   submittedBy: entry.email
                 };
                 if (!$.isEmptyObject(name)) {
