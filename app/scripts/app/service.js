@@ -423,17 +423,17 @@ dashboardappApp
       }
 
       this.getRecentFeedbacks = function(fn){
-        return api.get('/v1/names/feedbacks').success(fn)
+        return api.get('/v1/feedbacks').success(fn)
       }
 
       this.getFeedback = function(name, fn) {
-        return api.get('/v1/names/'+name+'/', { feedback: true }).success(function(resp){
+        return api.get('/v1/feedbacks/?name='+name+'/', { feedback: true }).success(function(resp){
           return fn( resp.feedback )
         })
       }
 
       this.deleteFeedback = function(name, fn) {
-        return api.deleteJson('/v1/'+name+'/feedback').success(fn).error(function(){
+        return api.deleteJson('/v1/feedbacks/?name='+name).success(fn).error(function(){
           return toastr.error('Feedbacks on ' + name + ' were not deleted. Please try again.')
         })
       }
