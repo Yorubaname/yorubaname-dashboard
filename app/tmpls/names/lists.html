@@ -1,10 +1,9 @@
 <div class="row">
-    
 
     <div class="col-sm-8">
         <a class="btn btn-sm btn-info" ui-sref="auth.names.add_entries">Add Name Entry</a>
         <div class="btn-group btn-sm">
-            <a ui-sref="auth.names.list_entries({status:'all'})" class="btn btn-sm btn-default" ng-class="status == 'all' ? 'btn-primary' : ''">All Names</a>
+            <!--a ui-sref="auth.names.list_entries({status:'all'})" class="btn btn-sm btn-default" ng-class="status == 'all' ? 'btn-primary' : ''">All Names</a-->
             <a ui-sref="auth.names.list_entries({status:'published'})" class="btn btn-sm btn-default" ng-class="status == 'published' ? 'btn-primary' : ''">Published Names</a>
             <a ui-sref="auth.names.list_entries({status:'modified'})" class="btn btn-sm btn-default" ng-class="status == 'modified' ? 'btn-primary' : ''" ng-show="isAdmin">Modified Names</a>
             <a ui-sref="auth.names.list_entries({status:'unpublished'})" class="btn btn-sm btn-default" ng-class="status == 'unpublished' ? 'btn-primary' : ''">Unpublished Names</a>
@@ -23,18 +22,19 @@
 
 </div>
 
-<div class="row" ng-if="status != 'suggested'">
-    <div class="col-md-12">
+<div class="row">
+
+    <div class="col-md-12" ng-if="status != 'suggested'">
         <div class="well well-sm text-center" ng-show="!namesList.length">
             <h3 class="text-muted">Not an entry here, yet!</h3>
-            <p class="lead">How about getting started by adding a name?</p>
+            <p class="lead">How about you start by adding a name?</p>
             <a class="btn btn-md btn-info" ui-sref="auth.names.add_entries">Add Name Entry</a>
         </div>
         <table class="table table-yuk2" id="names_table" ng-show="namesList.length">
             <thead>
                 <tr>
                     <th ng-hide="isBasic"><select-all-checkbox checkboxes="namesList"></select-all-checkbox></th> 
-                    <th>Name</th>
+                    <th ng-click="sort('name')">Name <span class="glyphicon sort-icon" ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                     <th>Syllables</th>
                     <th>Geolocation</th>
                     <th>Status</th>
@@ -43,27 +43,28 @@
                 </tr>
             </thead>
             <tbody>
-                <tr dir-paginate="entry in namesList|orderBy:sortKey:reverse|filter:search|itemsPerPage:50" total-items="namesListItems" current-page="pagination.current" ng-class="entry.isSelected ? 'bg-info' : '' ">
+                <tr dir-paginate="entry in namesList|orderBy:sortKey:reverse|filter:search|itemsPerPage:count" total-items="namesListItems" current-page="pagination.current" ng-class="entry.isSelected ? 'bg-info' : '' ">
                     <td ng-hide="isBasic"><input type="checkbox" ng-model="entry.isSelected"></td>
                     <td><a ui-sref="auth.names.edit_entries({entry:entry.name})"><strong>{{entry.name}}</strong></a></td>
                     <td>{{entry.syllables}}</td>
                     <td>{{entry.geoLocation.place}}</td>
-                    <td ng-show="isAdmin || isLexicographer"><a class="btn btn-xs" ng-class="entry.indexed ? 'btn-default' : 'btn-success'" ng-click="indexName(entry)">{{entry.indexed ? 'Unpublish' : 'Publish'}}</a></td>
-                    <td ng-show="isBasic">{{entry.indexed ? 'Published' : 'Pending'}}</td>
+                    <td ng-show="isAdmin || isLexicographer"><a class="btn btn-xs" ng-class="entry.indexed ? 'btn-default' : 'btn-success'" ng-click="indexName(entry)">{{entry.indexed ? 'Unpublish' : 'Publish'}}</a> </td>
+                    <td ng-show="isBasic">{{entry.indexed ? 'Published' : 'Pending'}} <a class="btn btn-xs btn-warning" ng-show="isAdmin && entry.status == 'MODIFIED'" ng-click="reIndexName(entry)">Re-Publish</a></td>
                     <td>{{entry.submittedBy}}</td>
                     <td>{{entry.createdAt|toDateString}}</td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr ng-hide="!namesList.length || isBasic">
-                    <td colspan="7"><select-all-checkbox checkboxes="namesList"></select-all-checkbox>  Select all names</td>
+                    <td colspan="2"><select-all-checkbox checkboxes="namesList"></select-all-checkbox>  Select all names</td>
+                    <td colspan="5">Show <select ng-model="count" ng-options="n for n in [ 10, 20, 50, 100, 250, 500 ]" ng-change="fetch(pagination.current, count)"></select> names</td>
                 </tr>
                 <tr>
                     <td colspan="7">
                         <dir-pagination-controls
                             max-size="12"
                             direction-links="true"
-                            boundary-links="true" on-page-change="fetch(newPageNumber)" >
+                            boundary-links="true" on-page-change="fetch(newPageNumber, count)">
                         </dir-pagination-controls>
                     </td>
                 </tr>
@@ -73,13 +74,10 @@
         <a ng-show="namesList.length && status != 'published' && isAdmin || isLexicographer" ng-click="indexNames('add')" class="btn btn-success btn-sm">Publish Selected</a>
         <a ng-show="namesList.length && status != 'unpublished' && isAdmin || isLexicographer" ng-click="indexNames('remove')" class="btn btn-default btn-sm">Unpublish Selected</a>
     </div>
-</div>
 
-
-<div class="row" ng-if="status == 'suggested'">
-    <div class="col-md-12">
+    <div class="col-md-12" ng-if="status == 'suggested'">
         <div class="well well-sm text-center" ng-show="!namesList.length">
-            <h3 class="text-muted">Not a thing to do.</h3>
+            <h3 class="text-muted">Not an entry here, now!</h3>
             <p class="lead">Great! It seems you've processed all suggested names. Enjoy your day!</p>
         </div>
 
@@ -87,7 +85,7 @@
             <thead>
                 <tr>
                     <th><select-all-checkbox checkboxes="namesList"></select-all-checkbox></th>
-                    <th>Name</th>
+                    <th ng-click="sort('name')">Name <span class="glyphicon sort-icon" ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
                     <th>Details</th>
                     <th>Geolocation</th>
                     <th>Suggested By</th>
@@ -106,7 +104,8 @@
             </tbody>
             <tfoot>
                 <tr ng-hide="!namesList.length">
-                    <td colspan="6"><select-all-checkbox checkboxes="namesList"></select-all-checkbox>  Select all suggested names</td>
+                    <td colspan="2"><select-all-checkbox checkboxes="namesList"></select-all-checkbox>  Select all suggested names</td>
+                    <td colspan="4">Show <select ng-model="count" ng-options="n for n in [ 10, 20, 50, 100, 250, 500 ]" ng-change="fetch(pagination.current, count)"></select> names</td>
                 </tr>
                 <tr>
                     <td colspan="6">

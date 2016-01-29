@@ -158,7 +158,7 @@ dashboardappApp
     this.authenticate = function(authData) {
         // encode authData to base64 here, instead
         authData = btoa(authData.email + ":" + authData.password)
-        //console.log(authData)
+        
         return api.authenticate(authData).success(function(response) {
             $localStorage.isAuthenticated = true;
             $localStorage.id = response.id;
@@ -169,15 +169,15 @@ dashboardappApp
 
             response.roles.some(function(role) {
                 // Check ROLE_ADMIN first, since it supercedes all
-                if (role === "ADMIN") {
+                if (role === "ROLE_ADMIN") {
                     $localStorage.role = "admin";
                     return true
                 }
-                else if (role === "PRO_LEXICOGRAPHER") {
+                else if (role === "ROLE_PRO_LEXICOGRAPHER") {
                     $localStorage.role = "lex_pro";
                     return true
                 }
-                else if (role === "BASIC_LEXICOGRAPHER") {
+                else if (role === "ROLE_BASIC_LEXICOGRAPHER") {
                     $localStorage.role = "lex_basic";
                     return true
                 }
@@ -290,7 +290,7 @@ dashboardappApp
       this.addName = function (name, fn) {
         // include logged in user's details, only if none exist - applies to accepting suggested names
         if (!name.submittedBy) name.submittedBy = $localStorage.username;
-        return api.postJson("/v1/names", formatName(name)).success(function(resp){
+        return api.postJson("/v1/names", name).success(function(resp){
           toastr.success(name.name + ' was successfully added. Add another name')
           fn()
           cacheNames()
@@ -336,7 +336,7 @@ dashboardappApp
       */
       this.updateName = function(originalName, nameEntry){
         nameEntry = angular.copy( nameEntry )
-        return api.putJson("/v1/names/" + originalName,  formatName(nameEntry)).success(function(resp){
+        return api.putJson("/v1/names/" + originalName,  nameEntry).success(function(resp){
           toastr.success(nameEntry.name + ' was successfully updated.')
           cacheNames()
         }).error(function(resp){
@@ -364,7 +364,7 @@ dashboardappApp
        */
       this.getName = function (name, duplicate, fn) {
         return api.get('/v1/names/' + name, { duplicates: duplicate }).success(function(resp){
-          return fn ( deformatName(resp) )
+          return fn ( resp )
         })
       }
 

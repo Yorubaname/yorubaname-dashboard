@@ -63,12 +63,12 @@
                     <button class="btn btn-success btn-lg" ng-disabled="!search.entry" ng-click="exec_search()" type="button"><i class="fa fa-search"></i> Search</button>
                 </span>
             </div>
-            <div class="checkbox">
+            <!--div class="checkbox">
                 <label>
                     <input type="checkbox" ng-model="search.authorsEntry">
                     Only search my entries
                 </label>
-            </div>
+            </div-->
         </form>
 
     </div>
@@ -85,11 +85,14 @@
                     <td>{{entry.syllables}}</td>
                 </tr>
             </tbody>
+            <tfoot ng-if="!latestNames.length">
+                <tr>There are no recently added names</tr>
+            </tfoot>
         </table>
             
     </div>
 
-    <div class="col-sm-4">
+    <div class="col-sm-2">
         <div class="heading_a"><span class="heading_text">Recently Published Names Entries</span></div>
         
         <table class="table table-yuk">
@@ -98,11 +101,14 @@
                     <td><a ui-sref="auth.names.edit_entries({entry:entry})">{{entry}}</a></td>
                 </tr>
             </tbody>
+            <tfoot ng-if="!publishedNames.length">
+                <tr>There are no Published names</tr>
+            </tfoot>
         </table>
             
     </div>
 
-    <div class="col-sm-4">
+    <div class="col-sm-6">
         <div class="heading_a"><span class="heading_text">Most Recent Names Feedbacks</span></div>
         
         <table class="table table-yuk">
@@ -110,8 +116,12 @@
                 <tr ng-repeat="entry in feedbacks">
                     <td><a ui-sref="auth.names.edit_entries({entry:entry.name})">{{entry.name}}</a></td>
                     <td>{{entry.feedback}}</td>
+                    <td>{{entry.submittedAt|toDateString}}</td>
                 </tr>
             </tbody>
+            <tfoot ng-if="!feedbacks.length">
+                <tr>There are no feedbacks on names</tr>
+            </tfoot>
         </table>
             
     </div>

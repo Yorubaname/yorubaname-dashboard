@@ -204,6 +204,7 @@ dashboardappApp
 
             $scope.feedbacks = []
             api.getRecentFeedbacks(function(responseData){
+                console.log(responseData)
                 responseData.slice(0,4).forEach(function(n) {
                     if (n !== undefined)
                     $scope.feedbacks.push(n)
@@ -223,7 +224,10 @@ dashboardappApp
             $scope.new = true
             $scope.name = {}
 
+
+
             $scope.submit = function(){
+                console.log($scope.name.geoLocation)
                 return api.addName($scope.name, function(){
                     // reset the form models fields
                     $scope.name = {}
@@ -251,6 +255,14 @@ dashboardappApp
                 $scope.name = resp
                 originalName = resp.name
             })
+
+            $scope.publish = function(){
+                // update name first, then publish
+                api.updateName(originalName, $scope.name, function(){
+                    // then publish names here...
+
+                })
+            }
 
             $scope.goto = function(entry){
                 api.updateName(originalName, $scope.name)
@@ -280,7 +292,9 @@ dashboardappApp
 
             $scope.namesList = []
 
-            $scope.status = $stateParams.status;
+            $scope.count = 50
+
+            $scope.status = $stateParams.status
 
             api.countNames($stateParams.status, function(num){
                 $scope.namesListItems = num
@@ -482,9 +496,8 @@ dashboardappApp
         function ($scope, api, toastr, $window) {
             $scope.user = {}
             $scope.roles = {
-                BASIC: 'ROLE_BASIC',
-                LEXICOGRAPHER: 'ROLE_LEXICOGRAPHER',
-                DASHBOARD: 'ROLE_DASHBOARD',
+                BASIC_LEXICOGRAPHER: 'ROLE_BASIC_LEXICOGRAPHER',
+                PRO_LEXICOGRAPHER: 'ROLE_PRO_LEXICOGRAPHER',
                 ADMIN: 'ROLE_ADMIN'
             }
 
@@ -513,9 +526,8 @@ dashboardappApp
             })
 
             $scope.roles = {
-                BASIC: 'ROLE_BASIC',
-                LEXICOGRAPHER: 'ROLE_LEXICOGRAPHER',
-                DASHBOARD: 'ROLE_DASHBOARD',
+                BASIC_LEXICOGRAPHER: 'ROLE_BASIC_LEXICOGRAPHER',
+                PRO_LEXICOGRAPHER: 'ROLE_PRO_LEXICOGRAPHER',
                 ADMIN: 'ROLE_ADMIN'
             }
 
