@@ -375,7 +375,7 @@ dashboardappApp
         filter.count = filter.count || 50
         filter.orderBy = 'createdAt'
 
-        if (filter.status == 'suggested') return api.get('/v1/suggest')
+        if (filter.status == 'suggested') return api.get('/v1/suggestions')
         if (filter.status == 'published') filter.indexed = true;
         if (filter.status == 'unpublished') filter.indexed = false;
         if (filter.status == 'modified') filter.state = 'MODIFIED';
@@ -386,14 +386,14 @@ dashboardappApp
       this.countNames = function(status, fn){
         var endpoint = '/v1/names/meta'
         if (status == 'published') endpoint = '/v1/search/meta'
-        if (status == 'suggested') endpoint = '/v1/suggest/meta'
+        if (status == 'suggested') endpoint = '/v1/suggestions/meta'
         return api.get(endpoint, { count: true }).success(function(resp){
           return fn(resp.count)
         })
       }
 
       this.deleteSuggestedName = function(name, fn) {
-        return api.delete("/v1/suggest/" + name).success(function(resp){
+        return api.delete("/v1/suggestions/" + name).success(function(resp){
           toastr.success(name + ' has been deleted successfully')
           //$state.go('auth.names.suggested')
           fn()
