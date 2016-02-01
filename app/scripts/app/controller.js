@@ -327,8 +327,8 @@ dashboardappApp
             $scope.delete = function(entry){
 
                 if (entry) {
-                    if ( $window.confirm('Are you sure you want to delete '+ entry.name + "with id" + entry.id + '?') )
-                      api.deleteSuggestedName(entry.id, function(){
+                    if ( $window.confirm('Are you sure you want to delete '+ entry.name + '?') )
+                      api.deleteSuggestedName(entry.name, function(){
                         $scope.namesList.splice( $scope.namesList.indexOf(entry), 1 )
                       })
                     return 
@@ -397,7 +397,6 @@ dashboardappApp
              */
               var acceptSuggestedName = function (entry) {
                 var name = {
-                  id: entry.id,
                   name: entry.name,
                   meaning: entry.details,
                   geoLocation: {
@@ -408,7 +407,7 @@ dashboardappApp
                 if (!$.isEmptyObject(name)) {
                   return api.addName(name, function () {
                     // Name added then delete from the suggested name store
-                    return api.deleteSuggestedName(name.id, function(){
+                    return api.deleteSuggestedName(name.name, function(){
                         $scope.namesList.splice( $scope.namesList.indexOf(entry), 1 )
                       })
                   })
