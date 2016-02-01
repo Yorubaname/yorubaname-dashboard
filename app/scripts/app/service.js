@@ -392,13 +392,13 @@ dashboardappApp
         })
       }
 
-      this.deleteSuggestedName = function(name, fn) {
-        return api.delete("/v1/suggestions/" + name).success(function(resp){
-          toastr.success(name + ' has been deleted successfully')
+      this.deleteSuggestedName = function(entry, fn) {
+        return api.delete("/v1/suggestions/" + entry.id).success(function(resp){
+          toastr.success(entry.name + ' with id: ' + entry.id + ' has been deleted successfully')
           //$state.go('auth.names.suggested')
           fn()
         }).error(function(resp){
-          toastr.error(name + ' could not be deleted. Please try again.')
+          toastr.error(entry.name + ' with id: ' + entry.id + ' could not be deleted. Please try again.')
         })
       }
 
