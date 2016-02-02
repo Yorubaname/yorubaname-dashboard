@@ -4,10 +4,10 @@
 </div>
 <div class="modal-body">
 	<ul style="list-style:decimal">
-	  <li ng-repeat="feedback in feedbacks"> {{feedback.feedback}} <button class="btn btn-danger btn-xs" ng-click="deleteFeedback(feedback.id)" ng-show="isAdmin">Delete</button></li>
+	  <li ng-repeat="feedback in feedbacks"> {{feedback.feedback}} <button class="btn btn-danger btn-xs" ng-click="deleteFeedback(feedback)" ng-show="isAdmin">Delete</button></li>
 	</ul>
 </div>
 <div class="modal-footer">
     <button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Close</button>
-    <button type="button" class="btn btn-danger btn-sm" ng-click="deleteFeedback()" ng-hide="!isAdmin">Delete All</button>
+    <button type="button" class="btn btn-danger btn-sm" ng-click="deleteFeedbacks()" ng-hide="!isAdmin">Delete All</button>
 </div>

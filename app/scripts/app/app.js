@@ -6,7 +6,8 @@ var dashboardappApp = angular.module('dashboardappApp', [ 'ui.router', 'ngAnimat
 
 dashboardappApp
    
-    .constant('baseUrl', /10|localhost/.test(location.hostname) ? 'http://localhost:8081' : 'http://www.yorubaname.com:8081')
+    .constant('baseUrl', 'http://www.yorubaname.com:8081')
+    //.constant('baseUrl', /10|localhost/.test(location.hostname) ? 'http://localhost:8081' : 'http://www.yorubaname.com:8081')
 
     /* Config Block */
     .config(

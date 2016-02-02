@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-sm-8 col-sm-offset-2" ng-controller="searchCtrl">
   	
-  	<div class="heading_a"><span class="heading_text">Find Entry</span></div>
+  	<div class="heading_a"><span class="heading_text">Find a Name Entry</span></div>
     
     <form ng-submit="exec_search()">
         <div class="input-group sepH_b">
@@ -10,20 +10,13 @@
                 <button class="btn btn-success btn-lg" ng-disabled="!search.entry" ng-click="exec_search()"><i class="fa fa-search"></i> Search</button>
             </span>
         </div>
-        <div class="checkbox">
-            <label>
-              <input type="checkbox" ng-model="search.authorsEntries">
-                Only search my entries
-            </label>
-        </div>
     </form>
         
   </div>
 
-  <!--div class="col-sm-8 col-sm-offset-2">
-      <h4>Showing results for {{search.entry}}</h4>
-
-      <p></p>
-  </div-->
+  <div class="col-sm-8 col-sm-offset-2" ng-show="results.length">
+      <h5>Showing {{results.length}} results for {{search.entry}}</h5>
+      <p ng-repeat="entry in results"><a ui-sref="auth.names.edit_entries({entry:entry.name})">{{entry.name}}</a> - {{entry.meaning}}</p>
+  </div>
 
 </div>

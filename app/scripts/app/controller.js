@@ -252,6 +252,10 @@ dashboardappApp
             api.getName($stateParams.entry, false, function(resp){
                 $scope.name = resp
                 originalName = resp.name
+                // hack for names without etymology
+                if (!resp.etymology.length) {
+                    $scope.name.etymology.push({ part:'', meaning:'' })
+                }
             })
 
             $scope.publish = function(){
@@ -312,17 +316,29 @@ dashboardappApp
               $scope.reverse = !$scope.reverse; //if true make it false and vice versa
             }
 
-            $scope.fetch = function(newPageNumber){
-                return api.getNames({ status: $stateParams.status, page: newPageNumber || 1, count: $scope.itemsPerPage || 50 }).success(function(responseData) {
+            $scope.fetch = function(newPageNumber, count){
+                return api.getNames({ status: $stateParams.status, page: newPageNumber || 1, count: count || $scope.itemsPerPage || $scope.count || 50 }).success(function(responseData) {
+                    $scope.namesList = []
+                    $scope.pagination.current = newPageNumber || 1
                     responseData.forEach(function(name) {
-                        $scope.namesList.unshift(name)
+                        $scope.namesList.push(name)
                     })
-                }).error(function(response) {
-                    console.log(response)
                 })
             }
 
             $scope.fetch()
+
+            $scope.deleteNames = function(){
+
+                var entries = $.map( $scope.namesList , function(elem){
+                    if (elem.isSelected == true) return elem
+                })
+
+                if (!entries.length) return toastr.warning('Select names to delete');
+
+                if (!$window.confirm('Are you sure you want to delete the selected name/s?')) return;
+                
+            }
 
             $scope.delete = function(entry){
 
@@ -417,12 +433,6 @@ dashboardappApp
         }
     ])
 
-    .controller('namesSearchCtrl', [
-        '$scope',
-        function($scope) {
-        }
-    ])
-
     .controller('namesByUserListCtrl', [
         '$scope',
         'namesApi',
@@ -432,7 +442,8 @@ dashboardappApp
             $scope.namesList = []
 
             api.getNames({ submittedBy: $scope.user.email }).success(function(responseData) {
-                $scope.namesListItems = responseData.length;
+                $scope.namesListItems = responseData.length
+                $scope.namesList = []
                 responseData.forEach(function(name) {
                     $scope.namesList.push(name)
                 })
@@ -477,11 +488,10 @@ dashboardappApp
 
             $scope.fetch = function(newPageNumber){
                 return api.getUsers({ page:newPageNumber || 1, count:50 }).success(function(response) {
+                    $scope.usersList = []
                     response.forEach(function(user) {
                         $scope.usersList.push(user)
                     })
-                }).error(function(response) {
-                    console.log(response)
                 })
             }
 
@@ -572,9 +582,9 @@ dashboardappApp
         '$state',
         'namesApi',
         'toastr',
-        '_',
-        function ($scope, $state, api, toastr,  _) {
-            $scope.search = {}
+        '$localStorage',
+        function ($scope, $state, api, toastr, $localStorage) {
+            $scope.search = $scope.search || {}
             api.getCachedNames(function(names){
                 $scope.names = names
             })
@@ -584,28 +594,33 @@ dashboardappApp
                         return $state.go('auth.names.edit_entries', { entry: $scope.search.entry })
                     }
                 })
-
                 if (!name) {
-                    toastr.warning( "No entries found for "+ $scope.search.entry )
-                    return $state.go('auth.names.search', { entry: $scope.search.entry })
-                }
-
-                if ($scope.search.authorsEntry) {
-                    console.log('will be searching my entries only')
-
+                    api.search($scope.search.entry).success(function(resp){
+                        if (resp.length < 1) return toastr.warning( "No entries found for "+ $scope.search.entry );
+                        else if (resp.length > 1) {
+                            $localStorage.searchResults = resp
+                            return $state.go('auth.names.search', { entry: $scope.search.entry })
+                        }
+                        return $state.go('auth.names.edit_entries', { entry: resp[0].name })
+                    })
                 }
             }
         }
     ])
 
-    .controller('searchPageCtrl', [
+    .controller('nameSearchCtrl', [
+        '$controller',
         '$scope',
-        'namesApi',
         '$stateParams',
-        function ($scope, api, $stateParams) {
-
-            // 
-            
+        '$localStorage',
+        function ($controller, $scope, $stateParams, $localStorage) {
+            if ($stateParams.entry) {
+                $scope.search = {
+                    entry: $stateParams.entry
+                }
+                $controller('searchCtrl', {$scope: $scope})
+                $scope.results = $localStorage.searchResults
+            }
         }
     ])
 ;

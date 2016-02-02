@@ -330,6 +330,10 @@ dashboardappApp
         })
       }
 
+      this.search = function(name){
+        return api.get('/v1/search',{'q':name})
+      }
+
       /**
       * Updates an existing name in the database;
       * @param nameEntry
@@ -432,9 +436,15 @@ dashboardappApp
         })
       }
 
-      this.deleteFeedback = function(name, fn) {
+      this.deleteFeedbacks = function(name, fn) {
         return api.deleteJson('/v1/feedbacks/?name='+name).success(fn).error(function(){
           return toastr.error('Feedbacks on ' + name + ' were not deleted. Please try again.')
+        })
+      }
+
+      this.deleteFeedback = function(id, fn) {
+        return api.deleteJson('/v1/feedbacks/'+id).success(fn).error(function(){
+          return toastr.error('Feedback was not deleted. Please try again.')
         })
       }
 

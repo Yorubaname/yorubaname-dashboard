@@ -34,7 +34,7 @@
             <thead>
                 <tr>
                     <th ng-hide="isBasic"><select-all-checkbox checkboxes="namesList"></select-all-checkbox></th> 
-                    <th ng-click="sort('name')">Name <span class="glyphicon sort-icon" ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                    <th>Name <span  ng-click="sort('name')" class="badge badge-default pull-right"><i class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></i></span></th>
                     <th>Syllables</th>
                     <th>Geolocation</th>
                     <th>Status</th>
@@ -48,7 +48,7 @@
                     <td><a ui-sref="auth.names.edit_entries({entry:entry.name})"><strong>{{entry.name}}</strong></a></td>
                     <td>{{entry.syllables}}</td>
                     <td>{{entry.geoLocation.place}}</td>
-                    <td ng-show="isAdmin || isLexicographer"><a class="btn btn-xs" ng-class="entry.indexed ? 'btn-default' : 'btn-success'" ng-click="indexName(entry)">{{entry.indexed ? 'Unpublish' : 'Publish'}}</a> </td>
+                    <td ng-show="isAdmin || isLexicographer"><a class="btn btn-xs" ng-class="entry.indexed ? 'btn-warning' : 'btn-success'" ng-click="indexName(entry)">{{entry.indexed ? 'Unpublish' : 'Publish'}}</a> </td>
                     <td ng-show="isBasic">{{entry.indexed ? 'Published' : 'Pending'}} <a class="btn btn-xs btn-warning" ng-show="isAdmin && entry.status == 'MODIFIED'" ng-click="reIndexName(entry)">Re-Publish</a></td>
                     <td>{{entry.submittedBy}}</td>
                     <td>{{entry.createdAt|toDateString}}</td>
@@ -60,7 +60,7 @@
                     <td colspan="5">Show <select ng-model="count" ng-options="n for n in [ 10, 20, 50, 100, 250, 500 ]" ng-change="fetch(1, count)"></select> names</td>
                 </tr>
                 <tr>
-                    <td colspan="7">
+                    <td colspan="7" class="text-center">
                         <dir-pagination-controls
                             max-size="12"
                             direction-links="true"
@@ -72,7 +72,8 @@
         </table>
 
         <a ng-show="namesList.length && status != 'published' && isAdmin || isLexicographer" ng-click="indexNames('add')" class="btn btn-success btn-sm">Publish Selected</a>
-        <a ng-show="namesList.length && status != 'unpublished' && isAdmin || isLexicographer" ng-click="indexNames('remove')" class="btn btn-default btn-sm">Unpublish Selected</a>
+        <a ng-show="namesList.length && status != 'unpublished' && isAdmin || isLexicographer" ng-click="indexNames('remove')" class="btn btn-warning btn-sm">Unpublish Selected</a>
+        <a ng-click="delete()" ng-hide="!namesList.length || !isAdmin" class="btn btn-default btn-sm pull-right">Delete Selected</a>
     </div>
 
     <div class="col-md-12" ng-if="status == 'suggested'">
@@ -85,7 +86,7 @@
             <thead>
                 <tr>
                     <th><select-all-checkbox checkboxes="namesList"></select-all-checkbox></th>
-                    <th ng-click="sort('name')">Name <span class="glyphicon sort-icon" ng-show="sortKey=='name'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span></th>
+                    <th>Name <span  ng-click="sort('name')" class="badge badge-default pull-right"><i class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></i></span></th>
                     <th>Details</th>
                     <th>Geolocation</th>
                     <th>Suggested By</th>
@@ -120,6 +121,6 @@
         </table>
 
         <a ng-click="accept()" ng-hide="!namesList.length" class="btn btn-success btn-sm">Accept Selected</a> 
-        <a ng-click="delete()" ng-hide="!namesList.length || !isAdmin" class="btn btn-default btn-sm">Delete Selected</a>
+        <a ng-click="delete()" ng-hide="!namesList.length || !isAdmin" class="btn btn-default btn-sm pull-right">Delete Selected</a>
 </div>
 </div>

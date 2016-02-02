@@ -102,26 +102,6 @@ dashboardappApp
                     templateUrl: 'tmpls/names/lists.html',
                     controller: 'namesListEntriesCtrl'
                 })
-
-                /*.state('auth.names.own_entries', {
-                    page_title: 'Yoruba Names - Admin - Own Name Entries',
-                    ncyBreadcrumb: {
-                        label: 'Your Entries'
-                    },
-                    url: '/your_entries',
-                    templateUrl: 'tmpls/names/sorted_lists.html',
-                    controller: 'namesByUserListCtrl'
-                })
-
-                /*.state('auth.names.suggested_names', {
-                    page_title: 'Yoruba Names - Suggested Names',
-                    ncyBreadcrumb: {
-                        label: 'Suggested Names'
-                    },
-                    url: '/suggested',
-                    templateUrl: 'tmpls/names/suggested.html',
-                    controller: 'namesSuggestedEntriesCtrl'
-                })*/
                 
                 // Names > Name Search
                 .state('auth.names.search', {
@@ -131,39 +111,9 @@ dashboardappApp
                     },
                     url: '/search/:entry',
                     templateUrl: 'tmpls/names/search.html',
-                    controller: 'namesSearchCtrl'
-                })
-                
-                /*// Pages (parent state)
-                .state('auth.profile', {
-                    abstract: true,
-                    url: '/profile',
-                    template: '<div ui-view autoscroll="false" class="mainView-animate"></div>'
-                })
-                
-                // Pages > Contact List
-                .state('auth.profile.index', {
-                    page_title: 'Yourba Names Admin - User Profile',
-                    ncyBreadcrumb: {
-                        label: 'User Profile'
-                    },
-                    url: '/',
-                    templateUrl: 'tmpls/profile/index.html',
-                    controller: 'profileIndexCtrl'
+                    controller: 'nameSearchCtrl'
                 })
 
-                // Pages > Faq/Help
-                .state('auth.profile.edit', {
-                    page_title: 'Yoruba Names Admin - Update User Profile',
-                    ncyBreadcrumb: {
-                        label: 'Update Profile'
-                    },
-                    url: '/edit',
-                    templateUrl: 'tmpls/profile/edit.html',
-                    controller: 'profileEditCtrl'
-                })*/
-
-                // Pages (parent state)
                 .state('auth.users', {
                     abstract: true,
                     url: '/users',
@@ -173,7 +123,6 @@ dashboardappApp
                     }
                 })
 
-                // Pages > Faq/Help > Categories
                 .state('auth.users.add_user', {
                     page_title: 'Yoruba Names Admin - Add User',
                     ncyBreadcrumb: {

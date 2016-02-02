@@ -170,22 +170,25 @@ dashboardappApp
               api.getGeoLocations().success(function(resp) {
                 scope.geoLocations = resp
               })
+              
+              scope.queryGeolocation = function(query){
+                return scope.geoLocations
+              }
             }
         }
     }])
 
-    .directive('etymology', ['$timeout', function($timeout) {
+    .directive('etymology', ['$stateParams', function($stateParams) {
         return {
             replace: true,
             restrict:'E',
             templateUrl: 'tmpls/names/directives/etymology.html',
             link: function(scope, element, attrs) {
-              $timeout(function(){
-                if (!scope.name.etymology) {
-                    scope.name.etymology = []
-                    scope.name.etymology.push({ part:'', meaning:'' })
-                  }
-              }, 500)
+
+              if (!$stateParams.entry) {
+                scope.name.etymology = []
+                scope.name.etymology.push({ part:'', meaning:'' })
+              }
               
               scope.add_etymology = function() {
                 return scope.name.etymology.push({ part:'', meaning:'' })
@@ -300,9 +303,16 @@ dashboardappApp
                         $scope.modalTitle = 'Feedbacks on ' + attributes['name']
                         $scope.feedbacks = scope.feedbacks
                         $scope.isAdmin = $rootScope.isAdmin
-                        $scope.deleteFeedback = function () {
-                            api.deleteFeedback(attributes['name'], function () {
+                        // delete all feedbacks and closes modal
+                        $scope.deleteFeedbacks = function () {
+                            api.deleteFeedbacks(attributes['name'], function () {
                               $modalInstance.close()
+                            })
+                        }
+                        // delete one feedback by id and remove from list
+                        $scope.deleteFeedback = function (feedback) {
+                            api.deleteFeedback(feedback, function () {
+                              $scope.feedbacks.splice( $scope.feedbacks.indexOf(feedback), 1)
                             })
                         }
                         $scope.cancel = function () {

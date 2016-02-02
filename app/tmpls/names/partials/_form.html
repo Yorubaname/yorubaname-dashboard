@@ -23,8 +23,9 @@
         <div class="form-group">
             <label for="geolocation" class="required">Geolocation</label>
             <span class="help-block">Where is this name most commonly used? Choose "General" if this name applies to more than one region, or chosse "Others/Don't Know" if you are not sure of its specific origin.</span>
-            <select geolocation id="geolocation" class="form-control" placeholder="Select geolocation..." ng-model="name.geoLocation" required ng-options="location.place group by location.region for location in geoLocations">
-            </select>
+            <tags-input ng-model="name.geoLocation" id="geolocation" add-on-space="true" min-length="3" display-property="place" add-from-autocomplete-only="true" placeholder="Select geolocation" required>
+               <auto-complete source="queryGeoLocation($query)" display-property="place" load-on-focus="true"></auto-complete>
+            </tags-input>
         </div>
         <div class="form-group">
             <label for="extra_info">Extra information about this name</label>
@@ -88,9 +89,9 @@
         <hr>
         <button type="submit" class="btn btn-lg btn-success" ng-click="submit()" ng-disabled="form.$invalid || !form.$dirty">{{ new ? 'Submit for Review' : 'Save Entry' }}</button>
 
-        <button class="btn btn-lg btn-primary" ng-click="publish()" ng-show="!new && isAdmin">Publish</button>
+        <button class="btn btn-lg btn-info" ng-click="publish()" ng-disabled="form.$invalid || !form.$dirty" ng-show="isAdmin || isLexicographer && !new">Publish</button>
 
-        <a ng-click="delete()" class="btn btn-link btn-lg text-danger" ng-hide="new || !isAdmin">Delete {{name.name}}</a>
+        <a ng-click="delete()" class="btn btn-link btn-md text-muted pull-right" ng-hide="new || !isAdmin">Delete {{name.name}}</a>
     </div>
 </div>
 
