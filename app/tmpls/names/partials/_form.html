@@ -24,7 +24,7 @@
             <label for="geolocation" class="required">Geolocation</label>
             <span class="help-block">Where is this name most commonly used? Choose "General" if this name applies to more than one region, or chosse "Others/Don't Know" if you are not sure of its specific origin.</span>
             <tags-input ng-model="name.geoLocation" id="geolocation" add-on-space="true" min-length="3" display-property="place" add-from-autocomplete-only="true" placeholder="Select geolocation" required>
-               <auto-complete source="queryGeoLocation($query)" display-property="place" load-on-focus="true"></auto-complete>
+               <auto-complete source="query($query)" display-property="place" load-on-focus="true"></auto-complete>
             </tags-input>
         </div>
         <div class="form-group">

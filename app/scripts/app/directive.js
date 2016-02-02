@@ -164,16 +164,13 @@ dashboardappApp
     })
 
     // 
-    .directive('geolocation', ['namesApi', function(api) {
+    .directive('geolocation', ['geolocation', function(geo) {
         return {
             link: function(scope, element, attrs) {
-              api.getGeoLocations().success(function(resp) {
-                scope.geoLocations = resp
-              })
+              scope.query = function(q) {
+                  return geo.load()
+                }
               
-              scope.queryGeolocation = function(query){
-                return scope.geoLocations
-              }
             }
         }
     }])
@@ -284,17 +281,17 @@ dashboardappApp
         }
     })
 
-    .directive('feedback', ['namesApi', '$modal', '$timeout', '$rootScope',  function(api, $modal, $timeout, $rootScope){
+    .directive('feedback', ['namesApi', '$modal', '$stateParams', '$rootScope',  function(api, $modal, $stateParams, $rootScope){
         return {
             //replace: true,
             restrict: 'EA',
             templateUrl: 'tmpls/names/feedbacks.html',
             link: function (scope, element, attributes) {
-              $timeout(function(){
-                api.getFeedback(attributes['name'], function (resp) {
-                    scope.feedbacks = resp
-                })
-              }, 500)
+              
+              api.getFeedback($stateParams.entry, function (resp) {
+                scope.feedbacks = resp
+              })
+              
               scope.showFeedbacks = function () {
                 $modal.open({
                     templateUrl: 'tmpls/names/partials/feedbackModal.html',

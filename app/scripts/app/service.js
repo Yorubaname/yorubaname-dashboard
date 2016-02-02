@@ -265,23 +265,27 @@ dashboardappApp
 
       var _this = this;
 
+      /*
+
       var formatName = function(name) {
         name.geoLocation = JSON.parse( name.geoLocation || '{}' )
-        /*name.pronunciation = $filter('aToString')(name.pronunciation,'-')
+        name.pronunciation = $filter('aToString')(name.pronunciation,'-')
         name.syllables = $filter('aToString')(name.syllables,'-')
         name.morphology = $filter('aToString')(name.morphology,'-')
-        name.ipaNotation = $filter('aToString')(name.ipaNotation,'-')*/
+        name.ipaNotation = $filter('aToString')(name.ipaNotation,'-')
         return name
       }
 
       var deformatName = function(name) {
         name.geoLocation = JSON.stringify( name.geoLocation )
-        /*name.pronunciation = $filter('sToArray')(name.pronunciation,'-')
+        name.pronunciation = $filter('sToArray')(name.pronunciation,'-')
         name.syllables = $filter('sToArray')(name.syllables,'-')
         name.morphology = $filter('sToArray')(name.morphology,'-')
-        name.ipaNotation = $filter('sToArray')(name.ipaNotation,'-')*/
+        name.ipaNotation = $filter('sToArray')(name.ipaNotation,'-')
         return name
       }
+
+      */
 
       /**
       * Adds a name to the database;
@@ -360,6 +364,16 @@ dashboardappApp
           cacheNames()
         }).error(function(resp){
           toastr.error(name.name + ' could not be deleted. Please try again.')
+        })
+      }
+
+      this.deleteNames = function (names) {
+        return api.deleteJson("/v1/names/batch", names).success(function(resp){
+          toastr.success(names.length + ' names have been deleted successfully')
+          //$state.go('auth.names.list_entries', {status:"all"})
+          cacheNames()
+        }).error(function(resp){
+          toastr.error('Could not delete selected names. Please try again.')
         })
       }
 
@@ -454,6 +468,23 @@ dashboardappApp
 
 }])
 
+dashboardappApp
+
+  .service('geolocation', ['$q', 'api', function($q, api) {
+
+    var locations = []
+
+    api.get('/v1/admin/geolocations').success(function(geos){
+      locations = resp
+    })
+      
+    this.load = function() {
+      var deferred = $q.defer()
+      deferred.resolve(locations)
+      return deferred.promise
+    }
+
+}])
 
 dashboardappApp
 
