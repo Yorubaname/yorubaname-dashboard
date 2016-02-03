@@ -149,34 +149,59 @@ dashboardappApp
         'namesApi',
         function ($scope, api) {
 
-            api.countNames('published', function(num){
-                $scope.count_published_names = num
-                $('.countUpMe .published_names').each(function() {
-                    var target = this,
-                    endVal = num,
-                    theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
-                    theAnimation.start()
-                })
-            })
 
-            api.countNames('suggested', function(num){
-                $scope.count_suggested_names = num
-                $('.countUpMe .suggested_names').each(function() {
-                    var target = this,
-                    endVal = num,
-                    theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
-                    theAnimation.start()
-                })
-            })
+            // TODO leaving this for YEMI to confirm and do a proper implementation and thus remove commented code
+            api.countNamesViaMetadata(function(counts){
+                $scope.count_all_names = counts.totalNames;
+                $scope.count_new_names = counts.totalNewNames;
+                $scope.count_modified_names = counts.totalModifiedNames;
+                $scope.count_published_names = counts.totalPublishedNames;
 
-            api.countNames('all', function(num){
-                $scope.count_all_names = num
                 $('.countUpMe .all_names').each(function() {
                     var target = this,
-                    endVal = num,
+                    endVal = counts.totalNames,
                     theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
                     theAnimation.start()
-                })
+                });
+
+                $('.countUpMe .published_names').each(function() {
+                    var target = this,
+                    endVal = counts.totalPublishedNames,
+                    theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
+                    theAnimation.start()
+                });
+
+
+            });
+
+            //api.countNames('published', function(num){
+            //    $scope.count_published_names = num
+            //    $('.countUpMe .published_names').each(function() {
+            //        var target = this,
+            //        endVal = num,
+            //        theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
+            //        theAnimation.start()
+            //    })
+            //})
+            //
+            //api.countNames('suggested', function(num){
+            //    $scope.count_suggested_names = num
+            //    $('.countUpMe .suggested_names').each(function() {
+            //        var target = this,
+            //        endVal = num,
+            //        theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
+            //        theAnimation.start()
+            //    })
+            //})
+            //
+            //api.countNames('all', function(num){
+            //    $scope.count_all_names = num
+            //    $('.countUpMe .all_names').each(function() {
+            //        var target = this,
+            //        endVal = num,
+            //        theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
+            //        theAnimation.start()
+            //    })
 
                 // try if this hacks unpublished names count
                 $('.countUpMe .unpublished_names').each(function() {
@@ -186,7 +211,7 @@ dashboardappApp
                     $scope.count_unpublished_names = endVal;
                     theAnimation.start()
                 })
-            })
+
 
             $scope.latestNames = []
             api.getNames({ page:1, count:5, status:'all' }).success(function(responseData){

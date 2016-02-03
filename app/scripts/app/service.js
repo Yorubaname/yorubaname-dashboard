@@ -390,7 +390,13 @@ dashboardappApp
         return api.get(endpoint, { count: true }).success(function(resp){
           return fn(resp.count)
         })
-      }
+      };
+
+      this.countNamesViaMetadata = function(fn) {
+          return api.get('/v1/names/meta').success(function(resp) {
+              return fn(resp);
+          });
+      };
 
       this.deleteSuggestedName = function(entry, fn) {
         return api.delete("/v1/suggestions/" + entry.id).success(function(resp){
