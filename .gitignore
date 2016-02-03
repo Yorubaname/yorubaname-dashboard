@@ -2,3 +2,4 @@ bower_components
 node_modules
 /.idea
 .tmp
+app/scripts/env.js

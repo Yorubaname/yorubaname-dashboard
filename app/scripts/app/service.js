@@ -246,7 +246,7 @@ dashboardappApp
     }
 
     this.countUsers = function(fn){
-      return api.get('/v1/users/meta', { count: true }).success(function(resp){
+      return api.get('/v1/auth/meta', { count: true }).success(function(resp){
         return fn(resp.count)
       })
     }
