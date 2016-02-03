@@ -149,8 +149,8 @@ dashboardappApp
         'namesApi',
         function ($scope, api) {
 
-            api.countNames('suggested', function(resp){
-                $scope.count_suggested_names = resp.totalSuggestedNames
+            api.countNames('suggested', function(num){
+                $scope.count_suggested_names = num
                 $('.countUpMe .suggested_names').each(function() {
                     var target = this,
                     endVal = $scope.count_suggested_names,
@@ -159,7 +159,7 @@ dashboardappApp
                 })
             })
 
-            api.countNames('names', function(resp){
+            api.countNames('', function(resp){
 
                 $scope.count_all_names = resp.totalNames
                 $('.countUpMe .all_names').each(function() {

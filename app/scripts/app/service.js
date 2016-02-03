@@ -401,12 +401,18 @@ dashboardappApp
         return api.get('/v1/names', filter)
       }
 
+
       this.countNames = function(status, fn){
         var endpoint = '/v1/names/meta'
         if (status == 'published') endpoint = '/v1/search/meta'
         if (status == 'suggested') endpoint = '/v1/suggestions/meta'
         return api.get(endpoint, { count: true }).success(function(resp){
-          return fn(resp)
+          if (status == 'modified') return fn(resp.totalModifiedNames)
+          else if (status == 'published') return fn(resp.totalPublishedNames)
+          else if (status == 'unpublished') return fn(resp.totalNewNames)
+          else if (status == 'suggested') return fn(resp.totalSuggestedNames)
+          else if (status == 'all') return fn(resp.totalNames)
+          else return fn(resp)
         })
       }
 
