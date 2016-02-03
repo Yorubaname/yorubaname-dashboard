@@ -247,7 +247,7 @@ dashboardappApp
 
     this.countUsers = function(fn){
       return api.get('/v1/auth/meta', { count: true }).success(function(resp){
-        return fn(resp.count)
+        return fn(resp.totalUsers)
       })
     }
 
@@ -406,7 +406,7 @@ dashboardappApp
         if (status == 'published') endpoint = '/v1/search/meta'
         if (status == 'suggested') endpoint = '/v1/suggestions/meta'
         return api.get(endpoint, { count: true }).success(function(resp){
-          return fn(resp.count)
+          return fn(resp)
         })
       }
 
