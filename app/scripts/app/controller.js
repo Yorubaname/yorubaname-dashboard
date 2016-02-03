@@ -149,41 +149,47 @@ dashboardappApp
         'namesApi',
         function ($scope, api) {
 
-            api.countNames('published', function(num){
-                $scope.count_published_names = num
-                $('.countUpMe .published_names').each(function() {
-                    var target = this,
-                    endVal = num,
-                    theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
-                    theAnimation.start()
-                })
-            })
-
-            api.countNames('suggested', function(num){
-                $scope.count_suggested_names = num
+            api.countNames('suggested', function(resp){
+                $scope.count_suggested_names = resp.totalSuggestedNames
                 $('.countUpMe .suggested_names').each(function() {
                     var target = this,
-                    endVal = num,
+                    endVal = $scope.count_suggested_names,
                     theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
                     theAnimation.start()
                 })
             })
 
-            api.countNames('all', function(num){
-                $scope.count_all_names = num
+            api.countNames('names', function(resp){
+
+                $scope.count_all_names = resp.totalNames
                 $('.countUpMe .all_names').each(function() {
                     var target = this,
-                    endVal = num,
+                    endVal = $scope.count_all_names,
                     theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
                     theAnimation.start()
                 })
 
-                // try if this hacks unpublished names count
+                $scope.count_published_names = resp.totalPublishedNames
+                $('.countUpMe .published_names').each(function() {
+                    var target = this,
+                    endVal = $scope.count_published_names,
+                    theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
+                    theAnimation.start()
+                })
+
+                $scope.count_unpublished_names = resp.totalNewNames
                 $('.countUpMe .unpublished_names').each(function() {
                     var target = this,
-                    endVal = num - $scope.count_published_names,
+                    endVal = $scope.count_unpublished_names,
                     theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
-                    $scope.count_unpublished_names = endVal;
+                    theAnimation.start()
+                })
+
+                $scope.count_modified_names = resp.totalModifiedNames
+                $('.countUpMe .modified_names').each(function() {
+                    var target = this,
+                    endVal = $scope.count_modified_names,
+                    theAnimation = new countUp(target, 0, endVal, 0, 2.6, { useEasing : true, useGrouping : true, separator: ' ' });
                     theAnimation.start()
                 })
             })
