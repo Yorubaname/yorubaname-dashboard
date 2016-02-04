@@ -452,9 +452,9 @@ dashboardappApp
                 if (!$.isEmptyObject(name)) {
                   return api.addName(name, function () {
                     // Name added then delete from the suggested name store
-                    return api.deleteSuggestedName(entry, function(){
+                    return api.deleteName(entry, function(){
                         $scope.namesList.splice( $scope.namesList.indexOf(entry), 1 )
-                      })
+                      }, 'suggested')
                   })
                 }
               }
@@ -478,8 +478,6 @@ dashboardappApp
                 responseData.forEach(function(name) {
                     $scope.namesList.push(name)
                 })
-            }).error(function(response) {
-                console.log(response)
             })
             
             $scope.$on('onRepeatLast', function (scope, element, attrs) {
