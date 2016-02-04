@@ -290,7 +290,7 @@ dashboardappApp
             }
 
             $scope.delete = function(){
-                if (confirm("Are you sure you want to delete " + $scope.name.name + "?")) {
+                if ($window.confirm("Are you sure you want to delete " + $scope.name.name + "?")) {
                     return api.deleteName($scope.name, function(){
                         return $window.history.back()
                     })
@@ -362,19 +362,41 @@ dashboardappApp
             }
 
             $scope.indexName = function(entry){
-                return (!entry.indexed) ? api.addNameToIndex(entry.name).success(function(response){
-                    return entry.indexed = true
-                }) : api.removeNameFromIndex(entry.name).success(function(response){
-                    entry.indexed = false
-                })
+                
+                if (entry.state == 'NEW')
+                    return api.addNameToIndex(entry.name).success(function(response){
+                        entry.state = 'PUBLISHED'
+                        entry.indexed = true
+                    })
+                else if (entry.state == 'MODIFIED')
+                    return api.removeNameFromIndex(entry.name).success(function(){
+                        return api.addNameToIndex(entry.name).success(function(){
+                            entry.state = 'PUBLISHED'
+                            entry.indexed = true
+                        })
+                    })
+                else // assume entry is published and objective is to unpublish it
+                    return api.removeNameFromIndex(entry.name).success(function(response){
+                        entry.indexed = false
+                        entry.state = 'NEW'
+                    })
             }
 
-            $scope.republish = function(entry){
-                return api.removeNameFromIndex(entry.name).success(function(){
-                    return api.addNameToIndex(entry.name).success(function(){
-                        return entry.state = 'PUBLISHED'
+            $scope.republishNames = function(){
+
+                var entries = $.map( $scope.namesList , function(elem){
+                    if (elem.isSelected == true) return elem
+                })
+
+                if (!entries.length) return toastr.warning('No names selected to republish')
+
+                return api.removeNamesFromIndex(entries).success(function(response){
+                    return api.addNamesToIndex(entries).success(function(response){
+                        $.map(entries, function(entry) { entry.state = 'PUBLISHED'; entry.indexed = true })
+                        toastr.success(entries.length + ' names have been republished')
                     })
                 })
+
             }
 
             $scope.indexNames = function(action){

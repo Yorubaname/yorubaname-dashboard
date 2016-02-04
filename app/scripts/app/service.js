@@ -358,7 +358,7 @@ dashboardappApp
       * @param nameEntry
       */
       this.deleteName = function (entry, fn, status) {
-        
+
         if (status == 'suggested') 
           return api.delete("/v1/suggestions/" + entry.id).success(function(resp){
             toastr.success(entry.name + ' with id: ' + entry.id + ' has been deleted successfully')
@@ -480,28 +480,14 @@ dashboardappApp
         })
       }
 
-      this.getGeoLocations = function(){
-        return api.get('/v1/admin/geolocations')
-      }
-
 }])
 
 dashboardappApp
 
-  .service('geolocation', ['$q', 'api', function($q, api) {
-
-    var locations = []
-
-    api.get('/v1/admin/geolocations').success(function(geos){
-      locations = resp
-    })
-      
-    this.load = function() {
-      var deferred = $q.defer()
-      deferred.resolve(locations)
-      return deferred.promise
+  .service('geolocation', ['$http', function($http) {
+    this.load = function(query) {
+      return $http.get('/v1/admin/geolocations')
     }
-
 }])
 
 dashboardappApp

@@ -164,13 +164,12 @@ dashboardappApp
     })
 
     // 
-    .directive('geolocation', ['geolocation', function(geo) {
+    .directive('nameForm', ['geolocation', function(geo) {
         return {
             link: function(scope, element, attrs) {
               scope.query = function(q) {
                   return geo.load()
-                }
-              
+              }
             }
         }
     }])
