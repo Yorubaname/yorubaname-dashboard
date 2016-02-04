@@ -267,15 +267,15 @@ dashboardappApp
 
             $scope.publish = function(){
                 // update name first, then publish
-                return api.updateName(originalName, $scope.name, function(name){
+                return api.updateName(originalName, $scope.name, function(){
                     // first remove name from index
-                    return api.removeNameFromIndex(name.name).success(function(){
-                        // then add name back to index
-                        return api.addNameToIndex(name.name).success(function(){
-                            name.state = 'PUBLISHED'
-                            name.indexed = true
-                            toastr.info(name.name + ' has been published')
-                        })
+                    api.removeNameFromIndex($scope.name.name).success()
+                    // then add name back to index
+                    return api.addNameToIndex($scope.name.name).success(function(){
+                        $scope.name.state = 'PUBLISHED'
+                        $scope.name.indexed = true
+                        toastr.info($scope.name.name + ' has been published')
+                        return $window.history.back()
                     })
                 })
             }
@@ -362,7 +362,7 @@ dashboardappApp
             }
 
             $scope.indexName = function(entry){
-                
+
                 if (entry.state == 'NEW')
                     return api.addNameToIndex(entry.name).success(function(response){
                         entry.state = 'PUBLISHED'
