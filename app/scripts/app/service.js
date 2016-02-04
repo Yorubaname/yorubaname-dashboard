@@ -394,9 +394,9 @@ dashboardappApp
         filter.orderBy = 'createdAt'
 
         if (filter.status == 'suggested') return api.get('/v1/suggestions')
-        if (filter.status == 'published') filter.indexed = true;
-        if (filter.status == 'unpublished') filter.indexed = false;
-        if (filter.status == 'modified') filter.state = 'MODIFIED';
+        else if (filter.status == 'published') filter.state = 'PUBLISHED';
+        else if (filter.status == 'unpublished') filter.state = 'NEW';
+        else if (filter.status == 'modified') filter.state = 'MODIFIED';
       
         return api.get('/v1/names', filter)
       }
