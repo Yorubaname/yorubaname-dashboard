@@ -269,7 +269,7 @@ dashboardappApp
                 // update name first, then publish
                 return api.updateName(originalName, $scope.name, function(){
                     // first remove name from index
-                    api.removeNameFromIndex($scope.name.name).success()
+                    api.removeNameFromIndex($scope.name.name)
                     // then add name back to index
                     return api.addNameToIndex($scope.name.name).success(function(){
                         $scope.name.state = 'PUBLISHED'
