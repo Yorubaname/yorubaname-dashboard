@@ -38,6 +38,7 @@
                     <th>Syllables</th>
                     <th>Geolocation</th>
                     <th>Status</th>
+                    <th ng-show="isAdmin || isLexicographer">Actions</th>
                     <th>Submitted By</th>
                     <th>Date</th>
                 </tr>
@@ -47,9 +48,9 @@
                     <td ng-hide="isBasic"><input type="checkbox" ng-model="entry.isSelected"></td>
                     <td><a ui-sref="auth.names.edit_entries({entry:entry.name})"><strong>{{entry.name}}</strong></a></td>
                     <td>{{entry.syllables}}</td>
-                    <td>{{entry.geoLocation.place}}</td>
-                    <td ng-show="isAdmin || isLexicographer"><a class="btn btn-xs" ng-class="entry.indexed ? 'btn-warning' : 'btn-success'" ng-click="indexName(entry)">{{entry.indexed ? 'Unpublish' : 'Publish'}}</a> </td>
-                    <td ng-show="isBasic">{{entry.indexed ? 'Published' : 'Pending'}} <a class="btn btn-xs btn-warning" ng-show="isAdmin && entry.status == 'MODIFIED'" ng-click="republish(entry)">Re-Publish</a></td>
+                    <td>{{entry.geoLocation|list}}</td>
+                    <td>{{entry.state}}</td>
+                    <td ng-show="isAdmin || isLexicographer"><a class="btn btn-xs" ng-class="entry.state == 'PUBLISHED' ? 'btn-warning' : 'btn-success'" ng-click="indexName(entry)">{{entry.state == 'PUBLISHED' ? 'Unpublish' : 'Publish'}}</a></td>
                     <td>{{entry.submittedBy}}</td>
                     <td>{{entry.createdAt|toDateString}}</td>
                 </tr>
@@ -57,10 +58,10 @@
             <tfoot>
                 <tr ng-hide="!namesList.length || isBasic">
                     <td colspan="2"><select-all-checkbox checkboxes="namesList"></select-all-checkbox>  Select all names</td>
-                    <td colspan="5">Show <select ng-model="count" ng-options="n for n in [ 10, 20, 50, 100, 250, 500 ]" ng-change="fetch(1, count)"></select> names</td>
+                    <td colspan="6">Show <select ng-model="count" ng-options="n for n in [ 10, 20, 50, 100, 250, 500 ]" ng-change="fetch(1, count)"></select> names</td>
                 </tr>
                 <tr>
-                    <td colspan="7" class="text-center">
+                    <td colspan="8" class="text-center">
                         <dir-pagination-controls
                             max-size="12"
                             direction-links="true"

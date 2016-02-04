@@ -53,3 +53,14 @@ dashboardappApp
       return input[0].toUpperCase() + input.slice(1).toLowerCase()
     } 
   })
+
+  /**
+ * Filter to parse input value array to comma separated list
+ */
+
+  .filter('list', ['$filter', '_', function($filter, _) {
+    return function(inputArray) {
+      if (typeof inputArray != 'object') return;
+      return _.pluck(inputArray, 'place').join(', ')
+    }
+  }])
