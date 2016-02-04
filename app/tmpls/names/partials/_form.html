@@ -89,7 +89,7 @@
         <hr>
         <button type="submit" class="btn btn-lg btn-success" ng-click="submit()" ng-disabled="form.$invalid || !form.$dirty">{{ new ? 'Submit for Review' : 'Save Entry' }}</button>
 
-        <button class="btn btn-lg btn-info" ng-click="publish()" ng-disabled="form.$invalid || !form.$dirty" ng-show="isAdmin || isLexicographer && !new">Publish</button>
+        <button class="btn btn-lg btn-info" ng-click="publish()" ng-disabled="form.$invalid || !form.$dirty" ng-show="isAdmin || isLexicographer && !new && name.state!='PUBLISHED'">Publish</button>
 
         <a ng-click="delete()" class="btn btn-link btn-md text-muted pull-right" ng-hide="new || !isAdmin">Delete {{name.name}}</a>
     </div>

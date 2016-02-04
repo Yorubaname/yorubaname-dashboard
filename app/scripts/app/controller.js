@@ -41,10 +41,10 @@ dashboardappApp
                             title: 'Add Entries',
                             link: 'auth.names.add_entries'
                         },
-                        {
+                        /*{
                             title: 'All Name Entries',
                             link: "auth.names.list_entries({status:'all'})"
-                        },
+                        },*/
                         {
                             title: 'Published Names',
                             link: "auth.names.list_entries({status:'published'})"
@@ -65,7 +65,7 @@ dashboardappApp
                 }
             ];
 
-            if ($rootScope.isAdmin == true) $scope.sections.push(
+            if ($rootScope.isLexicographer == true || $rootScope.isAdmin == true) $scope.sections.push(
                 {
                     id: 2,
                     title: 'Users',
@@ -246,7 +246,8 @@ dashboardappApp
         '$state',
         'namesApi',
         'toastr',
-        function($scope, $stateParams, $state, api, toastr) {
+        '$window',
+        function($scope, $stateParams, $state, api, toastr, $window) {
 
             var originalName = null
 
@@ -271,7 +272,9 @@ dashboardappApp
                     return api.removeNameFromIndex(name.name).success(function(){
                         // then add name back to index
                         return api.addNameToIndex(name.name).success(function(){
-                            toastr.info(name.name + ' has been published successfully')
+                            name.state = 'PUBLISHED'
+                            name.indexed = true
+                            toastr.info(name.name + ' has been published')
                         })
                     })
                 })
@@ -288,7 +291,9 @@ dashboardappApp
 
             $scope.delete = function(){
                 if (confirm("Are you sure you want to delete " + $scope.name.name + "?")) {
-                    return api.deleteName($scope.name)
+                    return api.deleteName($scope.name, function(){
+                        return $window.history.back()
+                    })
                 }
             }
 
@@ -334,26 +339,12 @@ dashboardappApp
 
             $scope.fetch()
 
-            $scope.deleteNames = function(){
-
-                var entries = $.map( $scope.namesList , function(elem){
-                    if (elem.isSelected == true) return elem
-                })
-
-                if (!entries.length) return toastr.warning('Select names to delete');
-
-                if (!$window.confirm('Are you sure you want to delete the selected name/s?')) return;
-                
-            }
-
             $scope.delete = function(entry){
 
-                if (entry) {
-                    if ( $window.confirm('Are you sure you want to delete suggested name '+ entry.name + ' with id: ' + entry.id + '?') )
-                      api.deleteSuggestedName(entry, function(){
+                if (entry && $window.confirm('Are you sure you want to delete '+ entry.name + '?') ) {
+                    return api.deleteName(entry, function(){
                         $scope.namesList.splice( $scope.namesList.indexOf(entry), 1 )
-                      })
-                    return 
+                    }, $scope.status)
                 }
 
                 var entries = $.map( $scope.namesList , function(elem){
@@ -362,7 +353,11 @@ dashboardappApp
 
                 if (!entries.length) return toastr.warning('Select names to delete');
 
-                if (!$window.confirm('Are you sure you want to delete the selected name/s?')) return;
+                if (!$window.confirm('Are you sure you want to delete the selected names?')) return;
+
+                return api.deleteNames(entries, function(){
+                    $scope.fetch($scope.pagination.current, $scope.itemsPerPage)
+                }, $scope.status)
                 
             }
 
@@ -371,6 +366,14 @@ dashboardappApp
                     return entry.indexed = true
                 }) : api.removeNameFromIndex(entry.name).success(function(response){
                     entry.indexed = false
+                })
+            }
+
+            $scope.republish = function(entry){
+                return api.removeNameFromIndex(entry.name).success(function(){
+                    return api.addNameToIndex(entry.name).success(function(){
+                        return entry.state = 'PUBLISHED'
+                    })
                 })
             }
 

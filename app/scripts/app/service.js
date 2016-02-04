@@ -357,24 +357,46 @@ dashboardappApp
       * Deletes a name from the database;
       * @param nameEntry
       */
-      this.deleteName = function (name) {
-        return api.deleteJson("/v1/names/" + name.name, name).success(function(resp){
-          toastr.success(name.name + ' has been deleted successfully')
-          $state.go('auth.names.list_entries', {status:"all"})
+      this.deleteName = function (entry, fn, status) {
+        
+        if (status == 'suggested') 
+          return api.delete("/v1/suggestions/" + entry.id).success(function(resp){
+            toastr.success(entry.name + ' with id: ' + entry.id + ' has been deleted successfully')
+            return fn()
+          }).error(function(resp){
+            toastr.error(entry.name + ' with id: ' + entry.id + ' could not be deleted. Please try again.')
+          })
+
+        return api.deleteJson("/v1/names/" + entry.name, entry).success(function(resp){
+          toastr.success(entry.name + ' has been deleted successfully')
           cacheNames()
+          fn()
         }).error(function(resp){
-          toastr.error(name.name + ' could not be deleted. Please try again.')
+          toastr.error(entry.name + ' could not be deleted. Please try again.')
         })
+
       }
 
-      this.deleteNames = function (names) {
+      this.deleteNames = function (names, fn, status) {
+
+        names = _.pluck(names, 'name')
+
+        if (status == 'suggested') 
+          return api.deleteJson("/v1/suggestions/batch", names).success(function(resp){
+            toastr.success(names.length + ' suggested names have been deleted')
+            return fn()
+          }).error(function(resp){
+            toastr.error('Could not delete selected names. Please try again.')
+          })
+
         return api.deleteJson("/v1/names/batch", names).success(function(resp){
           toastr.success(names.length + ' names have been deleted successfully')
-          //$state.go('auth.names.list_entries', {status:"all"})
           cacheNames()
+          return fn()
         }).error(function(resp){
           toastr.error('Could not delete selected names. Please try again.')
         })
+
       }
 
       /**
@@ -413,16 +435,6 @@ dashboardappApp
           else if (status == 'suggested') return fn(resp.totalSuggestedNames)
           else if (status == 'all') return fn(resp.totalNames)
           else return fn(resp)
-        })
-      }
-
-      this.deleteSuggestedName = function(entry, fn) {
-        return api.delete("/v1/suggestions/" + entry.id).success(function(resp){
-          toastr.success(entry.name + ' with id: ' + entry.id + ' has been deleted successfully')
-          //$state.go('auth.names.suggested')
-          fn()
-        }).error(function(resp){
-          toastr.error(entry.name + ' with id: ' + entry.id + ' could not be deleted. Please try again.')
         })
       }
 

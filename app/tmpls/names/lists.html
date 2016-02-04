@@ -49,7 +49,7 @@
                     <td>{{entry.syllables}}</td>
                     <td>{{entry.geoLocation.place}}</td>
                     <td ng-show="isAdmin || isLexicographer"><a class="btn btn-xs" ng-class="entry.indexed ? 'btn-warning' : 'btn-success'" ng-click="indexName(entry)">{{entry.indexed ? 'Unpublish' : 'Publish'}}</a> </td>
-                    <td ng-show="isBasic">{{entry.indexed ? 'Published' : 'Pending'}} <a class="btn btn-xs btn-warning" ng-show="isAdmin && entry.status == 'MODIFIED'" ng-click="reIndexName(entry)">Re-Publish</a></td>
+                    <td ng-show="isBasic">{{entry.indexed ? 'Published' : 'Pending'}} <a class="btn btn-xs btn-warning" ng-show="isAdmin && entry.status == 'MODIFIED'" ng-click="republish(entry)">Re-Publish</a></td>
                     <td>{{entry.submittedBy}}</td>
                     <td>{{entry.createdAt|toDateString}}</td>
                 </tr>
