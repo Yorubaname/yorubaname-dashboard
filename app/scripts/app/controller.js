@@ -406,7 +406,7 @@ dashboardappApp
                 if (entries.length > 0) {
 
                     (!action || action == 'add') ? api.addNamesToIndex(entries).success(function(response){
-                        $.map(entries, function(entry) { entry.indexed = true })
+                        $.map(entries, function(entry) { entry.indexed = true; entry.state = 'PUBLISHED' })
                         toastr.success(entries.length + ' names have been published')
                     }).error(function(){
                         toastr.error('Selected names could not be published')
@@ -415,7 +415,7 @@ dashboardappApp
                     :
 
                     api.removeNamesFromIndex(entries).success(function(response){
-                        $.map(entries, function(entry) { entry.indexed = false })
+                        $.map(entries, function(entry) { entry.indexed = false; entry.state = 'NEW'  })
                         toastr.success(entries.length + ' names unpublished')
                     }).error(function(){
                         toastr.error('Selected names could not be unpublished')
