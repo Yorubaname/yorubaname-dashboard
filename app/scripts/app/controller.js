@@ -543,7 +543,7 @@ dashboardappApp
 
             $scope.submit = function () {
                 $scope.user.roles = $.map( $scope.roles, function( value, key ) {
-                  if (value != false) return value
+                  if (value != false) return key
                 })
                 return api.addUser($scope.user)
             }
