@@ -410,17 +410,31 @@ dashboardappApp
       }
 
       this.getNames = function (filter) {
-        filter = !isEmptyObj(filter) ? filter : {}
-        filter.page = filter.page || 1
-        filter.count = filter.count || 50
-        filter.orderBy = 'createdAt'
+          filter = !isEmptyObj(filter) ? filter : {};
 
-        if (filter.status == 'suggested') return api.get('/v1/suggestions')
-        else if (filter.status == 'published') filter.state = 'PUBLISHED';
-        else if (filter.status == 'unpublished') filter.state = 'NEW';
-        else if (filter.status == 'modified') filter.state = 'MODIFIED';
-      
-        return api.get('/v1/names', filter)
+          // temp retrieving all for unpublished and modified. This should ideally
+          // be refactored to use the fromId query filter
+          if (filter.status === 'unpublished' || filter.status === 'modified') {
+              filter.all = true;
+          } else {
+              filter.page = filter.page || 1;
+              filter.count = filter.count || 50;
+
+          }
+
+          filter.orderBy = 'createdAt';
+
+          if (filter.status == 'suggested') {
+              return api.get('/v1/suggestions')
+          } else if (filter.status == 'published') {
+              filter.state = 'PUBLISHED';
+          } else if (filter.status == 'unpublished') {
+              filter.state = 'NEW';
+          } else if (filter.status == 'modified') {
+              filter.state = 'MODIFIED';
+          }
+
+          return api.get('/v1/names', filter)
       }
 
 
