@@ -22,29 +22,7 @@ dashboardappApp
         }
     }])
 
-    // page preloader
-    .directive('pageLoader', [
-        '$timeout',
-        function ($timeout) {
-            return {
-                restrict: 'AE',
-                template: '<div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div>',
-                link: function (scope, el, attrs) {
-                    el.addClass('pageLoader hide');
-                    scope.$on('$stateChangeStart', function (event) {
-                        el.toggleClass('hide animate');
-                    });
-                    scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState) {
-                        event.targetScope.$watch('$viewContentLoaded', function () {
-                            $timeout(function () {
-                                el.toggleClass('hide animate')
-                            }, 600);
-                        })
-                    });
-                }
-            };
-        }
-    ])
+   
 
     // show/hide side menu
     .directive('menuToggle', [
@@ -163,47 +141,6 @@ dashboardappApp
         }
     })
 
-    // 
-    .directive('nameForm', ['geolocation', function(geo) {
-        return {
-            link: function(scope, element, attrs) {
-              scope.query = function(q) {
-                  return geo.load()
-              }
-            }
-        }
-    }])
-
-    .directive('etymology', ['$stateParams', function($stateParams) {
-        return {
-            replace: true,
-            restrict:'E',
-            templateUrl: 'tmpls/names/directives/etymology.html',
-            link: function(scope, element, attrs) {
-
-              if (!$stateParams.entry) {
-                scope.name.etymology = []
-                scope.name.etymology.push({ part:'', meaning:'' })
-              }
-              
-              scope.add_etymology = function() {
-                return scope.name.etymology.push({ part:'', meaning:'' })
-              }
-
-              scope.remove_etymology = function(index) {
-                scope.name.etymology.splice(index, 1)
-                if ( scope.name.etymology.length < 1 )
-                return scope.name.etymology.push({ part:'', meaning:'' })
-              }
-
-              scope.$watch('name.etymology', function(val) {
-                scope.form.$dirty = true;
-              }, true)
-
-            }
-        }
-    }])
-
     .directive('avatar', ['$localStorage', function($localStorage) {
         return {
             restrict:'E',
@@ -280,48 +217,6 @@ dashboardappApp
         }
     })
 
-    .directive('feedback', ['namesApi', '$modal', '$stateParams', '$rootScope',  function(api, $modal, $stateParams, $rootScope){
-        return {
-            //replace: true,
-            restrict: 'EA',
-            templateUrl: 'tmpls/names/feedbacks.html',
-            link: function (scope, element, attributes) {
-              
-              api.getFeedback($stateParams.entry, function (resp) {
-                scope.feedbacks = resp
-              })
-              
-              scope.showFeedbacks = function () {
-                $modal.open({
-                    templateUrl: 'tmpls/names/partials/feedbackModal.html',
-                    size: 'md',
-                    controller: function ($scope, $modalInstance) {
-                        $scope.modalTitle = 'Feedbacks on ' + attributes['name']
-                        $scope.feedbacks = scope.feedbacks
-                        $scope.isAdmin = $rootScope.isAdmin
-                        // delete all feedbacks and closes modal
-                        $scope.deleteFeedbacks = function () {
-                            api.deleteFeedbacks(attributes['name'], function () {
-                              $modalInstance.close()
-                            })
-                        }
-                        // delete one feedback by id and remove from list
-                        $scope.deleteFeedback = function (feedback) {
-                            api.deleteFeedback(feedback, function () {
-                              $scope.feedbacks.splice( $scope.feedbacks.indexOf(feedback), 1)
-                            })
-                        }
-                        $scope.cancel = function () {
-                            $modalInstance.dismiss('cancel')
-                        }
-                    }
-                }) 
-              }
-
-            }
-        }
-    }])
-
     .directive('keyboard', function(){
         return {
             replace: true,
@@ -347,5 +242,3 @@ dashboardappApp
             }
         }
     })
-
-;

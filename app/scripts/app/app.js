@@ -147,23 +147,6 @@ dashboardappApp
                     $state.go('login')
                 }
 
-                // remove datatables fixedHeader from DOM
-                if($(".FixedHeader_Cloned").length) {
-                    $(".FixedHeader_Cloned").remove()
-                }
-                // remove daterangepicker element from DOM
-                if($(".daterangepicker").length) {
-                    $(".daterangepicker").remove()
-                }
-                // remove autosize element from DOM
-                if($("#autosizejs").length) {
-                    $("#autosizejs").remove()
-                }
-                // remove select2-hidden-accessible
-                if($(".select2-hidden-accessible").length) {
-                    $(".select2-hidden-accessible").remove()
-                }
-
             })
 
             $rootScope.isTouchDevice = !!('ontouchstart' in window);
@@ -214,3 +197,15 @@ dashboardappApp
             return items;
         };
     }])
+
+    .factory('utils', function () {
+        return {
+            // Util for finding an object by its 'id' property among an array
+            findById: function findById(a, id) {
+                for (var i = 0; i < a.length; i++) {
+                    if (a[i].id == id) return a[i];
+                }
+                return null;
+            }
+        }
+    })

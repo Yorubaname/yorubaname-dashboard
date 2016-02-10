@@ -1,8 +1,8 @@
 <div class="row row_full">
     <div class="col-sm-6">
         <avatar width="80" height="80" ng-model="user" size="large"></avatar>
-        <h1 class="user_profile_name">{{user.username}} <!--a class="btn btn-xs btn-primary pull-right" ui-sref="auth.profile.edit">Edit</a--></h1>
-        <p class="user_profile_info">Chief Lexicographer (Volunteer)</p>
+        <h1 class="user_profile_name">{{user.username}} <!--a class="btn btn-xs btn-primary pull-right" ui-sref="auth.users.profile">Edit</a--></h1>
+        <p class="user_profile_info">{{user.role}}</p>
         <p class="user_profile_info"> <a ng-href="mailto:{{user.email}}">{{user.email}}</a></p>
     </div>
     <div class="col-sm-6 text-right-sm">
@@ -86,7 +86,7 @@
                 </tr>
             </tbody>
             <tfoot ng-show="latestNames.length">
-                <tr class="text-right"><td colspan="2"><a ui-sref="auth.names.list_entries({status:'unpublished'})">Sell all recently added names</a></td></tr>
+                <tr class="text-right"><td colspan="2"><a ui-sref="auth.names.list_entries({status:'unpublished'})">See all recently added names</a></td></tr>
             </tfoot>
             <tfoot ng-hide="latestNames.length">
                 <tr class="warning"><td colspan="2">There are no recently added names</td></tr>
@@ -105,7 +105,7 @@
                 </tr>
             </tbody>
             <tfoot ng-show="publishedNames.length">
-                <tr class="text-right"><td><a ui-sref="auth.names.list_entries({status:'published'})">Sell all published names</a></td></tr>
+                <tr class="text-right"><td><a ui-sref="auth.names.list_entries({status:'published'})">See all published names</a></td></tr>
             </tfoot>
             <tfoot ng-hide="publishedNames.length">
                 <tr class="warning"><td>There are no Published names</td></tr>
@@ -126,7 +126,7 @@
                 </tr>
             </tbody>
             <tfoot ng-show="feedbacks.length">
-                <tr class="text-right"><td colspan="3"><a href="">Sell all feedbacks</a></td></tr>
+                <tr class="text-right"><td colspan="3"><a href="">See all feedbacks</a></td></tr>
             </tfoot>
             <tfoot ng-hide="feedbacks.length">
                 <tr class="warning"><td colspan="3">There are no feedbacks on names</td></tr>

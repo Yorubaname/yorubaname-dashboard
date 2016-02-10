@@ -16,7 +16,7 @@
 
   <div class="col-sm-8 col-sm-offset-2" ng-show="results.length">
       <h5>Showing {{results.length}} results for {{search.entry}}</h5>
-      <p ng-repeat="entry in results"><a ui-sref="auth.names.edit_entries({entry:entry.name})">{{entry.name}}</a> - {{entry.meaning}}</p>
+      <p ng-repeat="entry in results"><a ui-sref="names.edit_entries({entry:entry.name})">{{entry.name}}</a> - {{entry.meaning}}</p>
   </div>
 
 </div>
