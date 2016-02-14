@@ -219,8 +219,8 @@ dashboardappApp
       }
 
       this.getFeedback = function(name, fn) {
-        return api.get('/v1/feedbacks/?name='+name, { feedback: true }).success(function(resp){
-          return fn( resp.feedback )
+        return api.get('/v1/feedbacks/', { name:name, feedback: true }).success(function(resp){
+          return fn( resp )
         })
       }
 
