@@ -1,5 +1,5 @@
+/app/scripts/app/config.js
 bower_components
 node_modules
 /.idea
 .tmp
-app/scripts/env.js
