@@ -2,18 +2,18 @@
 
 angular.module('underscore', []).factory('_', function() { return window._ })
 
-var dashboardappApp = angular.module('dashboardappApp', [ 'ui.router', 'ngAnimate', 'ui.load', 'ngSanitize', 'ngStorage', 'ngTagsInput', 'ui.bootstrap', 'ncy-angular-breadcrumb', 'ngRetina', 'toastr', 'NgSwitchery', 'textAngular', 'angularFileUpload', 'underscore','angularUtils.directives.dirPagination']);
+var dashboardappApp = angular.module('dashboardappApp', [ 'config', 'ui.router', 'ngAnimate', 'ui.load', 'ngSanitize', 'ngStorage', 'ngTagsInput', 'ui.bootstrap', 'ncy-angular-breadcrumb', 'ngRetina', 'toastr', 'NgSwitchery', 'textAngular', 'angularFileUpload', 'underscore','angularUtils.directives.dirPagination']);
 
 dashboardappApp
    
     //.constant('baseUrl', 'http://www.yorubaname.com:8081')
-    .constant('baseUrl', /10|localhost/.test(location.hostname) ? 'http://localhost:8081' : 'http://www.yorubaname.com:8081')
+    // .constant('baseUrl', /10|localhost/.test(location.hostname) ? 'http://localhost:8081' : 'http://www.yorubaname.com:8081')
 
     /* Config Block */
     .config(
-    [ '$provide', '$httpProvider', 'baseUrl',
+    [ '$provide', '$httpProvider', 'ENV',
 
-        function ($provide, $httpProvider, baseUrl) {
+        function ($provide, $httpProvider, ENV) {
           
           // Intercept http calls.
           $provide.factory('MyHttpInterceptor', [ '$localStorage', '$q', function ($localStorage, $q) {
@@ -26,7 +26,7 @@ dashboardappApp
                 if (/^\/v1\//.test(config.url)){
                   config.crossOrigin = true;
                   // config.xhrFields || (config.xhrFields = { withCredentials: false });
-                  config.url = baseUrl + config.url;
+                  config.url = ENV.baseUrl + config.url;
                 }
                 // Return the config or wrap it in a promise if blank.
                 return config || $q.when(config)

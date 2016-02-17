@@ -2,7 +2,7 @@
 
 dashboardappApp
 
-  .service('authService', ['baseService', 'usersService', '$localStorage', '$state', '$rootScope', '$timeout', 'toastr', 'baseUrl', function(api, usersApi, $localStorage, $state, $rootScope, $timeout, toastr, baseUrl){
+  .service('authService', ['baseService', 'usersService', '$localStorage', '$state', '$rootScope', '$timeout', 'toastr', 'ENV', function(api, usersApi, $localStorage, $state, $rootScope, $timeout, toastr, ENV){
 
     this.getUser = function(callback) {
       return api.get("/v1/auth/user").then(function(response) {
@@ -23,7 +23,7 @@ dashboardappApp
             $localStorage.username = response.username;
             $localStorage.email = response.email;
             $localStorage.token = authData;
-            $localStorage.baseUrl = baseUrl;
+            $localStorage.baseUrl = ENV.baseUrl;
 
             response.roles.some(function(role) {
                 // Check ROLE_ADMIN first, since it supercedes all

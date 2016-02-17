@@ -69,10 +69,10 @@ dashboardappApp
     }
 }])
 
-.service('uploadService', ['FileUploader', 'baseUrl', 'toastr', '$localStorage', '$state', function(FileUploader, baseUrl, toastr, $localStorage, $state) {
+.service('uploadService', ['FileUploader', 'ENV', 'toastr', '$localStorage', '$state', function(FileUploader, ENV, toastr, $localStorage, $state) {
 
     FileUploader.prototype.setEndpoint = function setEndpoint(endpoint){
-      this.url = baseUrl + endpoint
+      this.url = ENV.baseUrl + endpoint
     }
 
     return function(options) {

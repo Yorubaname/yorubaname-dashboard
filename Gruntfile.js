@@ -370,28 +370,28 @@ module.exports = function (grunt) {
       options: {
         space: '  ',
         wrap: '"use strict";\n\n {%= __ngModule %}',
-        name: 'env'
+        name: 'config'
       },
       // Environment targets
       development: {
         options: {
-          dest: '<%= yeoman.app %>/scripts/env.js'
+          dest: '<%= yeoman.app %>/scripts/app/config.js'
         },
         constants: {
           ENV: {
             name: 'development',
-            appEndpoint: 'http://localhost:8081'
+            baseUrl: 'http://localhost:8081'
           }
         }
       },
       production: {
         options: {
-          dest: '<%= yeoman.app %>/scripts/env.js'
+          dest: '<%= yeoman.app %>/scripts/app/config.js'
         },
         constants: {
           ENV: {
             name: 'production',
-            appEndpoint: 'http://www.yorubaname.com:8081'
+            baseUrl: 'http://www.yorubaname.com:8081'
           }
         }
       }
