@@ -15,14 +15,14 @@ dashboardappApp
     // on authentication the $rootScope and $cookie is updated as necessary
     this.authenticate = function(authData) {
         // encode authData to base64 here, instead
-        authData = btoa(authData.email + ":" + authData.password)
+        token = btoa(authData.email + ":" + authData.password)
         
-        return api.authenticate(authData).success(function(response) {
+        return api.authenticate(token).success(function(response) {
             $localStorage.isAuthenticated = true;
             $localStorage.id = response.id;
             $localStorage.username = response.username;
-            $localStorage.email = response.email;
-            $localStorage.token = authData;
+            $localStorage.email = authData.email;
+            $localStorage.token = token;
             $localStorage.baseUrl = ENV.baseUrl;
 
             response.roles.some(function(role) {
@@ -60,7 +60,7 @@ dashboardappApp
       delete $localStorage.id;
       delete $localStorage.token;
       delete $localStorage.baseUrl;
-      $rootScope.user = null;
+      $rootScope.logged_in_user = null;
       $timeout(function(){
         $state.go('login')
         toastr.info('You are now logged out.')
