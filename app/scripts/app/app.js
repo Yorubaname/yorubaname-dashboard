@@ -93,8 +93,8 @@ dashboardappApp
             var is_logged_in = function(){
               if ($localStorage.isAuthenticated == true){
                 // read user info from $localStorage and set on $rootScope if it's not there 
-                if (!$rootScope.user) {
-                    $rootScope.user = {
+                if (!$rootScope.logged_in_user) {
+                    $rootScope.logged_in_user = {
                       username: $localStorage.username,
                       email: $localStorage.email,
                       id: $localStorage.id
