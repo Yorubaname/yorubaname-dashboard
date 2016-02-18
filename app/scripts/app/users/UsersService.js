@@ -6,7 +6,7 @@ dashboardappApp
   .service('usersService', ['baseService', '$state', 'toastr', function(api, $state, toastr){
 
     this.getUser = function(userId){
-      return api.get('/v1/users/'+userId)
+      return api.get('/v1/auth/users/'+userId)
     }
 
     this.addUser = function(user){
@@ -22,8 +22,10 @@ dashboardappApp
 
     /* updated user information */
     this.updateUser = function(user){
-      return api.putJson("/v1/auth/users", user)
+      console.log(user)
+      return api.patchJson("/v1/auth/users/" + user.id, user)
                .success(function(resp) {
+                  console.log(resp)
                   toastr.success('User account with email '+user.email+' successfully updated.')
                   $state.go('auth.users.list_users')
                })
@@ -41,6 +43,13 @@ dashboardappApp
 
     this.getUsers = function(params){
       return api.get("/v1/auth/users", params)
+    }
+
+    this.deleteUser = function(user, fn){
+      return api.delete("/v1/auth/users/"+user.id, user).success(function(){
+        toastr.success('User account with email '+user.email+' has been deleted.')
+        return fn()
+      })
     }
 
   }])

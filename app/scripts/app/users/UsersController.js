@@ -23,8 +23,6 @@ dashboardappApp
                 $scope.usersListItems = num || 50;
             })
 
-
-
             $scope.fetch = function(newPageNumber){
                 return api.getUsers({ page:newPageNumber || 1, count:50 }).success(function(response) {
                     $scope.usersList = []
@@ -34,9 +32,20 @@ dashboardappApp
                 })
             }
 
+            $scope.delete = function (user) {
+                if (!$window.confirm('Are you sure you want to delete this account?')) return;
+                return api.deleteUser(user, function(){
+                    // remove from list
+                    $scope.usersList.splice( $scope.usersList.indexOf(user), 1 )
+                    $scope.usersListItems--
+                })
+              }
+
             $scope.fetch()
         }
     ])
+
+/*
 
     .controller('profileIndexCtrl', [
         '$scope',
@@ -49,17 +58,4 @@ dashboardappApp
                 console.log(resp)
             })
         }
-    ])
-
-    .controller('profileEditCtrl', [
-        '$scope',
-        '$localStorage',
-        'usersService',
-        function ($scope, $localStorage, api) {
-            api.getUser($localStorage.id).success(function(user){
-                $scope.user = user
-            }).error(function(resp){
-                console.log(resp)
-            })
-        }
-    ])
+    ]) */

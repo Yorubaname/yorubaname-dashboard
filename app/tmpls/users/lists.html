@@ -24,10 +24,9 @@
                       Role
                       <span class="glyphicon sort-icon" ng-show="sortKey=='roles'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
                     </th>
-                    <!--th ng-click="sort('createdAt')">
-                      Date Created
-                      <span class="glyphicon sort-icon" ng-show="sortKey=='createdAt'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
-                    </th-->
+                    <th ng-show="isAdmin">
+                      Edit Info / Delete
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -35,12 +34,12 @@
                     <!--td><input type="checkbox" value="{{$index}}" ng-model="user.isSelected" name="selected_name"> {{user.username}}</td-->
                     <td><strong>{{user.email}}</strong></td>
                     <td>{{user.roles}}</td>
-                    <!--td>{{user.createdAt|toDateString}}</td-->
+                    <td ng-show="isAdmin"><a ui-sref="auth.users.edit_user({id:user.id})" class="btn btn-xs btn-default">Update</a> <button class="btn btn-xs btn-warning" ng-click="delete(user)" ng-hide="user.id == logged_in_user.id">Delete</button></td>
                 </tr>
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="2">
+                    <td colspan="3">
                         <dir-pagination-controls
                             max-size="12"
                             direction-links="true"
