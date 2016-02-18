@@ -123,6 +123,7 @@ dashboardappApp
                 if (entry && $window.confirm('Are you sure you want to delete '+ entry.name + '?') ) {
                     return api.deleteName(entry, function(){
                         $scope.namesList.splice( $scope.namesList.indexOf(entry), 1 )
+                        $scope.namesListItems--
                     }, $scope.status)
                 }
 

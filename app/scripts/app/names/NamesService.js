@@ -5,8 +5,6 @@ dashboardappApp
 
   .service('namesService', ['baseService', 'toastr', '$state', '$localStorage', '$timeout', '_', '$filter', function(api, toastr, $state, $localStorage, $timeout, _, $filter) {
 
-      var _this = this;
-
       /*
 
       var formatName = function(name) {
