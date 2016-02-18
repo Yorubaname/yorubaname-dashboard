@@ -7,11 +7,11 @@
 		
         <div class="header_user_actions dropdown" on-toggle="toggled(open)" dropdown>
             <div class="dropdown-toggle user_dropdown" dropdown-toggle>
-                <avatar width="38" height="38" ng-model="user"></avatar>
+                <avatar width="38" height="38" ng-model="logged_in_user"></avatar>
                 <span class="caret"></span>
             </div>
             <ul class="dropdown-menu dropdown-menu-right">
-                <!--li><a ui-sref="user.profile">{{user.username}}</a></li-->
+                <!--li><a ui-sref="user.profile">{{logged_in_user.username}}</a></li-->
                 <li><a ng-click="logout()">Log Out</a></li>
             </ul>
         </div>
