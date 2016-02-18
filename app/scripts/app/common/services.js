@@ -43,6 +43,21 @@ dashboardappApp
             data: data ? data : ''
         })
     }
+    this.patch = function(endpoint, data) {
+        $http.defaults.headers.put["Content-Type"] = "application/x-www-form-urlencoded";
+        return $http({
+            method: 'PATCH',
+            url: endpoint,
+            data: data ? data : ''
+        })
+    }
+    this.patchJson = function(endpoint, data) {
+        return $http({
+            method: 'PATCH',
+            url: endpoint,
+            data: data ? data : ''
+        })
+    }
     this.delete = function(endpoint, data) {
       $http.defaults.headers.put["Content-Type"] = "application/x-www-form-urlencoded";
       return $http({
