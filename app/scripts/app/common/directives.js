@@ -7,16 +7,12 @@ dashboardappApp
         return {
             link: function (scope, element) {
                 var listener = function (event, toState, toParams, fromState, fromParams) {
-                    var title = 'Yoruba Names Admin';
+                    var title = 'Yoruba Names Admin'
                     if (toState.page_title) {
-                        title = toState.page_title;
+                        title = toState.page_title
                     }
-                    if($rootScope.appVer) {
-                        element.text(title +' ('+$rootScope.appVer+')');
-                    } else {
-                        element.text(title);
-                    }
-                };
+                    element.text(title)
+                }
                 $rootScope.$on('$stateChangeStart', listener);
             }
         }
