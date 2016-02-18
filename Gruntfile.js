@@ -394,6 +394,17 @@ module.exports = function (grunt) {
             baseUrl: 'http://www.yorubaname.com:8081'
           }
         }
+      },
+      prod: {
+        options: {
+          dest: '<%= yeoman.app %>/scripts/app/config.js'
+        },
+        constants: {
+          ENV: {
+            name: 'prod',
+            baseUrl: 'http://52.36.89.23:8081'
+          }
+        }
       }
     }
   });
@@ -432,6 +443,25 @@ module.exports = function (grunt) {
   grunt.registerTask('build', [
     'clean:dist',
     'ngconstant:production',
+    //'wiredep', // TODO investigate as this injects jquery. Should not be needed
+    'useminPrepare',
+    'concurrent:dist',
+    'autoprefixer',
+    'concat',
+    'ngAnnotate',
+    'copy:dist',
+    //'cdnify',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin'
+  ]);
+
+  // Adding a temp build process to ease deployment to new server. //TODO remove as soon as domain is maooed
+  grunt.registerTask('tempbuild', [
+    'clean:dist',
+    'ngconstant:prod',
     //'wiredep', // TODO investigate as this injects jquery. Should not be needed
     'useminPrepare',
     'concurrent:dist',
