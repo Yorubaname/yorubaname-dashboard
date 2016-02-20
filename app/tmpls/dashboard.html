@@ -1,7 +1,9 @@
 <div class="row row_full">
     <div class="col-sm-6">
         <avatar width="80" height="80" ng-model="logged_in_user" size="large"></avatar>
-        <h1 class="user_profile_name">{{logged_in_user.username}} <a class="btn btn-xs btn-primary pull-right" ui-sref="auth.users.edit_user({id:logged_in_user.id})">Edit</a></h1>
+        <h1 class="user_profile_name">{{logged_in_user.username}}
+            <!--<a class="btn btn-xs btn-primary pull-right" ui-sref="auth.users.edit_user({id:logged_in_user.id})">Edit</a>-->
+        </h1>
         <p class="user_profile_info">{{logged_in_user.role}}</p>
         <p class="user_profile_info"> <a ng-href="mailto:{{logged_in_user.email}}">{{logged_in_user.email}}</a></p>
     </div>

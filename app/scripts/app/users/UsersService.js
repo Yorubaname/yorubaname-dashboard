@@ -22,7 +22,6 @@ dashboardappApp
 
     /* updated user information */
     this.updateUser = function(user){
-      console.log(user)
       return api.patchJson("/v1/auth/users/" + user.id, user)
                .success(function(resp) {
                   console.log(resp)
