@@ -2,9 +2,10 @@
 dashboardappApp
 
     .controller('namesAddEntriesCtrl', [
+        '$rootScope',
         '$scope',
         'namesService',
-        function($scope, api) {
+        function($rootScope, $scope, api) {
 
             $scope.new = true
             $scope.name = {}
