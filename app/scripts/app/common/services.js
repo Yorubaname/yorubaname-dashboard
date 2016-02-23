@@ -93,7 +93,7 @@ dashboardappApp
     return function(options) {
 
       var args = { 
-          url: baseUrl + options.url, 
+          url: ENV.baseUrl + options.url,
           headers:{
             Authorization: 'Basic ' + $localStorage.token
           }

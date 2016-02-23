@@ -5,9 +5,6 @@ angular.module('underscore', []).factory('_', function() { return window._ })
 var dashboardappApp = angular.module('dashboardappApp', [ 'config', 'ui.router', 'ngAnimate', 'ui.load', 'ngSanitize', 'ngStorage', 'ngTagsInput', 'ui.bootstrap', 'ncy-angular-breadcrumb', 'ngRetina', 'toastr', 'NgSwitchery', 'textAngular', 'angularFileUpload', 'underscore','angularUtils.directives.dirPagination']);
 
 dashboardappApp
-   
-    //.constant('baseUrl', 'http://www.yorubaname.com:8081')
-    // .constant('baseUrl', /10|localhost/.test(location.hostname) ? 'http://localhost:8081' : 'http://www.yorubaname.com:8081')
 
     /* Config Block */
     .config(
