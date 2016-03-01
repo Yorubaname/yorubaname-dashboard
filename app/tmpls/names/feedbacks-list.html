@@ -1,0 +1,47 @@
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="well well-sm text-center" ng-show="!feedbacks.length">
+            <h3 class="text-muted">There's no feedback on name entries, yet!</h3>
+            <p>List of feedbacks on names would appear here as they are received.</p>
+        </div>
+        <table class="table table-yuk2" ng-show="feedbacks.length">
+            <thead>
+                <tr>
+                    <th ng-hide="isBasic"><select-all-checkbox checkboxes="feedbacks"></select-all-checkbox></th> 
+                    <th>Name <span  ng-click="sort('name')" class="badge badge-default pull-right"><i class="glyphicon sort-icon" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></i></span></th>
+                    <th>Feedback</th>
+                    <th>Date</th>
+                    <th ng-show="isAdmin || isLexicographer">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr dir-paginate="entry in feedbacks|orderBy:sortKey:reverse|filter:search|itemsPerPage:count" total-items="feedbacksItems" current-page="pagination.current" ng-class="entry.isSelected ? 'bg-info' : '' ">
+                    <td ng-hide="isBasic"><input type="checkbox" ng-model="entry.isSelected"></td>
+                    <td><a ui-sref="auth.names.edit_entries({entry:entry.name})"><strong>{{entry.name}}</strong></a></td>
+                    <td>{{entry.feedback}}</td>
+                    <td>{{entry.submittedAt|toDateString}}</td>
+                    <td ng-show="isAdmin || isLexicographer"><a class="btn btn-xs btn-warning" ng-click="delete(entry)">Delete</a></td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr ng-hide="!feedbacks.length || isBasic">
+                    <td colspan="2"><select-all-checkbox checkboxes="feedbacks"></select-all-checkbox>  Select all feedbacks</td>
+                    <td colspan="6">Show <select ng-model="count" ng-options="n for n in [ 10, 20, 50, 100, 250, 500 ]" ng-change="fetch(1, count)"></select> feedbacks</td>
+                </tr>
+                <tr>
+                    <td colspan="8" class="text-center">
+                        <dir-pagination-controls
+                            max-size="12"
+                            direction-links="true"
+                            boundary-links="true" on-page-change="fetch(newPageNumber, count)">
+                        </dir-pagination-controls>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <a ng-click="deleteAll()" ng-hide="!feedbacks.length || !isAdmin" class="btn btn-default btn-sm pull-right">Delete Selected</a>
+    </div>
+    
+</div>

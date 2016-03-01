@@ -58,6 +58,10 @@ dashboardappApp
                             link: "auth.names.list_entries({status:'suggested'})"
                         },
                         {
+                            title: 'Feedbacks',
+                            link: 'auth.names.feedbacks'
+                        },
+                        {
                             title: 'Search',
                             link: 'auth.names.search'
                         }

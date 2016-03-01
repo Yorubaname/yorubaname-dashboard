@@ -289,3 +289,46 @@ dashboardappApp
             }
         }
     ])
+
+    .controller('namesFeedbacksCtrl', [
+        '$scope',
+        'namesService',
+        '$window',
+        'toastr',
+        function($scope, api, $window, toastr){
+
+            $scope.count = 50
+            $scope.feedbacks = []
+            $scope.pagination = {
+              current: 1
+            }
+
+            $scope.sort = function(keyname){
+              $scope.sortKey = keyname;   //set the sortKey to the param passed
+              $scope.reverse = !$scope.reverse; //if true make it false and vice versa
+            }
+
+            $scope.fetch = function(newPageNumber, count){
+                return api.getRecentFeedbacks(function(responseData){
+                    $scope.pagination.current = newPageNumber || 1
+                    $scope.feedbacks = []
+                    responseData.forEach(function(n) {
+                        $scope.feedbacks.push(n)
+                    })
+                })
+            }
+
+            $scope.fetch()
+
+            $scope.delete = function(entry){
+                // delete listed feedback entry
+                if (entry && $window.confirm('Are you sure you want to delete this feedback on '+ entry.name + '?') ) {
+                    return api.deleteFeedback(entry, function(){
+                        $scope.feedbacks.splice( $scope.feedbacks.indexOf(entry), 1 )
+                        // $scope.count--
+                    })
+                }
+
+            }
+        }
+    ])

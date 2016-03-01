@@ -61,5 +61,15 @@ dashboardappApp
                     controller: 'nameSearchCtrl'
                 })
 
+                .state('auth.names.feedbacks', {
+                    page_title: 'Yoruba Names - Admin - Feedbacks',
+                    ncyBreadcrumb: {
+                        label: 'Names Feedbacks'
+                    },
+                    url: '/feedbacks',
+                    templateUrl: 'tmpls/names/feedbacks-list.html',
+                    controller: 'namesFeedbacksCtrl'
+                })
+
         }
     ])
