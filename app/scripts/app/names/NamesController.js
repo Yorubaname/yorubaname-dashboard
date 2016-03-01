@@ -323,7 +323,7 @@ dashboardappApp
             $scope.delete = function(entry){
                 // delete listed feedback entry
                 if (entry && $window.confirm('Are you sure you want to delete this feedback on '+ entry.name + '?') ) {
-                    return api.deleteFeedback(entry, function(){
+                    return api.deleteFeedback(entry.id, function(){
                         $scope.feedbacks.splice( $scope.feedbacks.indexOf(entry), 1 )
                         // $scope.count--
                     })
