@@ -328,7 +328,9 @@ dashboardappApp
                         // $scope.count--
                     })
                 }
-
             }
+
+            // noop function as there's no option for mass feedback delete by ids
+            $scope.deleteAll = function(){}
         }
     ])
