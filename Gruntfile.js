@@ -391,18 +391,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'production',
-            baseUrl: 'http://www.yorubaname.com:8081'
-          }
-        }
-      },
-      prod: {
-        options: {
-          dest: '<%= yeoman.app %>/scripts/app/config.js'
-        },
-        constants: {
-          ENV: {
-            name: 'prod',
-            baseUrl: 'http://52.36.89.23:8081'
+            baseUrl: 'http://www.yorubaname.com'
           }
         }
       }
@@ -458,10 +447,10 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
-  // Adding a temp build process to ease deployment to new server. //TODO remove as soon as domain is maooed
-  grunt.registerTask('tempbuild', [
+  // build for running in local. Env.baseUrl will be set to localhost:8081
+  grunt.registerTask('devbuild', [
     'clean:dist',
-    'ngconstant:prod',
+    'ngconstant:development',
     //'wiredep', // TODO investigate as this injects jquery. Should not be needed
     'useminPrepare',
     'concurrent:dist',
