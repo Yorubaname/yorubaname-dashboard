@@ -16,6 +16,8 @@
   "unused": true,
   "futurehostile": true,
   "globals": {
-    "angular": false
+    "angular": false,
+    "$": false,
+    "FastClick": false
   }
 }
