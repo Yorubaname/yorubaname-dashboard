@@ -1,18 +1,13 @@
+"use strict";
 /* Controllers */
 angular.module("dashboardappApp")
-    .controller('mainCtrl', [
-        '$scope',
-        function ($scope){
-        }
-    ])
-
     .controller('headerCtrl', [
         '$scope',
         'authService',
         function ($scope, api){
             $scope.logout = function (){
-                return api.logout()
-            }
+                return api.logout();
+            };
         }
     ])
     
@@ -68,23 +63,26 @@ angular.module("dashboardappApp")
                 }
             ];
 
-            if ($rootScope.isLexicographer == true || $rootScope.isAdmin == true) $scope.sections.push(
-                {
-                    id: 2,
-                    title: 'Users',
-                    icon: 'fa fa-users first_level_icon',
-                    submenu_title: 'Users',
-                    submenu: [
-                        {
-                            title: 'Add User',
-                            link: 'auth.users.add_user'
-                        },
-                        {
-                            title: 'Users',
-                            link: "auth.users.list_users({role:'all'})"
-                        }
-                    ]
-                });
+            if ($rootScope.isLexicographer === true || $rootScope.isAdmin === true) 
+            {
+                $scope.sections.push(
+                    {
+                        id: 2,
+                        title: 'Users',
+                        icon: 'fa fa-users first_level_icon',
+                        submenu_title: 'Users',
+                        submenu: [
+                            {
+                                title: 'Add User',
+                                link: 'auth.users.add_user'
+                            },
+                            {
+                                title: 'Users',
+                                link: "auth.users.list_users({role:'all'})"
+                            }
+                        ]
+                    });
+            }
 
             // accordion menu
             $(document).off('click', '.side_menu_expanded #main_menu .has_submenu > a').on('click', '.side_menu_expanded #main_menu .has_submenu > a', function () {
@@ -109,18 +107,18 @@ angular.module("dashboardappApp")
                         $submenu_parent.removeClass('submenu_active').children('ul').slideUp('200');
                     }
                 }
-            })
+            });
 
             $rootScope.createScrollbar = function() {
                 $("#main_menu .menu_wrapper").mCustomScrollbar({
                     theme: "minimal-dark",
                     scrollbarPosition: "outside"
-                })
-            }
+                });
+            };
 
             $rootScope.destroyScrollbar = function() {
                 $("#main_menu .menu_wrapper").mCustomScrollbar('destroy');
-            }
+            };
 
             $timeout(function() {
                 if(!$rootScope.sideNavCollapsed && !$rootScope.topMenuAct) {
@@ -130,8 +128,8 @@ angular.module("dashboardappApp")
                         $('#main_menu .has_submenu.section_active').children('ul').show();
                     }
                     // init scrollbar
-                    $rootScope.createScrollbar()
+                    $rootScope.createScrollbar();
                 }
-            })
+            });
         }
-    ])
+    ]);
