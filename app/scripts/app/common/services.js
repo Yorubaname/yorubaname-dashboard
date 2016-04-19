@@ -1,7 +1,7 @@
 
 /* API Endpoint Service for API requests: Adapted from code base */
 
-dashboardappApp
+angular.module("dashboardappApp")
 
   .service('baseService', ['$http', function($http) {
 

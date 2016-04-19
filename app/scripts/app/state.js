@@ -1,6 +1,7 @@
-/* States */
-dashboardappApp
+"use strict";
 
+/* States */
+angular.module("dashboardappApp")
     .config(['$stateProvider', '$urlRouterProvider',
         function ($stateProvider, $urlRouterProvider) {
 
@@ -23,7 +24,7 @@ dashboardappApp
                     page_title: 'Yoruba Names - Admin - Error 404',
                     url: "/404",
                     templateUrl: 'tmpls/error.404.html'
-                })
+                });
 
         }
-    ])
+    ]);

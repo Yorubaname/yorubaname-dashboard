@@ -1,5 +1,5 @@
 /* Controllers */
-dashboardappApp
+angular.module("dashboardappApp")
 
     .controller('dashboardCtrl', [
         '$scope',

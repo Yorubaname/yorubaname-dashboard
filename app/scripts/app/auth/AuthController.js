@@ -1,6 +1,5 @@
 /* Controllers */
-dashboardappApp
-
+angular.module("dashboardappApp")
     .controller('loginCtrl', [
         '$scope',
         'authService',

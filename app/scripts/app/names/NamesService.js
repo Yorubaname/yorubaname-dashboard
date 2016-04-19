@@ -1,9 +1,8 @@
 
 /* Names API Endpoint Service, Extension for API requests for Name Entries resources only. Adapted from code base */
 
-dashboardappApp
-
-  .service('namesService', ['baseService', 'toastr', '$state', '$localStorage', '$timeout', '_', '$filter', function(api, toastr, $state, $localStorage, $timeout, _, $filter) {
+angular.module("dashboardappApp")
+    .service('namesService', ['baseService', 'toastr', '$state', '$localStorage', '$timeout', '_', '$filter', function(api, toastr, $state, $localStorage, $timeout, _, $filter) {
 
       /*
 
@@ -218,6 +217,31 @@ dashboardappApp
         return api.deleteJson('/v1/feedbacks/'+id).success(fn).error(function(){
           return toastr.error('Feedback was not deleted. Please try again.')
         })
-      }
+      };
 
-  }])
+        // TODO turn to a component
+        var isEmptyObj = function(obj) {
+            // null and undefined are "empty"
+            if (obj === null) {
+                return true;
+            }
+            // Assume if it has a length property with a non-zero value
+            // that that property is correct.
+            if (obj.length > 0) {
+                return false;
+            }
+            if (obj.length === 0) {
+                return true;
+            }
+            // Otherwise, does it have any properties of its own?
+            // Note that this doesn't handle
+            // toString and valueOf enumeration bugs in IE < 9
+            for (var key in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+  }]);

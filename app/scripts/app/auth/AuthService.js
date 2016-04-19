@@ -1,8 +1,7 @@
 /* Authentication API Endpoint Service, Extension for API requests for Signing In, Out, and Session validation. Adapted from code base */
 
-dashboardappApp
-
-  .service('authService', ['baseService', 'usersService', '$localStorage', '$state', '$rootScope', '$timeout', 'toastr', 'ENV', function(api, usersApi, $localStorage, $state, $rootScope, $timeout, toastr, ENV){
+angular.module("dashboardappApp")
+    .service('authService', ['baseService', 'usersService', '$localStorage', '$state', '$rootScope', '$timeout', 'toastr', 'ENV', function(api, usersApi, $localStorage, $state, $rootScope, $timeout, toastr, ENV){
 
     this.getUser = function(callback) {
       return api.get("/v1/auth/user").then(function(response) {

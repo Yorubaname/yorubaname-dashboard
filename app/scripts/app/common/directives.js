@@ -1,7 +1,6 @@
 /* Directives */
 
-dashboardappApp
-
+angular.module("dashboardappApp")
     // change page title
     .directive('updateTitle', ['$rootScope', function ($rootScope) {
         return {

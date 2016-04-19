@@ -1,7 +1,6 @@
 /* Directives */
 
-dashboardappApp
-
+angular.module("dashboardappApp")
     // Directive adds user roles the User Form
     .directive('userForm', ['usersService', '$stateParams', '$window', function(api, $stateParams, $window) {
         return {

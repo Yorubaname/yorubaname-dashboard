@@ -1,9 +1,8 @@
 
 /* Users API Endpoint Service */
 
-dashboardappApp
-
-  .service('usersService', ['baseService', '$state', 'toastr', function(api, $state, toastr){
+angular.module("dashboardappApp")
+    .service('usersService', ['baseService', '$state', 'toastr', function(api, $state, toastr){
 
     this.getUser = function(userId){
       return api.get('/v1/auth/users/'+userId)

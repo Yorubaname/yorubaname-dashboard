@@ -1,6 +1,5 @@
 /* States */
-dashboardappApp
-
+angular.module("dashboardappApp")
     .config(['$stateProvider', '$urlRouterProvider',
         function ($stateProvider, $urlRouterProvider) {
 

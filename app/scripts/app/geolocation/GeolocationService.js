@@ -1,4 +1,4 @@
-dashboardappApp
+angular.module("dashboardappApp")
 
   .service('geolocationService', ['$http', function($http) {
     this.load = function(query) {
