@@ -1,7 +1,8 @@
+"use strict";
 /* States */
 angular.module("dashboardappApp")
-    .config(['$stateProvider', '$urlRouterProvider',
-        function ($stateProvider, $urlRouterProvider) {
+    .config(['$stateProvider',
+        function ($stateProvider) {
 
             // State Configurations
             $stateProvider
@@ -40,7 +41,7 @@ angular.module("dashboardappApp")
                     data:{
                       requiresBasicPriviledge:true
                     }
-                })
+                });
 
         }
-    ])
+    ]);
