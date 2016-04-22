@@ -109,7 +109,7 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
         }, $scope.status);
       }
       var entries = $.map($scope.namesList, function (elem) {
-        if (elem.isSelected == true)
+        if (elem.isSelected === true)
           return elem;
       });
       if (!entries.length)
@@ -121,12 +121,12 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
       }, $scope.status);
     };
     $scope.indexName = function (entry) {
-      if (entry.state == 'NEW')
+      if (entry.state === 'NEW')
         return api.addNameToIndex(entry.name).success(function (response) {
           entry.state = 'PUBLISHED';
           entry.indexed = true;
         });
-      else if (entry.state == 'MODIFIED')
+      else if (entry.state === 'MODIFIED')
         return api.removeNameFromIndex(entry.name).success(function () {
           return api.addNameToIndex(entry.name).success(function () {
             entry.state = 'PUBLISHED';
@@ -142,7 +142,7 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
     };
     $scope.republishNames = function () {
       var entries = $.map($scope.namesList, function (elem) {
-        if (elem.isSelected == true)
+        if (elem.isSelected === true)
           return elem;
       });
       if (!entries.length)
@@ -159,11 +159,11 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
     };
     $scope.indexNames = function (action) {
       var entries = $.map($scope.namesList, function (elem) {
-        if (elem.isSelected == true)
+        if (elem.isSelected === true)
           return elem;
       });
       if (entries.length > 0) {
-        !action || action == 'add' ? api.addNamesToIndex(entries).success(function (response) {
+        !action || action === 'add' ? api.addNamesToIndex(entries).success(function (response) {
           $.map(entries, function (entry) {
             entry.indexed = true;
             entry.state = 'PUBLISHED';
@@ -188,7 +188,7 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
       if (entry)
         return acceptSuggestedName(entry);
       var entries = $.map($scope.namesList, function (elem) {
-        if (elem.isSelected == true)
+        if (elem.isSelected === true)
           return elem;
       });
       if (entries.length > 0) {

@@ -14,7 +14,7 @@ angular.module('dashboardappApp').controller('searchCtrl', [
     });
     $scope.exec_search = function () {
       var name = $scope.names.some(function (entry) {
-        if ($scope.search.entry == entry.name) {
+        if ($scope.search.entry === entry.name) {
           return $state.go('auth.names.edit_entries', { entry: $scope.search.entry });
         }
       });

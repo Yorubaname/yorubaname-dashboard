@@ -11,7 +11,7 @@ angular.module('dashboardappApp')  // Directive adds user roles the User Form
       link: function (scope, element, attrs) {
         scope.user = {};
         // Override the user object on the scope in edit user form
-        if ($stateParams.id != undefined) {
+        if ($stateParams.id !== undefined) {
           // This is true for Updating User Info
           scope.user.id = $stateParams.id;
           api.getUser($stateParams.id).success(function (user) {
@@ -19,12 +19,12 @@ angular.module('dashboardappApp')  // Directive adds user roles the User Form
           });
         }
         scope.role_is = function (role) {
-          if (typeof scope.user.roles == 'undefined')
+          if (typeof scope.user.roles === 'undefined')
             return null;
-          if (typeof scope.user.roles == 'object')
+          if (typeof scope.user.roles === 'object')
             return scope.user.roles.indexOf(role) > -1;
-          if (typeof scope.user.roles == 'string')
-            return scope.user.roles == role;
+          if (typeof scope.user.roles === 'string')
+            return scope.user.roles === role;
         };
         // Callback on submit
         scope.submit = function () {

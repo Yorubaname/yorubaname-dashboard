@@ -98,7 +98,7 @@ angular.module('dashboardappApp').service('namesService', [
       * @param nameEntry
       */
     this.deleteName = function (entry, fn, status) {
-      if (status == 'suggested')
+      if (status === 'suggested')
         return api.delete('/v1/suggestions/' + entry.id).success(function (resp) {
           toastr.success(entry.name + ' with id: ' + entry.id + ' has been deleted successfully');
           return fn();
@@ -115,7 +115,7 @@ angular.module('dashboardappApp').service('namesService', [
     };
     this.deleteNames = function (names, fn, status) {
       names = _.pluck(names, 'name');
-      if (status == 'suggested')
+      if (status === 'suggested')
         return api.deleteJson('/v1/suggestions/batch', names).success(function (resp) {
           toastr.success(names.length + ' suggested names have been deleted');
           return fn();
@@ -144,32 +144,32 @@ angular.module('dashboardappApp').service('namesService', [
       filter.page = filter.page || 1;
       filter.count = filter.count || 50;
       filter.orderBy = 'createdAt';
-      if (filter.status == 'suggested')
+      if (filter.status === 'suggested')
         return api.get('/v1/suggestions');
-      else if (filter.status == 'published')
+      else if (filter.status === 'published')
         filter.state = 'PUBLISHED';
-      else if (filter.status == 'unpublished')
+      else if (filter.status === 'unpublished')
         filter.state = 'NEW';
-      else if (filter.status == 'modified')
+      else if (filter.status === 'modified')
         filter.state = 'MODIFIED';
       return api.get('/v1/names', filter);
     };
     this.countNames = function (status, fn) {
       var endpoint = '/v1/names/meta';
-      if (status == 'published')
+      if (status === 'published')
         endpoint = '/v1/search/meta';
-      if (status == 'suggested')
+      if (status === 'suggested')
         endpoint = '/v1/suggestions/meta';
       return api.get(endpoint, { count: true }).success(function (resp) {
-        if (status == 'modified')
+        if (status === 'modified')
           return fn(resp.totalModifiedNames);
-        else if (status == 'published')
+        else if (status === 'published')
           return fn(resp.totalPublishedNames);
-        else if (status == 'unpublished')
+        else if (status === 'unpublished')
           return fn(resp.totalNewNames);
-        else if (status == 'suggested')
+        else if (status === 'suggested')
           return fn(resp.totalSuggestedNames);
-        else if (status == 'all')
+        else if (status === 'all')
           return fn(resp.totalNames);
         else
           return fn(resp);

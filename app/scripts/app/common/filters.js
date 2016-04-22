@@ -17,7 +17,7 @@ angular.module('dashboardappApp')  /**
     var val = '';
     for (var i = inputArray.length - 1; i >= 0; i--) {
       val += inputArray[i].text;
-      if (i != 0) {
+      if (i !== 0) {
         val += delimeter;
       }
     }
@@ -30,7 +30,7 @@ angular.module('dashboardappApp')  /**
   function ($filter) {
     return function (inputArray) {
       // console.log(typeof inputArray)
-      if (typeof inputArray != 'object')
+      if (typeof inputArray !== 'object')
         return;
       var date = $filter('limitTo')(inputArray, 3);
       date = date.join('-');
@@ -51,7 +51,7 @@ angular.module('dashboardappApp')  /**
   '_',
   function ($filter, _) {
     return function (inputArray) {
-      if (typeof inputArray != 'object')
+      if (typeof inputArray !== 'object')
         return;
       return _.pluck(inputArray, 'place').join(', ');
     };

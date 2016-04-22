@@ -114,7 +114,7 @@ angular.module('dashboardappApp').service('baseService', [
         console.info('onWhenAddingFileFailed', item, filter, options);
         if (fileType.indexOf(item.type) < 0)
           return toastr.warning('Invalid File' + invalidFileMsg);
-        if (this.queue.length == maxUpload)
+        if (this.queue.length === maxUpload)
           return toastr.warning('Single upload' + uploadLimitMsg);
       };
       uploader.onAfterAddingFile = function (fileItem) {
