@@ -1,3 +1,5 @@
+'use strict';
+
 /* States */
 angular.module('dashboardappApp').config([
   '$stateProvider',

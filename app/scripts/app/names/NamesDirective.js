@@ -1,3 +1,5 @@
+'use strict';
+
 /* Directives */
 angular.module('dashboardappApp')  // Directive adds the geolocation autocompletes on the tagsInput field of Name Form
 .directive('nameForm', [

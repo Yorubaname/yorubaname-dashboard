@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('dashboardappApp').service('geolocationService', [
   '$http',
   function ($http) {

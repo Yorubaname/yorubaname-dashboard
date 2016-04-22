@@ -1,3 +1,5 @@
+'use strict';
+
 /* Controllers */
 angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
   '$rootScope',

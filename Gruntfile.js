@@ -405,6 +405,7 @@ module.exports = function (grunt) {
     }
 
     grunt.task.run([
+      'jshint',
       'clean:server',
       'ngconstant:development',
       //'wiredep',
@@ -421,6 +422,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('test', [
+    'jshint',
     'clean:server',
     'wiredep',
     'concurrent:test',
@@ -430,6 +432,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('build', [
+    'jshint',
     'clean:dist',
     'ngconstant:production',
     //'wiredep', // TODO investigate as this injects jquery. Should not be needed
@@ -449,6 +452,7 @@ module.exports = function (grunt) {
 
   // build for running in local. Env.baseUrl will be set to localhost:8081
   grunt.registerTask('devbuild', [
+    'jshint',
     'clean:dist',
     'ngconstant:development',
     //'wiredep', // TODO investigate as this injects jquery. Should not be needed

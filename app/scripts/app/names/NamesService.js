@@ -1,3 +1,5 @@
+'use strict';
+
 /* Names API Endpoint Service, Extension for API requests for Name Entries resources only. Adapted from code base */
 angular.module('dashboardappApp').service('namesService', [
   'baseService',
