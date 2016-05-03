@@ -10,7 +10,7 @@ angular.module('dashboardappApp').service('usersService', [
       return api.get('/v1/auth/users/' + userId);
     };
     this.addUser = function (user) {
-      return api.postJson('/v1/auth/create', user).success(function (resp) {
+      return api.postJson('/v1/auth/create', user).success(function () {
         toastr.success('User account with email ' + user.email + ' successfully created.');
       }).error(function (resp) {
         console.log(resp);

@@ -4,7 +4,7 @@
 angular.module('dashboardappApp').config([
   '$stateProvider',
   '$urlRouterProvider',
-  function ($stateProvider, $urlRouterProvider) {
+  function ($stateProvider) {
     // State Configurations
     $stateProvider.state('auth.users', {
       abstract: true,

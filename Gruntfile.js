@@ -35,7 +35,7 @@ module.exports = function (grunt) {
       },
       js: {
         files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['newer:jshint:all'],
+        tasks: ['newer:jshint:check'],
         options: {
           livereload: '<%= connect.options.livereload %>'
         }
@@ -120,7 +120,7 @@ module.exports = function (grunt) {
         jshintrc: '.jshintrc',
         reporter: require('jshint-stylish')
       },
-      all: {
+      check: {
         src: [
           'Gruntfile.js',
           '<%= yeoman.app %>/scripts/**/*.js'
@@ -405,7 +405,7 @@ module.exports = function (grunt) {
     }
 
     grunt.task.run([
-      'jshint',
+      'jshint:check',
       'clean:server',
       'ngconstant:development',
       //'wiredep',

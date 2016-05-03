@@ -3,7 +3,7 @@
 angular.module('dashboardappApp').service('geolocationService', [
   '$http',
   function ($http) {
-    this.load = function (query) {
+    this.load = function () {
       return $http.get('/v1/admin/geolocations');
     };
   }

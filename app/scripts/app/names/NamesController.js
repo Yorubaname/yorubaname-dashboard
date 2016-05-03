@@ -122,7 +122,7 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
     };
     $scope.indexName = function (entry) {
       if (entry.state === 'NEW')
-        return api.addNameToIndex(entry.name).success(function (response) {
+        return api.addNameToIndex(entry.name).success(function () {
           entry.state = 'PUBLISHED';
           entry.indexed = true;
         });
@@ -135,7 +135,7 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
         });
       else
         // assume entry is published and objective is to unpublish it
-        return api.removeNameFromIndex(entry.name).success(function (response) {
+        return api.removeNameFromIndex(entry.name).success(function () {
           entry.indexed = false;
           entry.state = 'NEW';
         });
@@ -147,8 +147,8 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
       });
       if (!entries.length)
         return toastr.warning('No names selected to republish');
-      return api.removeNamesFromIndex(entries).success(function (response) {
-        return api.addNamesToIndex(entries).success(function (response) {
+      return api.removeNamesFromIndex(entries).success(function () {
+        return api.addNamesToIndex(entries).success(function () {
           $.map(entries, function (entry) {
             entry.state = 'PUBLISHED';
             entry.indexed = true;
@@ -163,25 +163,30 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
           return elem;
       });
       if (entries.length > 0) {
-        !action || action === 'add' ? api.addNamesToIndex(entries).success(function (response) {
-          $.map(entries, function (entry) {
-            entry.indexed = true;
-            entry.state = 'PUBLISHED';
+        if (!action || action === 'add') {
+          api.addNamesToIndex(entries).success(function () {
+            $.map(entries, function (entry) {
+              entry.indexed = true;
+              entry.state = 'PUBLISHED';
+            });
+            toastr.success(entries.length + ' names have been published');
+          }).error(function () {
+            toastr.error('Selected names could not be published');
           });
-          toastr.success(entries.length + ' names have been published');
-        }).error(function () {
-          toastr.error('Selected names could not be published');
-        }) : api.removeNamesFromIndex(entries).success(function (response) {
-          $.map(entries, function (entry) {
-            entry.indexed = false;
-            entry.state = 'NEW';
+        } else {
+          api.removeNamesFromIndex(entries).success(function () {
+            $.map(entries, function (entry) {
+              entry.indexed = false;
+              entry.state = 'NEW';
+            });
+            toastr.success(entries.length + ' names unpublished');
+          }).error(function () {
+            return toastr.error('Selected names could not be unpublished');
           });
-          toastr.success(entries.length + ' names unpublished');
-        }).error(function () {
-          toastr.error('Selected names could not be unpublished');
-        });
-      } else
+        }
+      } else {
         toastr.warning('No names selected');
+      }
     };
     // Accept Suggested Name/s
     $scope.accept = function (entry) {
@@ -231,13 +236,13 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
         $scope.namesList.push(name);
       });
     });
-    $scope.$on('onRepeatLast', function (scope, element, attrs) {
+    $scope.$on('onRepeatLast', function () {
       $('#user_list').listnav({
         filterSelector: '.ul_name',
         includeNums: false,
         removeDisabled: true,
         showCounts: false,
-        onClick: function (letter) {
+        onClick: function () {
           $scope.namesListItems = $window.document.getElementsByClassName('listNavShow').length;
           $scope.$apply();
         }
@@ -261,7 +266,7 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
   'namesService',
   '$window',
   'toastr',
-  function ($scope, api, $window, toastr) {
+  function ($scope, api, $window) {
     $scope.count = 50;
     $scope.feedbacks = [];
     $scope.pagination = { current: 1 };
@@ -270,7 +275,7 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
       //set the sortKey to the param passed
       $scope.reverse = !$scope.reverse;  //if true make it false and vice versa
     };
-    $scope.fetch = function (newPageNumber, count) {
+    $scope.fetch = function (newPageNumber) {
       return api.getRecentFeedbacks(function (responseData) {
         $scope.pagination.current = newPageNumber || 1;
         $scope.feedbacks = [];

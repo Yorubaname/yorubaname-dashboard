@@ -8,7 +8,9 @@ angular.module('dashboardappApp').controller('dashboardCtrl', [
     api.countNames('suggested', function (num) {
       $scope.count_suggested_names = num;
       $('.countUpMe .suggested_names').each(function () {
-        var target = this, endVal = $scope.count_suggested_names, theAnimation = new countUp(target, 0, endVal, 0, 2.6, {
+        var target = this, 
+            endVal = $scope.count_suggested_names, 
+            theAnimation = new countUp(target, 0, endVal, 0, 2.6, {
             useEasing: true,
             useGrouping: true,
             separator: ' '

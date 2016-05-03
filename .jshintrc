@@ -13,10 +13,13 @@
   "nonbsp": true,
   "singleGroups": true,
   "unused": true,
+  "newcap": false,
   "futurehostile": true,
   "globals": {
     "angular": false,
     "$": false,
-    "FastClick": false
+    "FastClick": false,
+    "countUp": false,
+    "oFH": false
   }
 }

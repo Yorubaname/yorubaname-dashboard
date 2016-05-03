@@ -6,8 +6,8 @@ angular.module('dashboardappApp')  // Directive adds the geolocation autocomplet
   'geolocationService',
   function (geo) {
     return {
-      link: function (scope, element, attrs) {
-        scope.query = function (q) {
+      link: function (scope) {
+        scope.query = function () {
           return geo.load();
         };
       }
@@ -18,7 +18,7 @@ angular.module('dashboardappApp')  // Directive adds the geolocation autocomplet
   'uploadService',
   function (Uploader) {
     return {
-      controller: function ($scope, $element, $attrs) {
+      controller: function ($scope) {
         $scope.uploader = Uploader({
           url: '/v1/names/upload',
           alias: 'nameFiles',
@@ -38,7 +38,7 @@ angular.module('dashboardappApp')  // Directive adds the geolocation autocomplet
       replace: true,
       restrict: 'E',
       templateUrl: 'tmpls/names/directives/etymology.html',
-      link: function (scope, element, attrs) {
+      link: function (scope) {
         if (!$stateParams.entry) {
           scope.name.etymology = [];
           scope.name.etymology.push({
@@ -60,7 +60,7 @@ angular.module('dashboardappApp')  // Directive adds the geolocation autocomplet
               meaning: ''
             });
         };
-        scope.$watch('name.etymology', function (val) {
+        scope.$watch('name.etymology', function () {
           scope.form.$dirty = true;
         }, true);
       }

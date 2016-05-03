@@ -9,7 +9,7 @@ angular.module('dashboardappApp').service('namesService', [
   '$timeout',
   '_',
   '$filter',
-  function (api, toastr, $state, $localStorage, $timeout, _, $filter) {
+  function (api, toastr, $state, $localStorage, $timeout, _) {
     /*
 
       var formatName = function(name) {
@@ -39,11 +39,11 @@ angular.module('dashboardappApp').service('namesService', [
       // include logged in user's details, only if none exist - applies to accepting suggested names
       if (!name.submittedBy)
         name.submittedBy = $localStorage.username;
-      return api.postJson('/v1/names', name).success(function (resp) {
+      return api.postJson('/v1/names', name).success(function () {
         toastr.success(name.name + ' was successfully added. Add another name');
         fn();
         cacheNames();
-      }).error(function (resp) {
+      }).error(function () {
         toastr.error(name.name + ' could not be added. Please try again.');
       });
     };
@@ -89,7 +89,7 @@ angular.module('dashboardappApp').service('namesService', [
         cacheNames();
         if (fn)
           return fn(resp);
-      }).error(function (resp) {
+      }).error(function () {
         toastr.error(nameEntry.name + ' could not be updated. Please try again.');
       });
     };
@@ -99,34 +99,34 @@ angular.module('dashboardappApp').service('namesService', [
       */
     this.deleteName = function (entry, fn, status) {
       if (status === 'suggested')
-        return api.delete('/v1/suggestions/' + entry.id).success(function (resp) {
+        return api.delete('/v1/suggestions/' + entry.id).success(function () {
           toastr.success(entry.name + ' with id: ' + entry.id + ' has been deleted successfully');
           return fn();
-        }).error(function (resp) {
+        }).error(function () {
           toastr.error(entry.name + ' with id: ' + entry.id + ' could not be deleted. Please try again.');
         });
-      return api.deleteJson('/v1/names/' + entry.name, entry).success(function (resp) {
+      return api.deleteJson('/v1/names/' + entry.name, entry).success(function () {
         toastr.success(entry.name + ' has been deleted successfully');
         cacheNames();
         fn();
-      }).error(function (resp) {
+      }).error(function () {
         toastr.error(entry.name + ' could not be deleted. Please try again.');
       });
     };
     this.deleteNames = function (names, fn, status) {
       names = _.pluck(names, 'name');
       if (status === 'suggested')
-        return api.deleteJson('/v1/suggestions/batch', names).success(function (resp) {
+        return api.deleteJson('/v1/suggestions/batch', names).success(function () {
           toastr.success(names.length + ' suggested names have been deleted');
           return fn();
-        }).error(function (resp) {
+        }).error(function () {
           toastr.error('Could not delete selected names. Please try again.');
         });
-      return api.deleteJson('/v1/names/batch', names).success(function (resp) {
+      return api.deleteJson('/v1/names/batch', names).success(function () {
         toastr.success(names.length + ' names have been deleted successfully');
         cacheNames();
         return fn();
-      }).error(function (resp) {
+      }).error(function () {
         toastr.error('Could not delete selected names. Please try again.');
       });
     };

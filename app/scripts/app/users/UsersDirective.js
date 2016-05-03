@@ -8,7 +8,7 @@ angular.module('dashboardappApp')  // Directive adds user roles the User Form
   '$window',
   function (api, $stateParams, $window) {
     return {
-      link: function (scope, element, attrs) {
+      link: function (scope) {
         scope.user = {};
         // Override the user object on the scope in edit user form
         if ($stateParams.id !== undefined) {

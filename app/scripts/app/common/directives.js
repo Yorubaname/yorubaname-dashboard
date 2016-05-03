@@ -6,7 +6,7 @@ angular.module('dashboardappApp')  // change page title
   function ($rootScope) {
     return {
       link: function (scope, element) {
-        var listener = function (event, toState, toParams, fromState, fromParams) {
+        var listener = function (event, toState) {
           var title = 'Yoruba Names Admin';
           if (toState.page_title) {
             title = toState.page_title;
@@ -27,12 +27,12 @@ angular.module('dashboardappApp')  // change page title
     return {
       restrict: 'E',
       template: '<span class="menu_toggle" ng-click="toggleSidebar()"><span class="icon_menu_toggle" ><i class="arrow_carrot-2left" ng-class="sideNavCollapsed ? \'hide\' : \'\'"></i><i class="arrow_carrot-2right" ng-class="sideNavCollapsed ? \'\' : \'hide\'"></i></span></span>',
-      link: function (scope, el, attrs) {
+      link: function (scope) {
         var mobileView = 992;
         $rootScope.getWidth = function () {
           return window.innerWidth;
         };
-        $rootScope.$watch($rootScope.getWidth, function (newValue, oldValue) {
+        $rootScope.$watch($rootScope.getWidth, function (newValue) {
           if (newValue >= mobileView) {
             if (angular.isDefined($localStorage.sideNavCollapsed)) {
               if ($localStorage.sideNavCollapsed === false) {
@@ -81,7 +81,7 @@ angular.module('dashboardappApp')  // change page title
           'h': element.height()
         };
       };
-      scope.$watch(scope.getElDimensions, function (newValue, oldValue) {
+      scope.$watch(scope.getElDimensions, function () {
         if (typeof oFH !== 'undefined') {
           oFH._fnUpdateClones(true);
           oFH._fnUpdatePositions();
@@ -122,7 +122,7 @@ angular.module('dashboardappApp')  // change page title
 .directive('addImageProp', function () {
   return {
     restrict: 'A',
-    link: function (scope, elem, attr) {
+    link: function (scope, elem) {
       elem.on('load', function () {
         var w = !scope.isHighDensity() ? $(this).width() : $(this).width() / 2, h = !scope.isHighDensity() ? $(this).height() : $(this).height() / 2;
         $(this).attr('width', w).attr('height', h);
@@ -153,18 +153,18 @@ angular.module('dashboardappApp')  // change page title
     controller: function ($scope, $element) {
       $scope.masterChange = function () {
         if ($scope.master) {
-          angular.forEach($scope.checkboxes, function (cb, index) {
+          angular.forEach($scope.checkboxes, function (cb) {
             cb.isSelected = true;
           });
         } else {
-          angular.forEach($scope.checkboxes, function (cb, index) {
+          angular.forEach($scope.checkboxes, function (cb) {
             cb.isSelected = false;
           });
         }
       };
       $scope.$watch('checkboxes', function () {
         var allSet = true, allClear = true;
-        angular.forEach($scope.checkboxes, function (cb, index) {
+        angular.forEach($scope.checkboxes, function (cb) {
           if (cb.isSelected) {
             allClear = false;
           } else {
@@ -193,7 +193,7 @@ angular.module('dashboardappApp')  // change page title
   return {
     replace: true,
     restrict: 'EA',
-    link: function (scope, element, attributes) {
+    link: function (scope, element) {
       element.keyboard({
         layout: 'custom',
         customLayout: {
