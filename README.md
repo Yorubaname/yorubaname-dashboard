@@ -37,6 +37,7 @@ This mode involves running the application from the result of building the sourc
 Run the application in this mode to confirm that changes made does not break the build and the application still works as expected after the build process.
 
 Follow the following steps to run the application from its built source
+
 1. run `grunt devbuild` this would build the application and make it available in `./dist` folder
 2. access the files in the `./dist` folder via an http server. An example of http server that can
 be used is https://www.npmjs.com/package/http-server
