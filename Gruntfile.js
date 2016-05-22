@@ -10,6 +10,7 @@
 module.exports = function (grunt) {
 
   // Load grunt tasks automatically
+  // Instead of having to do grunt.loadNpmTasks for each plugin manually
   require('load-grunt-tasks')(grunt);
 
   // Time how long tasks take. Can help when optimizing build times
@@ -128,7 +129,7 @@ module.exports = function (grunt) {
       },
       test: {
         options: {
-          jshintrc: 'test/.jshintrc'
+          jshintrc: '.jshintrc'
         },
         src: ['test/spec/{,*/}*.js']
       }
@@ -359,7 +360,7 @@ module.exports = function (grunt) {
     // Test settings
     karma: {
       unit: {
-        configFile: 'test/karma.conf.js',
+        configFile: 'karma.conf.js',
         singleRun: true
       }
     },

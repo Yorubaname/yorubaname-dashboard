@@ -20,6 +20,13 @@
     "$": false,
     "FastClick": false,
     "countUp": false,
-    "oFH": false
+    /** for testing **/
+    "oFH": false,
+    "describe": false,
+    "beforeEach": false,
+    "inject": false,
+    "it": false,
+    "expect": false,
+    "spyOn": false
   }
 }

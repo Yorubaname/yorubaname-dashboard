@@ -3,9 +3,9 @@
 angular.module('dashboardappApp').controller('headerCtrl', [
   '$scope',
   'authService',
-  function ($scope, api) {
+  function ($scope, authService) {
     $scope.logout = function () {
-      return api.logout();
+      return authService.logout();
     };
   }
 ]).controller('sideMenuCtrl', [
