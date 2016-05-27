@@ -1,12 +1,15 @@
 'use strict';
 /* Controllers */
-angular.module('dashboardappApp').controller('loginCtrl', [
+angular.module('AuthModule').controller('AuthController', [
   '$scope',
-  'authService',
-  function ($scope, api) {
+  'AuthService',
+  function ($scope, authService) {
     $scope.login = {};
     $scope.submit = function () {
-      return api.authenticate($scope.login, $scope);
+      return authService.authenticate($scope.login);
+    };
+    $scope.logout = function () {
+      return authService.logout();
     };
   }
 ]);

@@ -1,6 +1,6 @@
 'use strict';
 /* Directives */
-angular.module('dashboardappApp')  // change page title
+angular.module('CommonModule')  // change page title
 .directive('updateTitle', [
   '$rootScope',
   function ($rootScope) {

@@ -1,9 +1,8 @@
 'use strict';
 
 /* States */
-angular.module('dashboardappApp').config([
+angular.module('UsersModule').config([
   '$stateProvider',
-  '$urlRouterProvider',
   function ($stateProvider) {
     // State Configurations
     $stateProvider.state('auth.users', {

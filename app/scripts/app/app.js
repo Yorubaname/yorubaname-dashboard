@@ -18,7 +18,9 @@ angular.module('dashboardappApp', [
   'textAngular',
   'angularFileUpload',
   'underscore',
-  'angularUtils.directives.dirPagination'
+  'angularUtils.directives.dirPagination',
+   // application modules
+   'AuthModule'
 ])  /* Config Block */.config([
   '$provide',
   '$httpProvider',

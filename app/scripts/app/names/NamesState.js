@@ -3,7 +3,6 @@
 /* States */
 angular.module('dashboardappApp').config([
   '$stateProvider',
-  '$urlRouterProvider',
   function ($stateProvider) {
     // State Configurations
     $stateProvider  // Names (parent state)

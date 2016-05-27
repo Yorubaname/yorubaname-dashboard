@@ -1,7 +1,7 @@
 'use strict';
 
 /* Controllers */
-angular.module('dashboardappApp').controller('userListCtrl', [
+angular.module('UsersModule').controller('userListCtrl', [
   '$scope',
   'usersService',
   '$window',

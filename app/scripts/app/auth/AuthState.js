@@ -1,6 +1,6 @@
 'use strict';
 /* States */
-angular.module('dashboardappApp').config([
+angular.module('AuthModule').config([
   '$stateProvider',
   function ($stateProvider) {
     // State Configurations
@@ -9,7 +9,7 @@ angular.module('dashboardappApp').config([
       page_title: 'Yoruba Names - Admin - Login',
       url: '/login',
       templateUrl: 'tmpls/login.html',
-      controller: 'loginCtrl',
+      controller: 'AuthController',
       data: { requiresLogout: true }
     })  // Authenticated
 .state('auth', {

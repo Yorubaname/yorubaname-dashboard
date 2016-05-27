@@ -4,8 +4,10 @@ module.exports = function (config) {
         frameworks: ['jasmine'],
         basePath: '',
         browsers: ['PhantomJS'],
+        //browsers: ['Chrome'],
         logLevel: config.LOG_DEBUG,
         plugins: ['karma-jasmine', 'karma-phantomjs-launcher'],
+        //plugins: ['karma-jasmine', 'karma-chrome-launcher'],
         ngHtml2JsPreprocessor: {
             // strip app from the file path
             stripPrefix: 'app'
@@ -71,8 +73,10 @@ module.exports = function (config) {
             'bower_components/switchery/dist/switchery.css',
             'bower_components/ng-tags-input/ng-tags-input.min.css',
             'bower_components/keyboard/dist/css/keyboard.min.css',
+            'app/scripts/app/*.js',
+            'app/scripts/app/**/*Module.js',
             'app/scripts/app/**/*.js',
-            'app/styles/**/*.js',
+            'app/styles/**/*.css',
             'app/tmpls/**/*.html',
             'test/**/*.js'
         ]

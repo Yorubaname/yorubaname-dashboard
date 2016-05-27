@@ -1,14 +1,6 @@
 'use strict';
-/* Controllers */
-angular.module('dashboardappApp').controller('headerCtrl', [
-  '$scope',
-  'authService',
-  function ($scope, authService) {
-    $scope.logout = function () {
-      return authService.logout();
-    };
-  }
-]).controller('sideMenuCtrl', [
+
+angular.module('CommonModule').controller('SideMenuController', [
   '$rootScope',
   '$scope',
   '$state',

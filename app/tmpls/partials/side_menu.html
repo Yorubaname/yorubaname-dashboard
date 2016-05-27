@@ -1,5 +1,5 @@
 <!-- main menu -->
-<nav id="main_menu" ng-controller="sideMenuCtrl">
+<nav id="main_menu" ng-controller="SideMenuController">
     <div class="menu_wrapper">
         <ul>
             <li ng-repeat="section in sections" ng-switch="section.link.length > 0" class="first_level" ng-class="{'has_submenu': section.submenu.length > 0}">

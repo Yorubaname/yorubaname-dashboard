@@ -1,7 +1,7 @@
 'use strict';
 
 /* Users API Endpoint Service */
-angular.module('dashboardappApp').service('usersService', [
+angular.module('UsersModule').service('usersService', [
   'baseService',
   '$state',
   'toastr',

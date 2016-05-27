@@ -1,7 +1,7 @@
 'use strict';
 
 /* Directives */
-angular.module('dashboardappApp')  // Directive adds user roles the User Form
+angular.module('UsersModule')  // Directive adds user roles the User Form
 .directive('userForm', [
   'usersService',
   '$stateParams',

@@ -1,7 +1,7 @@
 'use strict';
 
 /* API Endpoint Service for API requests: Adapted from code base */
-angular.module('dashboardappApp').service('baseService', [
+angular.module('CommonModule').service('baseService', [
     '$http',
     function ($http) {
         this.get = function (endpoint, data, headers) {

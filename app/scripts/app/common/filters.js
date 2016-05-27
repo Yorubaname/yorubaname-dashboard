@@ -1,5 +1,5 @@
 'use strict';
-angular.module('dashboardappApp')  /**
+angular.module('CommonModule')  /**
  * Filter to parse delimated string to arrays
  */.filter('sToArray', function () {
   return function (text, delimeter) {

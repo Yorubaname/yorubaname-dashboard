@@ -1,6 +1,6 @@
 'use strict';
 /* Authentication API Endpoint Service, Extension for API requests for Signing In, Out, and Session validation. Adapted from code base */
-angular.module('dashboardappApp').service('authService', [
+angular.module('AuthModule').service('AuthService', [
   'baseService',
   'usersService',
   '$localStorage',
