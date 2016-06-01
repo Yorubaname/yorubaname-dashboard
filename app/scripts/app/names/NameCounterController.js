@@ -1,9 +1,9 @@
 'use strict';
 
 /* Controllers */
-angular.module('dashboardappApp').controller('dashboardCtrl', [
+angular.module('NamesModule').controller('NameCounterController', [
   '$scope',
-  'namesService',
+  'NamesService',
   function ($scope, api) {
     api.countNames('suggested', function (num) {
       $scope.count_suggested_names = num;

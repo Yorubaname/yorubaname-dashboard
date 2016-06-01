@@ -26,7 +26,7 @@ angular.module('AuthModule').config([
       url: '/',
       templateUrl: 'tmpls/dashboard.html',
       ncyBreadcrumb: { label: 'Home' },
-      controller: 'dashboardCtrl',
+      controller: 'NameCounterController',
       data: { requiresBasicPriviledge: true }
     });
   }

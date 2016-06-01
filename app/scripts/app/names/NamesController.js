@@ -1,15 +1,15 @@
 'use strict';
 
 /* Controllers */
-angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
+angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
   '$rootScope',
   '$scope',
-  'namesService',
-  function ($rootScope, $scope, api) {
+  'NamesService',
+  function ($rootScope, $scope, namesService) {
     $scope.new = true;
     $scope.name = {};
     $scope.submit = function () {
-      return api.addName($scope.name, function () {
+      return namesService.addName($scope.name, function () {
         // reset the form models fields
         $scope.name = {};
       });
@@ -19,16 +19,16 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
   '$scope',
   '$stateParams',
   '$state',
-  'namesService',
+  'NamesService',
   'toastr',
   '$window',
-  function ($scope, $stateParams, $state, api, toastr, $window) {
+  function ($scope, $stateParams, $state, namesService, toastr, $window) {
     var originalName = null;
-    api.prevAndNextNames($stateParams.entry, function (prev, next) {
+    namesService.prevAndNextNames($stateParams.entry, function (prev, next) {
       $scope.prev = prev;
       $scope.next = next;
     });
-    api.getName($stateParams.entry, false, function (resp) {
+    namesService.getName($stateParams.entry, false, function (resp) {
       $scope.name = resp;
       originalName = resp.name;
       // hack for names without etymology
@@ -41,11 +41,11 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
     });
     $scope.publish = function () {
       // update name first, then publish
-      return api.updateName(originalName, $scope.name, function () {
+      return namesService.updateName(originalName, $scope.name, function () {
         // first remove name from index
-        api.removeNameFromIndex($scope.name.name);
+        namesService.removeNameFromIndex($scope.name.name);
         // then add name back to index
-        return api.addNameToIndex($scope.name.name).success(function () {
+        return namesService.addNameToIndex($scope.name.name).success(function () {
           $scope.name.state = 'PUBLISHED';
           $scope.name.indexed = true;
           toastr.info($scope.name.name + ' has been published');
@@ -54,15 +54,15 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
       });
     };
     $scope.goto = function (entry) {
-      api.updateName(originalName, $scope.name);
+      namesService.updateName(originalName, $scope.name);
       return $state.go('auth.names.edit_entries', { entry: entry });
     };
     $scope.submit = function () {
-      return api.updateName(originalName, $scope.name);
+      return namesService.updateName(originalName, $scope.name);
     };
     $scope.delete = function () {
       if ($window.confirm('Are you sure you want to delete ' + $scope.name.name + '?')) {
-        return api.deleteName($scope.name, function () {
+        return namesService.deleteName($scope.name, function () {
           return $window.history.back();
         });
       }
@@ -70,11 +70,11 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
   }
 ]).controller('namesListEntriesCtrl', [
   '$scope',
-  'namesService',
+  'NamesService',
   '$stateParams',
   '$window',
   'toastr',
-  function ($scope, api, $stateParams, $window, toastr) {
+  function ($scope, namesService, $stateParams, $window, toastr) {
     $scope.namesList = [];
     $scope.status = $stateParams.status;
     $scope.count = 50;
@@ -84,11 +84,11 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
       //set the sortKey to the param passed
       $scope.reverse = !$scope.reverse;  //if true make it false and vice versa
     };
-    api.countNames($stateParams.status, function (num) {
+    namesService.countNames($stateParams.status, function (num) {
       $scope.namesListItems = num;
     });
     $scope.fetch = function (newPageNumber, count) {
-      return api.getNames({
+      return namesService.getNames({
         status: $stateParams.status,
         page: newPageNumber || 1,
         count: count || $scope.itemsPerPage || $scope.count || 50
@@ -103,7 +103,7 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
     $scope.fetch();
     $scope.delete = function (entry) {
       if (entry && $window.confirm('Are you sure you want to delete ' + entry.name + '?')) {
-        return api.deleteName(entry, function () {
+        return namesService.deleteName(entry, function () {
           $scope.namesList.splice($scope.namesList.indexOf(entry), 1);
           $scope.namesListItems--;
         }, $scope.status);
@@ -116,26 +116,26 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
         return toastr.warning('Select names to delete');
       if (!$window.confirm('Are you sure you want to delete the selected names?'))
         return;
-      return api.deleteNames(entries, function () {
+      return namesService.deleteNames(entries, function () {
         $scope.fetch($scope.pagination.current, $scope.itemsPerPage);
       }, $scope.status);
     };
     $scope.indexName = function (entry) {
       if (entry.state === 'NEW')
-        return api.addNameToIndex(entry.name).success(function () {
+        return namesService.addNameToIndex(entry.name).success(function () {
           entry.state = 'PUBLISHED';
           entry.indexed = true;
         });
       else if (entry.state === 'MODIFIED')
-        return api.removeNameFromIndex(entry.name).success(function () {
-          return api.addNameToIndex(entry.name).success(function () {
+        return namesService.removeNameFromIndex(entry.name).success(function () {
+          return namesService.addNameToIndex(entry.name).success(function () {
             entry.state = 'PUBLISHED';
             entry.indexed = true;
           });
         });
       else
         // assume entry is published and objective is to unpublish it
-        return api.removeNameFromIndex(entry.name).success(function () {
+        return namesService.removeNameFromIndex(entry.name).success(function () {
           entry.indexed = false;
           entry.state = 'NEW';
         });
@@ -147,8 +147,8 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
       });
       if (!entries.length)
         return toastr.warning('No names selected to republish');
-      return api.removeNamesFromIndex(entries).success(function () {
-        return api.addNamesToIndex(entries).success(function () {
+      return namesService.removeNamesFromIndex(entries).success(function () {
+        return namesService.addNamesToIndex(entries).success(function () {
           $.map(entries, function (entry) {
             entry.state = 'PUBLISHED';
             entry.indexed = true;
@@ -164,7 +164,7 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
       });
       if (entries.length > 0) {
         if (!action || action === 'add') {
-          api.addNamesToIndex(entries).success(function () {
+          namesService.addNamesToIndex(entries).success(function () {
             $.map(entries, function (entry) {
               entry.indexed = true;
               entry.state = 'PUBLISHED';
@@ -174,7 +174,7 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
             toastr.error('Selected names could not be published');
           });
         } else {
-          api.removeNamesFromIndex(entries).success(function () {
+          namesService.removeNamesFromIndex(entries).success(function () {
             $.map(entries, function (entry) {
               entry.indexed = false;
               entry.state = 'NEW';
@@ -214,9 +214,9 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
         submittedBy: entry.email
       };
       if (!$.isEmptyObject(name)) {
-        return api.addName(name, function () {
+        return namesService.addName(name, function () {
           // Name added then delete from the suggested name store
-          return api.deleteName(entry, function () {
+          return namesService.deleteName(entry, function () {
             $scope.namesList.splice($scope.namesList.indexOf(entry), 1);
           }, 'suggested');
         });
@@ -225,11 +225,11 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
   }
 ]).controller('namesByUserListCtrl', [
   '$scope',
-  'namesService',
+  'NamesService',
   '$window',
-  function ($scope, api, $window) {
+  function ($scope, namesService, $window) {
     $scope.namesList = [];
-    api.getNames({ submittedBy: $scope.user.email }).success(function (responseData) {
+    namesService.getNames({ submittedBy: $scope.user.email }).success(function (responseData) {
       $scope.namesListItems = responseData.length;
       $scope.namesList = [];
       responseData.forEach(function (name) {
@@ -257,16 +257,16 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
   function ($controller, $scope, $stateParams, $localStorage) {
     if ($stateParams.entry) {
       $scope.search = { entry: $stateParams.entry };
-      $controller('searchCtrl', { $scope: $scope });
+      $controller('SearchController', { $scope: $scope });
       $scope.results = $localStorage.searchResults;
     }
   }
 ]).controller('namesFeedbacksCtrl', [
   '$scope',
-  'namesService',
+  'NamesService',
   '$window',
   'toastr',
-  function ($scope, api, $window) {
+  function ($scope, namesService, $window) {
     $scope.count = 50;
     $scope.feedbacks = [];
     $scope.pagination = { current: 1 };
@@ -276,7 +276,7 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
       $scope.reverse = !$scope.reverse;  //if true make it false and vice versa
     };
     $scope.fetch = function (newPageNumber) {
-      return api.getRecentFeedbacks(function (responseData) {
+      return namesService.getRecentFeedbacks(function (responseData) {
         $scope.pagination.current = newPageNumber || 1;
         $scope.feedbacks = [];
         responseData.forEach(function (n) {
@@ -288,7 +288,7 @@ angular.module('dashboardappApp').controller('namesAddEntriesCtrl', [
     $scope.delete = function (entry) {
       // delete listed feedback entry
       if (entry && $window.confirm('Are you sure you want to delete this feedback on ' + entry.name + '?')) {
-        return api.deleteFeedback(entry.id, function () {
+        return namesService.deleteFeedback(entry.id, function () {
           $scope.feedbacks.splice($scope.feedbacks.indexOf(entry), 1)  // $scope.count--
 ;
         });

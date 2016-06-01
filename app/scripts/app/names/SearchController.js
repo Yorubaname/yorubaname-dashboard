@@ -1,10 +1,10 @@
 'use strict';
 
 /* Controllers */
-angular.module('dashboardappApp').controller('searchCtrl', [
+angular.module('NamesModule').controller('SearchController', [
   '$scope',
   '$state',
-  'namesService',
+  'NamesService',
   'toastr',
   '$localStorage',
   function ($scope, $state, api, toastr, $localStorage) {

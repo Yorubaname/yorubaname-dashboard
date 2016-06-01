@@ -1,7 +1,7 @@
 'use strict';
 
 /* Directives */
-angular.module('dashboardappApp')  // Directive adds the geolocation autocompletes on the tagsInput field of Name Form
+angular.module('NamesModule')  // Directive adds the geolocation autocompletes on the tagsInput field of Name Form
 .directive('nameForm', [
   'geolocationService',
   function (geo) {
@@ -67,7 +67,7 @@ angular.module('dashboardappApp')  // Directive adds the geolocation autocomplet
     };
   }
 ]).directive('feedback', [
-  'namesService',
+  'NamesService',
   '$modal',
   '$stateParams',
   '$rootScope',

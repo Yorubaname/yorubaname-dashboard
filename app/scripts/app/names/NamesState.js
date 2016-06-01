@@ -1,7 +1,7 @@
 'use strict';
 
 /* States */
-angular.module('dashboardappApp').config([
+angular.module('NamesModule').config([
   '$stateProvider',
   function ($stateProvider) {
     // State Configurations
@@ -18,7 +18,7 @@ angular.module('dashboardappApp').config([
       ncyBreadcrumb: { label: 'Add Name Entries' },
       url: '/new',
       templateUrl: 'tmpls/names/new.html',
-      controller: 'namesAddEntriesCtrl'
+      controller: 'NamesAddEntriesCtrl'
     })  // edit Name Entry
 .state('auth.names.edit_entries', {
       page_title: 'Yoruba Names - Admin - Edit Entry',

@@ -1,36 +1,14 @@
 'use strict';
 
 /* Names API Endpoint Service, Extension for API requests for Name Entries resources only. Adapted from code base */
-angular.module('dashboardappApp').service('namesService', [
+angular.module('NamesModule').service('NamesService', [
   'baseService',
   'toastr',
   '$state',
   '$localStorage',
   '$timeout',
   '_',
-  '$filter',
   function (api, toastr, $state, $localStorage, $timeout, _) {
-    /*
-
-      var formatName = function(name) {
-        name.geoLocation = JSON.parse( name.geoLocation || '{}' )
-        name.pronunciation = $filter('aToString')(name.pronunciation,'-')
-        name.syllables = $filter('aToString')(name.syllables,'-')
-        name.morphology = $filter('aToString')(name.morphology,'-')
-        name.ipaNotation = $filter('aToString')(name.ipaNotation,'-')
-        return name
-      }
-
-      var deformatName = function(name) {
-        name.geoLocation = JSON.stringify( name.geoLocation )
-        name.pronunciation = $filter('sToArray')(name.pronunciation,'-')
-        name.syllables = $filter('sToArray')(name.syllables,'-')
-        name.morphology = $filter('sToArray')(name.morphology,'-')
-        name.ipaNotation = $filter('sToArray')(name.ipaNotation,'-')
-        return name
-      }
-
-      */
     /**
       * Adds a name to the database;
       * @param nameEntry
