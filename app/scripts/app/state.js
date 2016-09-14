@@ -23,7 +23,7 @@ angular.module('dashboardappApp').config([
         page_title: 'Yoruba Names - Admin - Error 404',
         url: '/404',
         templateUrl: 'tmpls/error.404.html'
-      })
+      });
   }
 
-])
+]);

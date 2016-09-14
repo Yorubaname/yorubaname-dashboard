@@ -61,7 +61,7 @@ angular.module('NamesModule').config([
         url: '/feedbacks',
         templateUrl: 'tmpls/names/feedbacks-list.html',
         controller: 'namesFeedbacksCtrl'
-      })
+      });
 
   }
-])
+]);

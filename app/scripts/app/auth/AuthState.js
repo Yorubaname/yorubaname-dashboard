@@ -37,6 +37,6 @@ angular.module('AuthModule').config([
         data: {
           requiresBasicPriviledge: true
         }
-      })
+      });
   }
-])
+]);

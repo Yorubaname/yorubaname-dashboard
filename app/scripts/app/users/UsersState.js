@@ -37,6 +37,6 @@ angular.module('UsersModule').config([
         url: '/lists/:role',
         templateUrl: 'tmpls/users/lists.html',
         controller: 'userListCtrl'
-      })
+      });
   }
-])
+]);
