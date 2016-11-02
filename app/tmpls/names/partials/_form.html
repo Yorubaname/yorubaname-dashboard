@@ -15,10 +15,9 @@
             <textarea id="meaning" cols="10" rows="3" class="form-control" ng-model="name.meaning" required></textarea>
         </div>
         <div class="form-group">
-            <label for="syllables" class="required">Syllable breakdown</label>
+            <label for="syllables">Syllable breakdown</label>
             <span class="help-block">Enter syllable breakdown by separating each syllable with an hyphen, e.g <em>o-lú-ní-yì</em></span>
             <input type="text" id="syllables" class="form-control" ng-model="name.syllables">
-            <!--tags-input ng-model="name.syllables" id="syllables" add-on-space="true" min-length="1" required></tags-input-->
         </div>
         <div class="form-group">
             <label for="geolocation" class="required">Geolocation</label>
@@ -27,6 +26,7 @@
                <auto-complete source="query($query)" display-property="place" load-on-focus="true" max-results-to-show="20"></auto-complete>
             </tags-input>
         </div>
+
         <div class="form-group">
             <label for="extra_info">Extra information about this name</label>
             <textarea id="extra_info" cols="10" rows="3" class="form-control" ng-model="name.extendedMeaning"></textarea>
