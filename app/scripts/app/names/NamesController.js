@@ -127,11 +127,9 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
           entry.indexed = true;
         });
       else if (entry.state === 'MODIFIED')
-        return namesService.removeNameFromIndex(entry.name).success(function () {
-          return namesService.addNameToIndex(entry.name).success(function () {
-            entry.state = 'PUBLISHED';
-            entry.indexed = true;
-          });
+        return namesService.addNameToIndex(entry.name).success(function () {
+          entry.state = 'PUBLISHED';
+          entry.indexed = true;
         });
       else
         // assume entry is published and objective is to unpublish it
