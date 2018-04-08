@@ -7,7 +7,12 @@
        <a ng-hide="!next" class="btn btn-sm btn-info pull-right" ng-click="goto(next.name)">Next: <b>{{next.name|capitalize}}</b> &gt; </a>
     </div>
     <div class="col-xs-12" style="margin-top:20px;">
-       <div class="heading_a"><span class="heading_text">Update Name Entry: {{name.name}}</span> <feedback name="{{ name.name }}"></feedback> </div>
+       <div class="heading_a">
+           <span class="heading_text">Update Name Entry: {{name.name}}</span>
+           <em>Created: {{name.createdAt|toDateString}}</em>
+           <span>|</span>
+           <em>Last modified: {{name.updatedAt|toDateString}}</em>
+           <feedback name="{{ name.name }}"></feedback> </div>
     </div>
 </div>
 
