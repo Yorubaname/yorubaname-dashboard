@@ -39,6 +39,29 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
         });
       }
     });
+    
+    $scope.generate_glossary = function () {
+      // split the morphology with the dashes if it's not empty
+      if ($scope.name.morphology) {
+        let etymology = $scope.name.etymology;
+        const splitMorphology = $scope.name.morphology.split('-');
+        // add each entry to etymology list if it does not exist already
+        for (var i = 0; i < splitMorphology.length; i++) {
+          const newPart = splitMorphology[i];
+          const oldPart = etymology[i];
+          if (!oldPart) {
+            etymology.push({
+              part: newPart,
+              meaning: ''
+            });
+          } else {            
+            oldPart.part = newPart;  
+          }
+        }
+        $scope.name.etymology = etymology.slice(0, splitMorphology.length);
+      }
+    };
+
     $scope.publish = function () {
       // update name first, then publish
       return namesService.updateName(originalName, $scope.name, function () {
