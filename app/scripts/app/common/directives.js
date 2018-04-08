@@ -136,9 +136,9 @@ angular.module('CommonModule')  // change page title
       restrict: 'E',
       template: '<div class="user_avatar"></div>',
       link: function (scope, element, attrs) {
-        var user = attrs.ngModel ? scope.$eval(attrs.ngModel) : $localStorage.user, name = user.username || user.email, letter = name.substr(0, 1).toUpperCase(), 
-            div = attrs.size === 'large' ? $('<div style="width:80px; height:80px; color:#333; background:#c0c0c0; line-height:2; font-size:40px; display:inline-block; float:left; text-align:center; margin-right:15px;">' + letter + '</div>') : $('<div style="width:38px; height:auto; color:#fff; font-size:28px; float:left; display:inline-block; text-align:center;">' + letter + '</div>');
-        element.html(div);
+       var letter = $localStorage.username.substr(0, 1).toUpperCase();
+       var div  = attrs.size === 'large' ? $('<div style="width:80px; height:80px; color:#333; background:#c0c0c0; line-height:2; font-size:40px; display:inline-block; float:left; text-align:center; margin-right:15px;">' + letter + '</div>') : $('<div style="width:38px; height:auto; color:#fff; font-size:28px; float:left; display:inline-block; text-align:center;">' + letter + '</div>');
+       element.html(div);
       }
     };
   }
