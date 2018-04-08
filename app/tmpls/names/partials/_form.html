@@ -51,7 +51,7 @@
         <div class="form-group">
             <label for="morphology">Morphology</label>
             <span class="help-block">Enter morphology by using hyphen to separate each part, e.g. <em>olú-ní-iyì</em></span>
-            <input type="text" id="morphology" class="form-control" ng-model="name.morphology">
+            <input type="text" id="morphology" class="form-control" ng-model="name.morphology" ng-blur="generate_glossary()">
             <!--tags-input ng-model="name.morphology" id="morphology" add-on-space="true" min-length="1"></tags-input-->
         </div>
 
