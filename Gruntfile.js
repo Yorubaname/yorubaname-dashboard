@@ -138,7 +138,7 @@ module.exports = function (grunt) {
     // Empties folders to start fresh
     clean: {
       dist: {
-        options: {force:true},
+        options: { force: true },
         files: [{
           dot: true,
           src: [
@@ -181,23 +181,23 @@ module.exports = function (grunt) {
     wiredep: {
       app: {
         src: ['<%= yeoman.app %>/index.html'],
-        ignorePath:  /\.\.\//
+        ignorePath: /\.\.\//
       },
       test: {
         devDependencies: true,
         src: '<%= karma.unit.configFile %>',
-        ignorePath:  /\.\.\//,
-        fileTypes:{
+        ignorePath: /\.\.\//,
+        fileTypes: {
           js: {
             block: /(([\s\t]*)\/{2}\s*?bower:\s*?(\S*))(\n|\r|.)*?(\/{2}\s*endbower)/gi,
-              detect: {
-                js: /'(.*\.js)'/gi
-              },
-              replace: {
-                js: '\'{{filePath}}\','
-              }
+            detect: {
+              js: /'(.*\.js)'/gi
+            },
+            replace: {
+              js: '\'{{filePath}}\','
             }
           }
+        }
       }
     },
 
@@ -392,7 +392,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'production',
-            baseUrl: 'http://www.yorubaname.com'
+            baseUrl: 'https://www.yorubaname.com'
           }
         }
       }
