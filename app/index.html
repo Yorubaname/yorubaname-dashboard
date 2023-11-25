@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html ng-app="dashboardappApp">
+
 <head>
   <meta charset="UTF-8">
   <title update-title></title>
@@ -28,7 +29,7 @@
   <link href="styles/main-override.css" rel="stylesheet" media="screen" id="overrideCss">
   <!-- endbuild -->
 
-  <link href='http://fonts.googleapis.com/css?family=Open+Sans&subset=latin,latin-ext' rel='stylesheet' media="screen">
+  <link href='//fonts.googleapis.com/css?family=Open+Sans&subset=latin,latin-ext' rel='stylesheet' media="screen">
   <script id="template/accordion/accordion-group.html" type="text/ng-template">
     <div class="panel panel-default" ng-class="{'panel-active': isOpen}">
       <div class="panel-heading">
@@ -146,6 +147,7 @@
   <!-- endbuild -->
 
 </head>
+
 <body class="{{siteBg}}" ng-class="{
         'side_menu_active' : sideMenuAct && !$state.includes('error.404'),
         'side_menu_collapsed' : sideNavCollapsed && sideMenuAct,
@@ -157,7 +159,8 @@
         'top_menu_active': topMenuAct && !$state.includes('error.404')
     }">
 
-<div ui-view autoscroll="false" class="mainView-animate"></div>
+  <div ui-view autoscroll="false" class="mainView-animate"></div>
 
 </body>
+
 </html>
