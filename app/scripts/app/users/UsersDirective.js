@@ -16,23 +16,19 @@ angular.module('UsersModule')  // Directive adds user roles the User Form
             scope.user.id = $stateParams.id;
             api.getUser($stateParams.id).success(function (user) {
               scope.user = user;
+              if (typeof user.roles === 'object')
+                scope.role = user.roles[0].replace('ROLE_', '');
+              if (typeof user.roles === 'string')
+                scope.role = user.roles.replace('ROLE_', '');
             });
-          }
-          function role_is(role, isRole) {
-            if (isRole) {
-              scope.role = role.replace('ROLE_', '');
-            }
-            return isRole;
           }
           scope.role_is = function (role) {
             if (typeof scope.user.roles === 'undefined')
               return null;
-            if (typeof scope.user.roles === 'object') {
-              return role_is(role, scope.user.roles.indexOf(role) > -1);
-            }
-            if (typeof scope.user.roles === 'string') {
-              return role_is(role, scope.user.roles === role);
-            }
+            if (typeof scope.user.roles === 'object')
+              return scope.user.roles.indexOf(role) > -1;
+            if (typeof scope.user.roles === 'string')
+              return scope.user.roles === role;
           };
           // Callback on submit
           scope.submit = function () {
