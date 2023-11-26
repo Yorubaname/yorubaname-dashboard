@@ -20,7 +20,7 @@ angular.module('UsersModule')  // Directive adds user roles the User Form
           }
           function role_is(role, isRole) {
             if (isRole) {
-              scope.role = role;
+              scope.role = role.replace('ROLE_', '');
             }
             return isRole;
           }
