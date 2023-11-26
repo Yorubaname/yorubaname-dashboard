@@ -5,6 +5,7 @@ angular.module('underscore', []).factory('_', function () {
 angular.module('dashboardappApp', [
   'config',
   'ui.router',
+  'ui.router.state.events',
   'ngAnimate',
   'ui.load',
   'ngSanitize',
@@ -19,8 +20,8 @@ angular.module('dashboardappApp', [
   'angularFileUpload',
   'underscore',
   'angularUtils.directives.dirPagination',
-   // application modules
-   'AuthModule'
+  // application modules
+  'AuthModule'
 ])  /* Config Block */.config([
   '$provide',
   '$httpProvider',
@@ -146,48 +147,48 @@ angular.module('dashboardappApp', [
     $rootScope.fixedLayout = true;
   }
 ])  /* filters */
-    // https://github.com/angular-ui/ui-utils
-.filter('unique', [
-  '$parse',
-  function ($parse) {
-    return function (items, filterOn) {
-      if (filterOn === false) {
-        return items;
-      }
-      if ((filterOn || angular.isUndefined(filterOn)) && angular.isArray(items)) {
-        var newItems = [], get = angular.isString(filterOn) ? $parse(filterOn) : function (item) {
+  // https://github.com/angular-ui/ui-utils
+  .filter('unique', [
+    '$parse',
+    function ($parse) {
+      return function (items, filterOn) {
+        if (filterOn === false) {
+          return items;
+        }
+        if ((filterOn || angular.isUndefined(filterOn)) && angular.isArray(items)) {
+          var newItems = [], get = angular.isString(filterOn) ? $parse(filterOn) : function (item) {
             return item;
           };
-        var extractValueToCompare = function (item) {
-          return angular.isObject(item) ? get(item) : item;
-        };
-        angular.forEach(items, function (item) {
-          var isDuplicate = false;
-          for (var i = 0; i < newItems.length; i++) {
-            if (angular.equals(extractValueToCompare(newItems[i]), extractValueToCompare(item))) {
-              isDuplicate = true;
-              break;
+          var extractValueToCompare = function (item) {
+            return angular.isObject(item) ? get(item) : item;
+          };
+          angular.forEach(items, function (item) {
+            var isDuplicate = false;
+            for (var i = 0; i < newItems.length; i++) {
+              if (angular.equals(extractValueToCompare(newItems[i]), extractValueToCompare(item))) {
+                isDuplicate = true;
+                break;
+              }
             }
-          }
-          if (!isDuplicate) {
-            newItems.push(item);
-          }
-        });
-        items = newItems;
-      }
-      return items;
-    };
-  }
-]).factory('utils', function () {
-  return {
-    // Util for finding an object by its 'id' property among an array
-    findById: function findById(a, id) {
-      for (var i = 0; i < a.length; i++) {
-        if (a[i].id === id) {
-          return a[i];
+            if (!isDuplicate) {
+              newItems.push(item);
+            }
+          });
+          items = newItems;
         }
-      }
-      return null;
+        return items;
+      };
     }
-  };
-});
+  ]).factory('utils', function () {
+    return {
+      // Util for finding an object by its 'id' property among an array
+      findById: function findById(a, id) {
+        for (var i = 0; i < a.length; i++) {
+          if (a[i].id === id) {
+            return a[i];
+          }
+        }
+        return null;
+      }
+    };
+  });
