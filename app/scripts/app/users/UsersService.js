@@ -22,7 +22,7 @@ angular.module('UsersModule').service('usersService', [
       return api.patchJson('/v1/auth/users/' + user.id, user).success(function (resp) {
         console.log(resp);
         toastr.success('User account with email ' + user.email + ' successfully updated.');
-        $state.go('auth.users.list_users');
+        $state.go('auth.users.list_users', { role: 'all' });
       }).error(function (resp) {
         console.log(resp);
         toastr.error('User account could not be updated. Try again.');
