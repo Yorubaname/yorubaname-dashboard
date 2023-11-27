@@ -29,12 +29,11 @@ angular.module('CommonModule')  /**
   '$filter',
   function ($filter) {
     return function (inputArray) {
-      // console.log(typeof inputArray)
       if (typeof inputArray !== 'object')
         return;
       var date = $filter('limitTo')(inputArray, 3);
       date = date.join('-');
-      return $filter('date')(date, 'mediumDate');
+      return $filter('date')(new Date(date), 'mediumDate');
     };
   }
 ]).filter('capitalize', function () {
