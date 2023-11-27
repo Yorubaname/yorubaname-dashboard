@@ -9,6 +9,36 @@ angular.module('NamesModule').service('NamesService', [
   '$timeout',
   '_',
   function (api, toastr, $state, $localStorage, $timeout, _) {
+    var cacheNames = function () {
+      return api.get('/v1/names?all=true').success(function (resp) {
+        $localStorage.entries = resp;
+      });
+    };
+    // TODO turn to a component
+    var isEmptyObj = function (obj) {
+      // null and undefined are "empty"
+      if (obj === null) {
+        return true;
+      }
+      // Assume if it has a length property with a non-zero value
+      // that that property is correct.
+      if (obj.length > 0) {
+        return false;
+      }
+      if (obj.length === 0) {
+        return true;
+      }
+      // Otherwise, does it have any properties of its own?
+      // Note that this doesn't handle
+      // toString and valueOf enumeration bugs in IE < 9
+      for (var key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          return false;
+        }
+      }
+      return true;
+    };
+
     /**
       * Adds a name to the database;
       * @param nameEntry
@@ -38,11 +68,6 @@ angular.module('NamesModule').service('NamesService', [
           return getPrevAndNextNames(name, fn);
         });
       }
-    };
-    var cacheNames = function () {
-      return api.get('/v1/names?all=true').success(function (resp) {
-        $localStorage.entries = resp;
-      });
     };
     this.getCachedNames = function (fn) {
       if ($localStorage.entries && $localStorage.entries.length)
@@ -190,30 +215,6 @@ angular.module('NamesModule').service('NamesService', [
       return api.deleteJson('/v1/feedbacks/' + id).success(fn).error(function () {
         return toastr.error('Feedback was not deleted. Please try again.');
       });
-    };
-    // TODO turn to a component
-    var isEmptyObj = function (obj) {
-      // null and undefined are "empty"
-      if (obj === null) {
-        return true;
-      }
-      // Assume if it has a length property with a non-zero value
-      // that that property is correct.
-      if (obj.length > 0) {
-        return false;
-      }
-      if (obj.length === 0) {
-        return true;
-      }
-      // Otherwise, does it have any properties of its own?
-      // Note that this doesn't handle
-      // toString and valueOf enumeration bugs in IE < 9
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-          return false;
-        }
-      }
-      return true;
     };
   }
 ]);

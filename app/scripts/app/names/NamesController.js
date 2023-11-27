@@ -186,25 +186,13 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
         toastr.warning('No names selected');
       }
     };
-    // Accept Suggested Name/s
-    $scope.accept = function (entry) {
-      if (entry)
-        return acceptSuggestedName(entry);
-      var entries = $.map($scope.namesList, function (elem) {
-        if (elem.isSelected === true)
-          return elem;
-      });
-      if (entries.length > 0) {
-        return entries.forEach(function (entry) {
-          acceptSuggestedName(entry);
-        });
-      } else
-        toastr.warning('Please select names to accept.');
-    };
+
     /**
-             * Adds the suggested name to the list of names eligible to be added to search index
-             */
-    var acceptSuggestedName = function (entry) {
+     * Adds the suggested name to the list of names eligible to be added to search index
+     * @param {*} entry 
+     * @returns 
+     */
+    function acceptSuggestedName(entry) {
       var name = {
         name: entry.name,
         meaning: entry.details,
@@ -219,6 +207,21 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
           }, 'suggested');
         });
       }
+    }
+    // Accept Suggested Name/s
+    $scope.accept = function (entry) {
+      if (entry)
+        return acceptSuggestedName(entry);
+      var entries = $.map($scope.namesList, function (elem) {
+        if (elem.isSelected === true)
+          return elem;
+      });
+      if (entries.length > 0) {
+        return entries.forEach(function (entry) {
+          acceptSuggestedName(entry);
+        });
+      } else
+        toastr.warning('Please select names to accept.');
     };
   }
 ]).controller('namesByUserListCtrl', [
@@ -288,7 +291,7 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
       if (entry && $window.confirm('Are you sure you want to delete this feedback on ' + entry.name + '?')) {
         return namesService.deleteFeedback(entry.id, function () {
           $scope.feedbacks.splice($scope.feedbacks.indexOf(entry), 1)  // $scope.count--
-;
+            ;
         });
       }
     };
