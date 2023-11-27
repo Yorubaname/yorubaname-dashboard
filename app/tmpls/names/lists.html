@@ -40,7 +40,8 @@
                     <th>Status</th>
                     <th ng-show="isAdmin || isLexicographer">Actions</th>
                     <th>Submitted By</th>
-                    <th>Date</th>
+                    <th>Date Added</th>
+                    <th>Last Modified</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,6 +54,7 @@
                     <td ng-show="isAdmin || isLexicographer"><a class="btn btn-xs" ng-class="entry.state == 'PUBLISHED' ? 'btn-warning' : 'btn-success'" ng-click="indexName(entry)">{{entry.state == 'PUBLISHED' ? 'Unpublish' : 'Publish'}}</a></td>
                     <td>{{entry.submittedBy}}</td>
                     <td>{{entry.createdAt|toDateString}}</td>
+                    <td>{{entry.updatedAt|toDateString}}</td>
                 </tr>
             </tbody>
             <tfoot>
