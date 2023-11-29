@@ -41,10 +41,6 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
         link: function (scope) {
           if (!$stateParams.entry) {
             scope.name.etymology = [];
-            scope.name.etymology.push({
-              part: '',
-              meaning: ''
-            });
           }
 
           scope.add_etymology = function () {
@@ -56,11 +52,6 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
 
           scope.remove_etymology = function (index) {
             scope.name.etymology.splice(index, 1);
-            if (scope.name.etymology.length < 1)
-              return scope.name.etymology.push({
-                part: '',
-                meaning: ''
-              });
           };
           scope.$watch('name.etymology', function () {
             scope.form.$dirty = true;

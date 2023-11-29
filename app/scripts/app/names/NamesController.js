@@ -31,34 +31,45 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
     namesService.getName($stateParams.entry, false, function (resp) {
       $scope.name = resp;
       originalName = resp.name;
-      // hack for names without etymology
-      if (!resp.etymology.length) {
-        $scope.name.etymology.push({
-          part: '',
-          meaning: ''
-        });
-      }
     });
-    
+
     $scope.generate_glossary = function () {
       // split the morphology with the dashes if it's not empty
       if ($scope.name.morphology) {
         let etymology = $scope.name.etymology;
-        const splitMorphology = $scope.name.morphology.split('-');
-        // add each entry to etymology list if it does not exist already
-        for (var i = 0; i < splitMorphology.length; i++) {
-          const newPart = splitMorphology[i];
-          const oldPart = etymology[i];
-          if (!oldPart) {
-            etymology.push({
-              part: newPart,
-              meaning: ''
-            });
-          } else {            
-            oldPart.part = newPart;  
+        const hashSet = {};
+        const morphologyValues = $scope.name.morphology.split(',');
+        let etymologyCounter = 0;
+
+        for (let j = 0; j < morphologyValues.length; j++) {
+          const splitMorphology = morphologyValues[j].trim().split('-');
+          // add each entry to etymology list if it does not exist already
+          for (let i = 0; i < splitMorphology.length; i++) {
+            const oldPart = etymology[etymologyCounter];
+            etymologyCounter++;
+
+            const newPart = splitMorphology[i];
+            if (hashSet[newPart]) {
+              etymologyCounter--;
+              continue;
+            }
+
+            if (!oldPart) {
+              etymology.push({
+                part: newPart,
+                meaning: ''
+              });
+            } else {
+              const isSame = oldPart.part === newPart;
+              oldPart.part = newPart;
+              oldPart.meaning = isSame ? oldPart.meaning : '';
+            }
+            hashSet[newPart] = true;
           }
         }
-        $scope.name.etymology = etymology.slice(0, splitMorphology.length);
+        $scope.name.etymology = etymology.slice(0, etymologyCounter);
+      } else {
+        $scope.name.etymology = []
       }
     };
 
