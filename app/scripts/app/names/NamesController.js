@@ -57,7 +57,7 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
             };
 
             if (etymology[etymologyCounter]) {
-              etymology[etymologyCounter] = newEty
+              etymology[etymologyCounter] = newEty;
             } else {
               etymology.push(newEty);
 
@@ -69,7 +69,7 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
         }
         $scope.name.etymology = etymology.slice(0, etymologyCounter);
       } else {
-        $scope.name.etymology = []
+        $scope.name.etymology = [];
       }
     };
 
