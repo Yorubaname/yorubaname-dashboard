@@ -37,7 +37,8 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
       // split the morphology with the dashes if it's not empty
       if ($scope.name.morphology) {
         let etymology = $scope.name.etymology;
-        const hashSet = {};
+        const alreadyAdded = {};
+        const existingPartMeanings = etymology.reduce((acc, obj) => ({ ...acc, [obj.part]: obj.meaning }), {});
         const morphologyValues = $scope.name.morphology.split(',');
         let etymologyCounter = 0;
 
@@ -45,26 +46,25 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
           const splitMorphology = morphologyValues[j].trim().split('-');
           // add each entry to etymology list if it does not exist already
           for (let i = 0; i < splitMorphology.length; i++) {
-            const oldPart = etymology[etymologyCounter];
-            etymologyCounter++;
-
             const newPart = splitMorphology[i];
-            if (hashSet[newPart]) {
-              etymologyCounter--;
+            if (alreadyAdded[newPart] || newPart.trim() === '') {
               continue;
             }
 
-            if (!oldPart) {
-              etymology.push({
-                part: newPart,
-                meaning: ''
-              });
+            var newEty = {
+              part: newPart,
+              meaning: existingPartMeanings[newPart] || ''
+            };
+
+            if (etymology[etymologyCounter]) {
+              etymology[etymologyCounter] = newEty
             } else {
-              const isSame = oldPart.part === newPart;
-              oldPart.part = newPart;
-              oldPart.meaning = isSame ? oldPart.meaning : '';
+              etymology.push(newEty);
+
             }
-            hashSet[newPart] = true;
+
+            etymologyCounter++;
+            alreadyAdded[newPart] = true;
           }
         }
         $scope.name.etymology = etymology.slice(0, etymologyCounter);
