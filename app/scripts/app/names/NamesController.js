@@ -31,14 +31,48 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
     namesService.getName($stateParams.entry, false, function (resp) {
       $scope.name = resp;
       originalName = resp.name;
-      // hack for names without etymology
-      if (!resp.etymology.length) {
-        $scope.name.etymology.push({
-          part: '',
-          meaning: ''
-        });
-      }
     });
+
+    $scope.generate_glossary = function () {
+      // split the morphology with the dashes if it's not empty
+      if ($scope.name.morphology) {
+        let etymology = $scope.name.etymology;
+        const alreadyAdded = {};
+        const existingPartMeanings = etymology.reduce((acc, obj) => ({ ...acc, [obj.part]: obj.meaning }), {});
+        const morphologyValues = $scope.name.morphology.split(',');
+        let etymologyCounter = 0;
+
+        for (let j = 0; j < morphologyValues.length; j++) {
+          const splitMorphology = morphologyValues[j].trim().split('-');
+          // add each entry to etymology list if it does not exist already
+          for (let i = 0; i < splitMorphology.length; i++) {
+            const newPart = splitMorphology[i].trim();
+            if (newPart === '' || alreadyAdded[newPart]) {
+              continue;
+            }
+
+            var newEty = {
+              part: newPart,
+              meaning: existingPartMeanings[newPart] || ''
+            };
+
+            if (etymology[etymologyCounter]) {
+              etymology[etymologyCounter] = newEty
+            } else {
+              etymology.push(newEty);
+
+            }
+
+            etymologyCounter++;
+            alreadyAdded[newPart] = true;
+          }
+        }
+        $scope.name.etymology = etymology.slice(0, etymologyCounter);
+      } else {
+        $scope.name.etymology = []
+      }
+    };
+
     $scope.publish = function () {
       // update name first, then publish
       return namesService.updateName(originalName, $scope.name, function () {

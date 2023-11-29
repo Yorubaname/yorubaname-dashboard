@@ -2,97 +2,116 @@
 
 <form class="name-entry-form" name="form" name-form>
 
-<div class="row">
-    <div class="col-lg-6 col-sm-6 col-sm-6 col-xs-12">
+    <div class="row">
+        <div class="col-lg-6 col-sm-6 col-sm-6 col-xs-12">
 
-        <div class="form-group">
-            <label for="name" class="required">Name</label>
-            <input type="text" id="name" class="form-control" ng-model="name.name" required keyboard>
-        </div>
-        <div class="form-group">
-            <label for="meaning" class="required">Meaning</label>
-            <span class="help-block">If meaning of name is not known, write "unknown" in the space provided. If name has more than one meaning, kindly separate each with comma.</span>
-            <textarea id="meaning" cols="10" rows="3" class="form-control" ng-model="name.meaning" required></textarea>
-        </div>
-        <div class="form-group">
-            <label for="syllables">Syllable breakdown</label>
-            <span class="help-block">Enter syllable breakdown by separating each syllable with an hyphen, e.g <em>o-lú-ní-yì</em></span>
-            <input type="text" id="syllables" class="form-control" ng-model="name.syllables">
-        </div>
-        <div class="form-group">
-            <label for="geolocation" class="required">Geolocation</label>
-            <span class="help-block">Where is this name most commonly used? Choose "General" if this name applies to more than one region, or chosse "Others/Don't Know" if you are not sure of its specific origin.</span>
-            <tags-input ng-model="name.geoLocation" id="geolocation" add-on-space="true" min-length="3" display-property="place" add-from-autocomplete-only="true" placeholder="Select geolocation" required>
-               <auto-complete source="query($query)" display-property="place" load-on-focus="true" max-results-to-show="20"></auto-complete>
-            </tags-input>
+            <div class="form-group">
+                <label for="name" class="required">Name</label>
+                <input type="text" id="name" class="form-control" ng-model="name.name" required keyboard>
+            </div>
+            <div class="form-group">
+                <label for="meaning" class="required">Meaning</label>
+                <span class="help-block">If meaning of name is not known, write "unknown" in the space provided. If name
+                    has more than one meaning, kindly separate each with comma.</span>
+                <textarea id="meaning" cols="10" rows="3" class="form-control" ng-model="name.meaning"
+                    required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="syllables">Syllable breakdown</label>
+                <span class="help-block">Enter syllable breakdown by separating each syllable with an hyphen, e.g
+                    <em>o-lú-ní-yì</em></span>
+                <input type="text" id="syllables" class="form-control" ng-model="name.syllables">
+            </div>
+            <div class="form-group">
+                <label for="geolocation" class="required">Geolocation</label>
+                <span class="help-block">Where is this name most commonly used? Choose "General" if this name applies to
+                    more than one region, or chosse "Others/Don't Know" if you are not sure of its specific
+                    origin.</span>
+                <tags-input ng-model="name.geoLocation" id="geolocation" add-on-space="true" min-length="3"
+                    display-property="place" add-from-autocomplete-only="true" placeholder="Select geolocation"
+                    required>
+                    <auto-complete source="query($query)" display-property="place" load-on-focus="true"
+                        max-results-to-show="20"></auto-complete>
+                </tags-input>
+            </div>
+
+            <div class="form-group">
+                <label for="extra_info">Extra information about this name</label>
+                <textarea id="extra_info" cols="10" rows="3" class="form-control"
+                    ng-model="name.extendedMeaning"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="ipa">IPA Notation</label>
+                <span class="help-block">For linguists only: Enter IPA Notation in square brackets, separating each
+                    syllable with a hyphen. e.g. <em>[ou-lú-ní-jì]</em>.</span>
+                <input type="text" id="ipa" class="form-control" ng-model="name.ipaNotation">
+                <!--tags-input ng-model="name.ipaNotation" id="ipa" add-on-space="true" min-length="1"></tags-input-->
+            </div>
+            <div class="form-group">
+                <label for="pronunciation">Pronunciation</label>
+                <span class="help-block">If you can't properly tone-mark the name, give us your best alphabetic English
+                    approximation of how the name is pronounced. e.g. <em>"Oh-loo-nee-yee"</em></span>
+                <input type="text" id="pronunciation" class="form-control" ng-model="name.pronunciation">
+                <!--tags-input ng-model="name.pronunciation" id="pronunciation" add-on-space="true" min-length="1"></tags-input-->
+            </div>
+
         </div>
 
-        <div class="form-group">
-            <label for="extra_info">Extra information about this name</label>
-            <textarea id="extra_info" cols="10" rows="3" class="form-control" ng-model="name.extendedMeaning"></textarea>
-        </div>
-        <div class="form-group">
-            <label for="ipa">IPA Notation</label>
-            <span class="help-block">For linguists only: Enter IPA Notation in square brackets, separating each syllable with a hyphen. e.g. <em>[ou-lú-ní-jì]</em>.</span>
-            <input type="text" id="ipa" class="form-control" ng-model="name.ipaNotation">
-            <!--tags-input ng-model="name.ipaNotation" id="ipa" add-on-space="true" min-length="1"></tags-input-->
-        </div>
-        <div class="form-group">
-            <label for="pronunciation">Pronunciation</label>
-            <span class="help-block">If you can't properly tone-mark the name, give us your best alphabetic English approximation of how the name is pronounced. e.g. <em>"Oh-loo-nee-yee"</em></span>
-            <input type="text" id="pronunciation" class="form-control" ng-model="name.pronunciation">
-            <!--tags-input ng-model="name.pronunciation" id="pronunciation" add-on-space="true" min-length="1"></tags-input-->
+        <div class="col-lg-6 col-sm-6 col-sm-6 col-xs-12">
+
+            <div class="form-group">
+                <label for="morphology">Morphology</label>
+                <span class="help-block">Enter morphology by using hyphen to separate each part, e.g.
+                    <em>olú-ní-iyì</em></span>
+                <!--Allow unicode characters, space, brackets, comma, hyphens and dots-->
+                <input type="text" id="morphology" class="form-control" ng-model="name.morphology"
+                    ng-blur="generate_glossary()" ng-pattern="/^[\p{L}\p{M}()\[\].,\s-]+$/u">
+            </div>
+
+            <div class="form-group">
+                <h5>Gloss</h5>
+                <span class="help-block">Enter the composite part of this name and its meaning.</span>
+                <etymology></etymology>
+                <p class="text-right help-block"><a ng-click="add_etymology()">Add a new part and meaning pair</a></p>
+            </div>
+
+            <div class="form-group">
+                <label for="name_variants">Variants</label>
+                <span class="help-block">Enter other known variations for this name. Use comma to separate the different
+                    variations.</span>
+                <textarea id="name_variants" class="form-control" ng-model="name.variants"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="person_name">Famous People</label>
+                <span class="help-block">Enter names of famous people bearing this name. Use comma to separate
+                    names.</span>
+                <textarea id="person_name" class="form-control" ng-model="name.famousPeople"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="media">Media Link</label>
+                <span class="help-block">Enter links to resources that can be found online for this name. Use comma to
+                    separate links.</span>
+                <textarea id="media" class="form-control" ng-model="name.media"></textarea>
+            </div>
+
         </div>
 
     </div>
 
-    <div class="col-lg-6 col-sm-6 col-sm-6 col-xs-12">
+    <div class="row">
+        <div class="col-sm-12">
+            <hr>
+            <button type="submit" class="btn btn-lg btn-success" ng-click="submit()"
+                ng-disabled="form.$invalid || !form.$dirty">{{ new ? 'Submit for Review' : 'Save Entry' }}</button>
 
-        <div class="form-group">
-            <label for="morphology">Morphology</label>
-            <span class="help-block">Enter morphology by using hyphen to separate each part, e.g. <em>olú-ní-iyì</em></span>
-            <input type="text" id="morphology" class="form-control" ng-model="name.morphology">
-            <!--tags-input ng-model="name.morphology" id="morphology" add-on-space="true" min-length="1"></tags-input-->
+            <button class="btn btn-lg btn-info" ng-click="publish()" ng-disabled="form.$invalid || !form.$dirty"
+                ng-show="isAdmin || isLexicographer && !new && name.state!='PUBLISHED'">Publish</button>
+
+            <a ng-click="delete()" class="btn btn-link btn-md text-muted pull-right" ng-hide="new || !isAdmin">Delete
+                {{name.name}}</a>
         </div>
-
-        <div class="form-group">
-            <h5>Gloss</h5>
-            <span class="help-block">Enter the composite part of this name and its meaning.</span>
-            <etymology></etymology>
-            <p class="text-right help-block"><a ng-click="add_etymology()">Add a new part and meaning pair</a></p>
-        </div>
-
-        <div class="form-group">
-            <label for="name_variants">Variants</label>
-            <span class="help-block">Enter other known variations for this name. Use comma to separate the different variations.</span>
-            <textarea id="name_variants" class="form-control" ng-model="name.variants"></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="person_name">Famous People</label>
-            <span class="help-block">Enter names of famous people bearing this name. Use comma to separate names.</span>
-            <textarea id="person_name" class="form-control" ng-model="name.famousPeople"></textarea>
-        </div>
-
-        <div class="form-group">
-            <label for="media">Media Link</label>
-            <span class="help-block">Enter links to resources that can be found online for this name. Use comma to separate links.</span>
-            <textarea id="media" class="form-control" ng-model="name.media"></textarea>
-        </div>
-
     </div>
-    
-</div>
-
-<div class="row">
-    <div class="col-sm-12">
-        <hr>
-        <button type="submit" class="btn btn-lg btn-success" ng-click="submit()" ng-disabled="form.$invalid || !form.$dirty">{{ new ? 'Submit for Review' : 'Save Entry' }}</button>
-
-        <button class="btn btn-lg btn-info" ng-click="publish()" ng-disabled="form.$invalid || !form.$dirty" ng-show="isAdmin || isLexicographer && !new && name.state!='PUBLISHED'">Publish</button>
-
-        <a ng-click="delete()" class="btn btn-link btn-md text-muted pull-right" ng-hide="new || !isAdmin">Delete {{name.name}}</a>
-    </div>
-</div>
 
 </form>

@@ -114,3 +114,8 @@ form .etymology:hover .remove {
 span.help-block {
   margin-bottom: 10px;
 }
+
+/* Increase specificity to apply styles when the input is required but empty */
+form input.ng-invalid:not(form.ng-pristine) {
+  border-color: red;
+}
