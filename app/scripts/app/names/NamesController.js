@@ -46,8 +46,8 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
           const splitMorphology = morphologyValues[j].trim().split('-');
           // add each entry to etymology list if it does not exist already
           for (let i = 0; i < splitMorphology.length; i++) {
-            const newPart = splitMorphology[i];
-            if (alreadyAdded[newPart] || newPart.trim() === '') {
+            const newPart = splitMorphology[i].trim();
+            if (newPart === '' || alreadyAdded[newPart]) {
               continue;
             }
 
