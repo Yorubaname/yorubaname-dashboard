@@ -63,9 +63,9 @@
                 <label for="morphology">Morphology</label>
                 <span class="help-block">Enter morphology by using hyphen to separate each part, e.g.
                     <em>olú-ní-iyì</em></span>
+                <!--Allow unicode characters, space, brackets, comma, hyphens and dots-->
                 <input type="text" id="morphology" class="form-control" ng-model="name.morphology"
                     ng-blur="generate_glossary()" ng-pattern="/^[\p{L}\p{M}()\[\].,\s-]+$/u">
-                <!--tags-input ng-model="name.morphology" id="morphology" add-on-space="true" min-length="1"></tags-input-->
             </div>
 
             <div class="form-group">
