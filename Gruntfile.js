@@ -383,7 +383,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'development',
-            baseUrl: 'https://www.yorubaname.com'
+            baseUrl: 'http://localhost:8081'
           }
         }
       },
