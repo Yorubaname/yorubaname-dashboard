@@ -29,7 +29,7 @@ angular.module('CommonModule')  /**
   '$filter',
   function ($filter) {
     return function (inputArray) {
-      if (typeof inputArray !== 'object')
+      if (typeof inputArray !== 'object' || inputArray === null)
         return;
       var date = $filter('limitTo')(inputArray, 3);
       date = date.join('-');
