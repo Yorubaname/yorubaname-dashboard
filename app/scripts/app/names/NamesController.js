@@ -38,7 +38,11 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
       if ($scope.name.morphology) {
         let etymology = $scope.name.etymology;
         const alreadyAdded = {};
-        const existingPartMeanings = etymology.reduce((acc, obj) => ({ ...acc, [obj.part]: obj.meaning }), {});
+        const existingPartMeanings = etymology.reduce(function (acc, obj) {
+          acc[obj.part] = obj.meaning;
+          return acc;
+        }, {});
+
         const morphologyValues = $scope.name.morphology.split(',');
         let etymologyCounter = 0;
 
@@ -57,7 +61,7 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
             };
 
             if (etymology[etymologyCounter]) {
-              etymology[etymologyCounter] = newEty
+              etymology[etymologyCounter] = newEty;
             } else {
               etymology.push(newEty);
 
@@ -69,7 +73,7 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
         }
         $scope.name.etymology = etymology.slice(0, etymologyCounter);
       } else {
-        $scope.name.etymology = []
+        $scope.name.etymology = [];
       }
     };
 

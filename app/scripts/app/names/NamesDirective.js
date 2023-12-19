@@ -102,4 +102,34 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
         }
       };
     }
+  ]) // Directive adds array of embedded video fields to the Name Form
+  .directive('embeddedVideo', [
+    '$stateParams',
+    function ($stateParams) {
+      return {
+        replace: true,
+        restrict: 'E',
+        templateUrl: 'tmpls/names/directives/embedded-video.html',
+        link: function (scope) {
+          if (!$stateParams.entry) {
+            scope.name.videos = [];
+          }
+          scope.add_video = function () {
+            if (scope.name.videos === undefined) {
+              scope.name.videos = [];
+            }
+            return scope.name.videos.push({
+              url: '',
+              caption: ''
+            });
+          };
+          scope.remove_video = function (index) {
+            scope.name.videos.splice(index, 1);
+          };
+          scope.$watch('name.videos', function () {
+            scope.form.$dirty = true;
+          }, true);
+        }
+      };
+    }
   ]);
