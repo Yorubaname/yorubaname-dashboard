@@ -11,15 +11,12 @@ angular.module('UsersModule')  // Directive adds user roles the User Form
         link: function (scope) {
           scope.user = {};
           // Override the user object on the scope in edit user form
-          if ($stateParams.id !== undefined) {
+          if ($stateParams.email !== undefined) {
             // This is true for Updating User Info
-            scope.user.id = $stateParams.id;
-            api.getUser($stateParams.id).success(function (user) {
+            scope.user.email = $stateParams.email;
+            api.getUser($stateParams.email).success(function (user) {
               scope.user = user;
-              if (typeof user.roles === 'object')
-                scope.role = user.roles[0].replace('ROLE_', '');
-              if (typeof user.roles === 'string')
-                scope.role = user.roles.replace('ROLE_', '');
+              scope.role = user.roles[0];
             });
           }
           scope.role_is = function (role) {

@@ -6,8 +6,8 @@ angular.module('UsersModule').service('usersService', [
   '$state',
   'toastr',
   function (api, $state, toastr) {
-    this.getUser = function (userId) {
-      return api.get('/v1/auth/users/' + userId);
+    this.getUser = function (email) {
+      return api.get('/v1/auth/users/' + email);
     };
     this.addUser = function (user) {
       return api.postJson('/v1/auth/create', user).success(function () {
@@ -19,7 +19,7 @@ angular.module('UsersModule').service('usersService', [
     };
     /* updated user information */
     this.updateUser = function (user) {
-      return api.patchJson('/v1/auth/users/' + user.id, user).success(function (resp) {
+      return api.patchJson('/v1/auth/users/' + user.email, user).success(function (resp) {
         console.log(resp);
         toastr.success('User account with email ' + user.email + ' successfully updated.');
         $state.go('auth.users.list_users', { role: 'all' });
@@ -37,7 +37,7 @@ angular.module('UsersModule').service('usersService', [
       return api.get('/v1/auth/users', params);
     };
     this.deleteUser = function (user, fn) {
-      return api.delete('/v1/auth/users/' + user.id, user).success(function () {
+      return api.delete('/v1/auth/users/' + user.email, user).success(function () {
         toastr.success('User account with email ' + user.email + ' has been deleted.');
         return fn();
       });

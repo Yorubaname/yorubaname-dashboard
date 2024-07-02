@@ -27,7 +27,7 @@ angular.module('UsersModule').config([
       .state('auth.users.edit_user', {
         page_title: 'Yoruba Names Admin - Edit User',
         ncyBreadcrumb: {label: 'Edit User Info'},
-        url: '/edit/:id',
+        url: '/edit/:email',
         templateUrl: 'tmpls/users/edit.html'
       })
 
