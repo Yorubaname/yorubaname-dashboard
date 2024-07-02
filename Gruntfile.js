@@ -383,7 +383,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'development',
-            baseUrl: 'http://localhost:8081'
+            baseUrl: 'https://localhost:7177/api'
           }
         }
       },
@@ -394,7 +394,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'production',
-            baseUrl: 'https://www.yorubaname.com'
+            baseUrl: 'https://api.yorubaname.com/api'
           }
         }
       }
