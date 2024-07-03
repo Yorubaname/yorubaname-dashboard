@@ -55,4 +55,12 @@ angular.module('CommonModule')  /**
       return _.pluck(inputArray, 'place').join(', ');
     };
   }
-]);
+])
+.filter('commaSeparated', function() {
+  return function(input) {
+      if (Array.isArray(input)) {
+          return input.join(', ');
+      }
+      return input;
+  };
+});

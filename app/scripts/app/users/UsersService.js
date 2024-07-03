@@ -4,12 +4,14 @@
 angular.module('UsersModule').service('usersService', [
   'baseService',
   '$state',
+  '$localStorage',
   'toastr',
-  function (api, $state, toastr) {
+  function (api, $state, $localStorage, toastr) {
     this.getUser = function (email) {
       return api.get('/v1/auth/users/' + email);
     };
     this.addUser = function (user) {
+      user.createdBy = $localStorage.username;
       return api.postJson('/v1/auth/create', user).success(function () {
         toastr.success('User account with email ' + user.email + ' successfully created.');
       }).error(function (resp) {
@@ -19,6 +21,7 @@ angular.module('UsersModule').service('usersService', [
     };
     /* updated user information */
     this.updateUser = function (user) {
+      user.updatedBy = $localStorage.username;
       return api.patchJson('/v1/auth/users/' + user.email, user).success(function (resp) {
         console.log(resp);
         toastr.success('User account with email ' + user.email + ' successfully updated.');

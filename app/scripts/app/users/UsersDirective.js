@@ -13,7 +13,6 @@ angular.module('UsersModule')  // Directive adds user roles the User Form
           // Override the user object on the scope in edit user form
           if ($stateParams.email !== undefined) {
             // This is true for Updating User Info
-            scope.user.email = $stateParams.email;
             api.getUser($stateParams.email).success(function (user) {
               scope.user = user;
               scope.role = user.roles[0];
@@ -30,7 +29,7 @@ angular.module('UsersModule')  // Directive adds user roles the User Form
           // Callback on submit
           scope.submit = function () {
             scope.user.roles = [scope.role];
-            if (!scope.user.id)
+            if (!$stateParams.email)
               return api.addUser(scope.user);
             else
               return api.updateUser(scope.user);

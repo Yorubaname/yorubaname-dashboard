@@ -28,19 +28,19 @@
             <label>Priviledges</label>
             <div class="radio">
                 <label>
-                    <input name="roles" ng-model="role" type="radio" value="BASIC_LEXICOGRAPHER" ng-checked="role_is('ROLE_BASIC_LEXICOGRAPHER')">
+                    <input name="roles" ng-model="role" type="radio" value="BASIC_LEXICOGRAPHER" ng-checked="role_is('BASIC_LEXICOGRAPHER')">
                     Basic Lexicographer
                 </label>
             </div>
             <div class="radio">
                 <label>
-                    <input name="roles" ng-model="role" type="radio" value="PRO_LEXICOGRAPHER" ng-checked="role_is('ROLE_PRO_LEXICOGRAPHER')">
+                    <input name="roles" ng-model="role" type="radio" value="PRO_LEXICOGRAPHER" ng-checked="role_is('PRO_LEXICOGRAPHER')">
                     Pro Lexicographer
                 </label>
             </div>
             <div class="radio">
                 <label>
-                    <input name="roles" ng-model="role" type="radio" value="ADMIN" ng-checked="role_is('ROLE_ADMIN')">
+                    <input name="roles" ng-model="role" type="radio" value="ADMIN" ng-checked="role_is('ADMIN')">
                     Admin
                 </label>
             </div>
@@ -53,7 +53,7 @@
     <div class="col-sm-12">
         <hr>
         <button type="submit" ng-click="submit()" ng-disabled="form.$invalid || !form.$dirty" class="btn btn-lg btn-success">Update Account</button>
-        <button class="btn btn-link pull-right" ng-hide="user.id == logged_in_user.id || !isAdmin" ng-click="delete(user)">Delete Account</button>
+        <button class="btn btn-link pull-right" ng-hide="user.email == logged_in_user.email || !isAdmin" ng-click="delete(user)">Delete Account</button>
     </div>
 </div>
 
