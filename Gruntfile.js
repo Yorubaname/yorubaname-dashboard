@@ -394,7 +394,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'production',
-            baseUrl: 'https://api.yorubaname.com/api'
+            baseUrl: 'https://newweb.yorubaname.com/api'
           }
         }
       }
