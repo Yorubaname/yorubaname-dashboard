@@ -43,10 +43,6 @@ angular.module('CommonModule').controller('SideMenuController', [
           {
             title: 'Feedbacks',
             link: 'auth.names.feedbacks'
-          },
-          {
-            title: 'Search',
-            link: 'auth.names.search'
           }
         ]
       }
