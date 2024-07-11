@@ -28,12 +28,17 @@ angular.module('CommonModule')  /**
  */.filter('toDateString', [
   '$filter',
   function ($filter) {
-    return function (inputArray) {
-      if (typeof inputArray !== 'object' || inputArray === null)
+    return function (input) {
+      if (typeof input !== 'string' || input === null) {
         return;
-      var date = $filter('limitTo')(inputArray, 3);
-      date = date.join('-');
-      return $filter('date')(new Date(date), 'mediumDate');
+      }
+      
+      var date = new Date(input);
+      if (isNaN(date.getTime())) {
+        return;
+      }
+      
+      return $filter('date')(date, 'MMM d, yyyy');
     };
   }
 ]).filter('capitalize', function () {
