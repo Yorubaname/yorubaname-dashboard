@@ -211,8 +211,8 @@ angular.module('NamesModule').service('NamesService', [
         return toastr.error('Feedbacks on ' + name + ' were not deleted. Please try again.');
       });
     };
-    this.deleteFeedback = function (id, fn) {
-      return api.deleteJson('/v1/feedbacks/' + id).success(fn).error(function () {
+    this.deleteFeedback = function (id, name, fn) {
+      return api.deleteJson('/v1/feedbacks/' + name + '/' + id).success(fn).error(function () {
         return toastr.error('Feedback was not deleted. Please try again.');
       });
     };

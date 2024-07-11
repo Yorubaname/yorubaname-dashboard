@@ -89,7 +89,7 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
                 };
                 // delete one feedback by id and remove from list
                 $scope.deleteFeedback = function (feedback) {
-                  api.deleteFeedback(feedback, function () {
+                  api.deleteFeedback(feedback.id, feedback.name, function () {
                     $scope.feedbacks.splice($scope.feedbacks.indexOf(feedback), 1);
                   });
                 };
