@@ -16,7 +16,7 @@ angular.module('UsersModule').service('usersService', [
         toastr.success('User account with email ' + user.email + ' successfully created.');
       }).error(function (resp) {
         console.log(resp);
-        toastr.error('User account could not be created. Try again.');
+        toastr.error((resp && resp.message) || 'User account could not be created. Try again.');
       });
     };
     /* updated user information */
