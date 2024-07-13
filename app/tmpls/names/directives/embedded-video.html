@@ -3,10 +3,10 @@
         <label title="Video ID: This is the alphanumeric code after 'v=' in the YouTube video link. 
         For example, if the video link is https://www.youtube.com/watch?v=AboutUs123, then the Video ID is AboutUs123.
         Copy the ID from the link and paste it in the box.">Video ID</label>
-        <input type="text" class="form-control" name="url[{{$index}}]" ng-model="video.url" placeholder="AboutUs123"
+        <input type="text" class="form-control" name="videoId[{{$index}}]" ng-model="video.videoId" placeholder="AboutUs123"
             required>
-        <span ng-show="form.url[{{$index}}].$invalid && !form.url[{{$index}}].$pristine"
-            class="help-block text-danger">A video URL is required</span>
+        <span ng-show="form.videoId[{{$index}}].$invalid && !form.videoId[{{$index}}].$pristine"
+            class="help-block text-danger">A video ID is required</span>
     </div>
     <div class="col-sm-8">
         <label>Caption</label>

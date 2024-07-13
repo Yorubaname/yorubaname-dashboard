@@ -119,7 +119,7 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
               scope.name.videos = [];
             }
             return scope.name.videos.push({
-              url: '',
+              videoId: '',
               caption: ''
             });
           };
