@@ -387,6 +387,17 @@ module.exports = function (grunt) {
           }
         }
       },
+      staging: {
+        options: {
+          dest: '<%= yeoman.app %>/scripts/app/config.js'
+        },
+        constants: {
+          ENV: {
+            name: 'staging',
+            baseUrl: 'https://staging.yorubaname.com/api'
+          }
+        }
+      },
       production: {
         options: {
           dest: '<%= yeoman.app %>/scripts/app/config.js'
@@ -394,7 +405,7 @@ module.exports = function (grunt) {
         constants: {
           ENV: {
             name: 'production',
-            baseUrl: 'https://newweb.yorubaname.com/api'
+            baseUrl: 'https://www.yorubaname.com/api'
           }
         }
       }
@@ -434,10 +445,31 @@ module.exports = function (grunt) {
     'karma'
   ]);
 
+  // Build for running in PROD
   grunt.registerTask('build', [
     'jshint',
     'clean:dist',
     'ngconstant:production',
+    //'wiredep', // TODO investigate as this injects jquery. Should not be needed
+    'useminPrepare',
+    'concurrent:dist',
+    'autoprefixer',
+    'concat',
+    'ngAnnotate',
+    'copy:dist',
+    //'cdnify',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin'
+  ]);
+
+  // Build for running in Staging environment.
+  grunt.registerTask('stage', [
+    'jshint',
+    'clean:dist',
+    'ngconstant:staging',
     //'wiredep', // TODO investigate as this injects jquery. Should not be needed
     'useminPrepare',
     'concurrent:dist',
