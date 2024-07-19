@@ -87,6 +87,7 @@ angular.module('NamesModule').service('NamesService', [
       */
     this.updateName = function (originalName, nameEntry, fn) {
       nameEntry = angular.copy(nameEntry);
+      nameEntry.submittedBy = $localStorage.username;
       return api.putJson('/v1/names/' + originalName, nameEntry).success(function (resp) {
         toastr.success(nameEntry.name + ' was successfully updated.');
         cacheNames();
