@@ -80,9 +80,7 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
     $scope.publish = function () {
       // update name first, then publish
       return namesService.updateName(originalName, $scope.name, function () {
-        // first remove name from index
-        namesService.removeNameFromIndex($scope.name.name);
-        // then add name back to index
+        // Publish the name
         return namesService.addNameToIndex($scope.name.name).success(function () {
           $scope.name.state = 'PUBLISHED';
           $scope.name.indexed = true;
