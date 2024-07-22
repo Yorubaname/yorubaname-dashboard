@@ -40,7 +40,7 @@ angular.module('UsersModule').service('usersService', [
       return api.get('/v1/auth/users', params);
     };
     this.deleteUser = function (user, fn) {
-      return api.delete('/v1/auth/users/' + user.email, user).success(function () {
+      return api.deleteJson('/v1/auth/users/' + user.email, user).success(function () {
         toastr.success('User account with email ' + user.email + ' has been deleted.');
         return fn();
       });

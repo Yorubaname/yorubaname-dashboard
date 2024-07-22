@@ -103,7 +103,7 @@ angular.module('NamesModule').service('NamesService', [
       */
     this.deleteName = function (entry, fn, status) {
       if (status === 'suggested')
-        return api.delete('/v1/suggestions/' + entry.id).success(function () {
+        return api.deleteJson('/v1/suggestions/' + entry.id).success(function () {
           toastr.success(entry.name + ' with id: ' + entry.id + ' has been deleted successfully');
           return fn();
         }).error(function () {
