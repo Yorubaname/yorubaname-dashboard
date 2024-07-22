@@ -90,7 +90,6 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
       });
     };
     $scope.goto = function (entry) {
-      namesService.updateName(originalName, $scope.name);
       return $state.go('auth.names.edit_entries', { entry: entry });
     };
     $scope.submit = function () {
