@@ -99,13 +99,13 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
       if (partsToFetch.length > 0) {
         etymologyService.getLatestMeaning(partsToFetch)
           .then(function (data) {
-            for (const key in data) {
+            for (var key in data) {
               if (data.hasOwnProperty(key)) {
                 partMeaningDict[key.normalize('NFC')] = data[key];
               }
             }
             $scope.name.etymology = updateEtymology(etymologyParts, partMeaningDict, etymology);
-            toastr.success('Successfully fetched etymology meanings from previous words.')
+            toastr.success('Successfully fetched etymology meanings from previous words.');
           })
           .catch(function (error) {
             toastr.error('Error fetching latest etymology part meanings.');
