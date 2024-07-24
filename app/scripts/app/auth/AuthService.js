@@ -29,14 +29,13 @@ angular.module('AuthModule').service('AuthService', [
         $localStorage.token = token;
         $localStorage.baseUrl = ENV.baseUrl;
         response.roles.some(function (role) {
-          // Check ROLE_ADMIN first, since it supercedes all
-          if (role === 'ROLE_ADMIN') {
+          if (role === 'ADMIN') {
             $localStorage.role = 'admin';
             return true;
-          } else if (role === 'ROLE_PRO_LEXICOGRAPHER') {
+          } else if (role === 'PRO_LEXICOGRAPHER') {
             $localStorage.role = 'lex_pro';
             return true;
-          } else if (role === 'ROLE_BASIC_LEXICOGRAPHER') {
+          } else if (role === 'BASIC_LEXICOGRAPHER') {
             $localStorage.role = 'lex_basic';
             return true;
           }

@@ -33,8 +33,11 @@
                 <tr dir-paginate="user in usersList|orderBy:sortKey:reverse|filter:search|itemsPerPage:50" total-items="usersListItems" current-page="pagination.current" ng-class="user.isSelected ? 'bg-info' : '' ">
                     <!--td><input type="checkbox" value="{{$index}}" ng-model="user.isSelected" name="selected_name"> {{user.username}}</td-->
                     <td><strong>{{user.email}}</strong></td>
-                    <td>{{user.roles}}</td>
-                    <td ng-show="isAdmin"><a ui-sref="auth.users.edit_user({id:user.id})" class="btn btn-xs btn-default">Update</a> <button class="btn btn-xs btn-warning" ng-click="delete(user)" ng-hide="user.id == logged_in_user.id">Delete</button></td>
+                    <td>{{user.roles|commaSeparated}}</td>
+                    <td ng-show="isAdmin">
+                        <a ui-sref="auth.users.edit_user({email:user.email})" class="btn btn-xs btn-default">Update</a> 
+                        <button class="btn btn-xs btn-warning" ng-click="delete(user)" ng-hide="user.email == logged_in_user.email">Delete</button>
+                    </td>
                 </tr>
             </tbody>
             <tfoot>
