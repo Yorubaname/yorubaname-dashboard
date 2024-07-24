@@ -20,9 +20,10 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
   '$stateParams',
   '$state',
   'NamesService',
+  'EtymologyService',
   'toastr',
   '$window',
-  function ($scope, $stateParams, $state, namesService, toastr, $window) {
+  function ($scope, $stateParams, $state, namesService, etymologyService, toastr, $window) {
     var originalName = null;
     namesService.prevAndNextNames($stateParams.entry, function (prev, next) {
       $scope.prev = prev;
@@ -33,47 +34,85 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
       originalName = resp.name;
     });
 
-    $scope.generate_glossary = function () {
-      // split the morphology with the dashes if it's not empty
-      if ($scope.name.morphology) {
-        let etymology = $scope.name.etymology;
-        const alreadyAdded = {};
-        const existingPartMeanings = etymology.reduce(function (acc, obj) {
-          acc[obj.part] = obj.meaning;
-          return acc;
-        }, {});
+    const mapExistingPartMeanings = (etymology) => {
+      return etymology.reduce((map, item) => {
+        map[item.part.toLowerCase().normalize('NFC')] = item.meaning;
+        return map;
+      }, {});
+    };
 
-        const morphologyValues = $scope.name.morphology.split(',');
-        let etymologyCounter = 0;
+    const identifyPartsToFetch = (etymologyParts, existingPartMeanings) => {
+      const partsToFetch = [];
+      const alreadyAdded = {}; // To prevent duplicates
 
-        for (let j = 0; j < morphologyValues.length; j++) {
-          const splitMorphology = morphologyValues[j].trim().split('-');
-          // add each entry to etymology list if it does not exist already
-          for (let i = 0; i < splitMorphology.length; i++) {
-            const newPart = splitMorphology[i].trim();
-            if (newPart === '' || alreadyAdded[newPart]) {
-              continue;
-            }
-
-            var newEty = {
-              part: newPart,
-              meaning: existingPartMeanings[newPart] || ''
-            };
-
-            if (etymology[etymologyCounter]) {
-              etymology[etymologyCounter] = newEty;
-            } else {
-              etymology.push(newEty);
-
-            }
-
-            etymologyCounter++;
-            alreadyAdded[newPart] = true;
-          }
+      etymologyParts.forEach(part => {
+        if (!alreadyAdded[part] && !existingPartMeanings[part]) {
+          partsToFetch.push(part);
+          alreadyAdded[part] = true;
         }
-        $scope.name.etymology = etymology.slice(0, etymologyCounter);
-      } else {
+      });
+
+      return partsToFetch;
+    };
+
+    const updateEtymology = (etymologyParts, partMeaningDict, etymology) => {
+      const alreadyAdded = {};
+      let etymologyCounter = 0;
+
+      etymologyParts.forEach(part => {
+        if (!alreadyAdded[part]) {
+          const newEty = {
+            part: part,
+            meaning: partMeaningDict[part] || ''
+          };
+
+          if (etymology[etymologyCounter]) {
+            etymology[etymologyCounter] = newEty;
+          } else {
+            etymology.push(newEty);
+          }
+
+          etymologyCounter++;
+          alreadyAdded[part] = true;
+        }
+      });
+
+      return etymology.slice(0, etymologyCounter);
+    };
+
+    $scope.generate_glossary = function () {
+      if (!$scope.name.morphology) {
         $scope.name.etymology = [];
+        return;
+      }
+
+      $scope.name.morphology = $scope.name.morphology.toLowerCase().normalize('NFC');
+
+      let etymology = $scope.name.etymology;
+      const partMeaningDict = mapExistingPartMeanings(etymology);
+      const etymologyParts = $scope.name.morphology
+        .split(',')
+        .flatMap(value => value.trim().split('-'))
+        .filter(Boolean);
+      const partsToFetch = identifyPartsToFetch(etymologyParts, partMeaningDict);
+
+      if (partsToFetch.length > 0) {
+        etymologyService.getLatestMeaning(partsToFetch)
+          .then(function (data) {
+            for (const key in data) {
+              if (data.hasOwnProperty(key)) {
+                partMeaningDict[key.normalize('NFC')] = data[key];
+              }
+            }
+            $scope.name.etymology = updateEtymology(etymologyParts, partMeaningDict, etymology);
+            toastr.success('Successfully fetched etymology meanings from previous words.')
+          })
+          .catch(function (error) {
+            toastr.error('Error fetching latest etymology part meanings.');
+            console.error('Error fetching latest etymology part meanings:', error);
+          });
+      } else {
+        $scope.name.etymology = updateEtymology(etymologyParts, partMeaningDict, etymology);
       }
     };
 
