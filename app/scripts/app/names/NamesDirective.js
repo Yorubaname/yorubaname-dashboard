@@ -64,8 +64,7 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
     '$uibModal',
     '$stateParams',
     '$rootScope',
-    'toastr',
-    function (api, $uibModal, $stateParams, $rootScope, toastr) {
+    function (api, $uibModal, $stateParams, $rootScope) {
       return {
         //replace: true,
         restrict: 'EA',
