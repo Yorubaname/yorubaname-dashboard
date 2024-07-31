@@ -61,10 +61,10 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
     }
   ]).directive('feedback', [
     'NamesService',
-    '$uibModal',
+    '$modal',
     '$stateParams',
     '$rootScope',
-    function (api, $uibModal, $stateParams, $rootScope) {
+    function (api, $modal, $stateParams, $rootScope) {
       return {
         //replace: true,
         restrict: 'EA',
@@ -74,7 +74,7 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
             scope.feedbacks = resp;
           });
           scope.showFeedbacks = function () {
-            $uibModal.open({
+            $modal.open({
               templateUrl: 'tmpls/names/partials/feedbackModal.html',
               size: 'md',
               controller: function ($scope, $modalInstance) {
