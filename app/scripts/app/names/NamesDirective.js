@@ -61,10 +61,11 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
     }
   ]).directive('feedback', [
     'NamesService',
-    '$modal',
+    '$uibModal',
     '$stateParams',
     '$rootScope',
-    function (api, $modal, $stateParams, $rootScope) {
+    'toastr',
+    function (api, $uibModal, $stateParams, $rootScope, toastr) {
       return {
         //replace: true,
         restrict: 'EA',
@@ -74,7 +75,7 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
             scope.feedbacks = resp;
           });
           scope.showFeedbacks = function () {
-            $modal.open({
+            $uibModal.open({
               templateUrl: 'tmpls/names/partials/feedbackModal.html',
               size: 'md',
               controller: function ($scope, $modalInstance) {
@@ -84,6 +85,7 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
                 // delete all feedbacks and closes modal
                 $scope.deleteFeedbacks = function () {
                   api.deleteFeedbacks(attributes.name, function () {
+                    $scope.feedbacks.splice(0, $scope.feedbacks.length);
                     $modalInstance.close();
                   });
                 };
@@ -91,6 +93,9 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
                 $scope.deleteFeedback = function (feedback) {
                   api.deleteFeedback(feedback.id, feedback.name, function () {
                     $scope.feedbacks.splice($scope.feedbacks.indexOf(feedback), 1);
+                    if (!$scope.feedbacks.length){
+                      $modalInstance.close();
+                    }
                   });
                 };
                 $scope.cancel = function () {
