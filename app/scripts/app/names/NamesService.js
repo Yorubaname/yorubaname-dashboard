@@ -208,12 +208,18 @@ angular.module('NamesModule').service('NamesService', [
       });
     };
     this.deleteFeedbacks = function (name, fn) {
-      return api.deleteJson('/v1/feedbacks/?name=' + name).success(fn).error(function () {
+      return api.deleteJson('/v1/feedbacks/?name=' + name).success(function() {
+        toastr.success('All Feedbacks on ' + name + ' were deleted successfully!');
+        fn();
+      }).error(function () {
         return toastr.error('Feedbacks on ' + name + ' were not deleted. Please try again.');
       });
     };
     this.deleteFeedback = function (id, name, fn) {
-      return api.deleteJson('/v1/feedbacks/' + name + '/' + id).success(fn).error(function () {
+      return api.deleteJson('/v1/feedbacks/' + name + '/' + id).success(function(){
+        toastr.success(`Feedback on ${name} deleted successfully!`);
+        fn();
+      }).error(function () {
         return toastr.error('Feedback was not deleted. Please try again.');
       });
     };
