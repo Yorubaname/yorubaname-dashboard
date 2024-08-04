@@ -92,7 +92,7 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
                 $scope.deleteFeedback = function (feedback) {
                   api.deleteFeedback(feedback.id, feedback.name, function () {
                     $scope.feedbacks.splice($scope.feedbacks.indexOf(feedback), 1);
-                    if (!$scope.feedbacks.length){
+                    if (!$scope.feedbacks.length) {
                       $modalInstance.close();
                     }
                   });
@@ -108,8 +108,8 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
     }
   ]) // Directive adds array of embedded video fields to the Name Form
   .directive('embeddedVideo', [
-    '$stateParams',
-    function ($stateParams) {
+    '$stateParams', 'toastr',
+    function ($stateParams, toastr) {
       return {
         replace: true,
         restrict: 'E',
@@ -129,6 +129,29 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
           };
           scope.remove_video = function (index) {
             scope.name.videos.splice(index, 1);
+          };
+
+          scope.initVideoUrl = function (video) {
+            if (!video.videoUrl && video.videoId) {
+              video.videoUrl = 'https://www.youtube.com/watch?v=' + video.videoId;
+            }
+          };
+          scope.updateVideoId = function (video) {
+            var url = video.videoUrl;
+            var videoId = video.videoId;
+
+            if (url) {
+              var match = url.match(/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([^&]+)/);
+              if (match && match[1]) {
+                videoId = match[1];
+                video.videoId = videoId;
+              } else {
+                toastr.error('Invalid YouTube URL');
+                video.videoId = '';
+              }
+            } else if (videoId) {
+              video.videoUrl = 'https://www.youtube.com/watch?v=' + videoId;
+            }
           };
           scope.$watch('name.videos', function () {
             scope.form.$dirty = true;
