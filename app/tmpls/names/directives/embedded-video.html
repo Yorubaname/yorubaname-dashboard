@@ -1,16 +1,17 @@
-<div class="row etymology" ng-repeat="video in name.videos track by $index">
-    <div class="col-sm-4">
-        <label title="Video ID: This is the alphanumeric code after 'v=' in the YouTube video link. 
-        For example, if the video link is https://www.youtube.com/watch?v=AboutUs123, then the Video ID is AboutUs123.
-        Copy the ID from the link and paste it in the box.">Video ID</label>
-        <input type="text" class="form-control" name="videoId[{{$index}}]" ng-model="video.videoId" placeholder="AboutUs123"
-            required>
-        <span ng-show="form.videoId[{{$index}}].$invalid && !form.videoId[{{$index}}].$pristine"
-            class="help-block text-danger">A video ID is required</span>
+<div class="row etymology" ng-repeat="video in name.videos track by $index" ng-init="initVideoUrl(video)">
+    <div class="col-sm-12">
+        <label title="Video URL: Paste the full YouTube video URL here. 
+        For example, if the video link is https://www.youtube.com/watch?v=AboutUs123, paste it here.">Video URL</label>
+        <input type="text" class="form-control" name="videoUrl[{{$index}}]" ng-model="video.videoUrl" placeholder="https://www.youtube.com/watch?v=AboutUs123" ng-blur="updateVideoId(video)">
     </div>
-    <div class="col-sm-8">
+    <div class="col-sm-12">
         <label>Caption</label>
         <input type="text" class="form-control" name="caption[{{$index}}]" ng-model="video.caption">
+    </div>
+    <div class="col-sm-12" style="display: none;">
+        <label>Video ID</label>
+        <input type="text" class="form-control" name="videoId[{{$index}}]" ng-model="video.videoId" placeholder="AboutUs123" required disabled>
+        <span ng-show="form.videoId[{{$index}}].$invalid && !form.videoId[{{$index}}].$pristine" class="help-block text-danger">A video ID is required</span>
     </div>
     <a class="btn btn-xs btn-danger remove" ng-click="remove_video($index)"><i class="fa fa-times"></i></a>
 </div>
