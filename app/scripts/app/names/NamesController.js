@@ -1,3 +1,5 @@
+/* globals confirm */
+
 'use strict';
 
 /* Controllers */
