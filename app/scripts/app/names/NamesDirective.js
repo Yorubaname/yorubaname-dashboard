@@ -46,7 +46,8 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
           scope.add_etymology = function () {
             return scope.name.etymology.push({
               part: '',
-              meaning: ''
+              meaning: '',
+              isFresh: true
             });
           };
 

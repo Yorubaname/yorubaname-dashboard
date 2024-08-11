@@ -81,6 +81,13 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
     };
 
     $scope.generate_glossary = function () {
+      var regenerate = confirm("Do you want to automatically generate gloss from this morphology value?"+
+        "\nSelect Cancel/No to leave as is.");
+
+      if (!regenerate){
+        return;
+      }
+
       if (!$scope.name.morphology) {
         $scope.name.etymology = [];
         return;
@@ -114,6 +121,8 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
       } else {
         $scope.name.etymology = updateEtymology(etymologyParts, partMeaningDict, etymology);
       }
+      
+      toastr.warning("Please, re-check gloss before saving/publishing as some parts might have been removed/changed.");
     };
 
     $scope.publish = function () {
