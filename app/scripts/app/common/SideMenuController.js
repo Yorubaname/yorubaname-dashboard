@@ -63,6 +63,12 @@ angular.module('CommonModule').controller('SideMenuController', [
             link: 'auth.users.list_users({role:\'all\'})'
           }
         ]
+      },
+      {
+        id: 3,
+        title: 'Geolocation',
+        icon: 'fa fa-list-ol first_level_icon',
+        link: 'auth.geolocation.list_geolocation'
       });
     }
     // accordion menu
