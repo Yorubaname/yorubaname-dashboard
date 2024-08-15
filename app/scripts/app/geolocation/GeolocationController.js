@@ -19,7 +19,7 @@ angular.module('GeolocationModule')
             // Open the modal to add a new geolocation
             $scope.openAddGeoLocationModal = function () {
                 var modalInstance = $modal.open({
-                    templateUrl: 'tmpls/geolocation/partials/addGeoLocationModal.html',
+                    templateUrl: 'tmpls/geolocation/partials/addGeolocationModal.html',
                     controller: 'AddGeoLocationModalController'
                 });
 
