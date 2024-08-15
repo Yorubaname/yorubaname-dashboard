@@ -34,7 +34,7 @@ angular.module('GeolocationModule')
             };
 
             // Delete a geolocation
-            $scope.deleteGeoLocation = function (id, place, index) {
+            $scope.deleteGeoLocation = function (id, place) {
                 GeoLocationService.delete(id, place)
                     .then(function (data) {
                         $scope.loadGeoLocations();
