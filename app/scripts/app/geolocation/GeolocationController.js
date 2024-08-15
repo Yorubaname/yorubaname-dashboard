@@ -11,8 +11,8 @@ angular.module('GeolocationModule')
 
             // Load all geolocations
             $scope.loadGeoLocations = function () {
-                GeoLocationService.load().then(function (response) {
-                    $scope.geolocations = response.data;
+                GeoLocationService.load(true).then(function (data) {
+                    $scope.geolocations = data;
                 });
             };
 
@@ -25,8 +25,8 @@ angular.module('GeolocationModule')
 
                 modalInstance.result
                 .then(function (newGeoLocation) {
-                    $scope.geolocations.push(newGeoLocation);
-                    toastr.success(`Geolocation '${newGeoLocation.place}' was created successfully.`)
+                    $scope.loadGeoLocations();
+                    toastr.success(`Geolocation '${newGeoLocation.place}' was created successfully.`);
                 })
                 .catch(function(error){
                     toastr.error(error.data.message);
@@ -37,7 +37,7 @@ angular.module('GeolocationModule')
             $scope.deleteGeoLocation = function (id, place, index) {
                 GeoLocationService.delete(id, place)
                     .then(function (data) {
-                        $scope.geolocations.splice(index, 1);
+                        $scope.loadGeoLocations();
                         toastr.success(data.data.message);
                     })
                     .catch(function (error) {
