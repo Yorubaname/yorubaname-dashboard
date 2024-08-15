@@ -7,8 +7,22 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
     function (geo) {
       return {
         link: function (scope) {
-          scope.query = function () {
-            return geo.load();
+          geo.load().then(function (data) {
+            scope.geolocations = data;
+          });
+
+          scope.query = function (query) {
+            if (!scope.geolocations) return [];
+
+            if (!query || query.trim() === '') {
+              // If the query is empty or null, return the full list
+              return scope.geolocations;
+            }
+
+            // Otherwise, filter the list based on the query
+            return scope.geolocations.filter(function (location) {
+              return location.place.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+            });
           };
         }
       };

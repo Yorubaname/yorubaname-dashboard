@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <h3 class="modal-title">Add New GeoLocation</h3>
+    <button type="button" class="close" ng-click="cancel()">&times;</button>
+</div>
+<div class="modal-body">
+    <form>
+        <div class="form-group">
+            <label>Place:</label>
+            <input type="text" ng-model="newGeoLocation.place" class="form-control" required />
+        </div>
+        <div class="form-group">
+            <label>Region:</label>
+            <input type="text" ng-model="newGeoLocation.region" class="form-control" required />
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="addGeoLocation()">Add</button>
+    <button class="btn btn-secondary" ng-click="cancel()">Cancel</button>
+</div>

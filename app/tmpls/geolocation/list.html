@@ -1,0 +1,22 @@
+<div class="row">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Place</th>
+                <th>Region</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="geo in geolocations">
+                <td>{{ geo.place }}</td>
+                <td>{{ geo.region }}</td>
+                <td>
+                    <button class="btn btn-danger" ng-click="deleteGeoLocation(geo.id, geo.place)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button class="btn btn-primary" ng-click="openAddGeoLocationModal()">Add New GeoLocation</button>
+</div>

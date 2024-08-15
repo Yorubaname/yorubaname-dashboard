@@ -25,13 +25,13 @@
             <div class="form-group">
                 <label for="geolocation" class="required">Geolocation</label>
                 <span class="help-block">Where is this name most commonly used? Choose "General" if this name applies to
-                    more than one region, or chosse "Others/Don't Know" if you are not sure of its specific
+                    more than one region, or choose "Others/Don't Know" if you are not sure of its specific
                     origin.</span>
-                <tags-input ng-model="name.geoLocation" id="geolocation" add-on-space="true" min-length="3"
+                <tags-input ng-model="name.geoLocation" id="geolocation" add-on-space="true"
                     display-property="place" add-from-autocomplete-only="true" placeholder="Select geolocation"
                     required>
-                    <auto-complete source="query($query)" display-property="place" load-on-focus="true"
-                        max-results-to-show="20"></auto-complete>
+                    <auto-complete source="query($query)" display-property="place" load-on-focus="true" min-length="1"
+                        max-results-to-show="50"></auto-complete>
                 </tags-input>
             </div>
 
