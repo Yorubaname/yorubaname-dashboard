@@ -2,9 +2,10 @@
 
 /* States */
 angular.module('UsersModule').config([
-  '$stateProvider',
-  function ($stateProvider) {
-
+  '$stateProvider', 'DomainConfigProvider',
+  function ($stateProvider, DomainConfigProvider) {
+    var domainConfig = DomainConfigProvider.$get();
+    
     // State Configurations
     $stateProvider
 
@@ -18,21 +19,21 @@ angular.module('UsersModule').config([
       })
 
       .state('auth.users.add_user', {
-        page_title: 'Yoruba Names Admin - Add User',
+        page_title: `${domainConfig.siteDisplayName} Admin - Add User`,
         ncyBreadcrumb: {label: 'Add User'},
         url: '/new',
         templateUrl: 'tmpls/users/new.html'
       })
 
       .state('auth.users.edit_user', {
-        page_title: 'Yoruba Names Admin - Edit User',
+        page_title: `${domainConfig.siteDisplayName} Admin - Edit User`,
         ncyBreadcrumb: {label: 'Edit User Info'},
         url: '/edit/:email',
         templateUrl: 'tmpls/users/edit.html'
       })
 
       .state('auth.users.list_users', {
-        page_title: 'Yoruba Names Admin - All Users',
+        page_title: `${domainConfig.siteDisplayName} Admin - All Users`,
         ncyBreadcrumb: {label: 'All Users'},
         url: '/lists/:role',
         templateUrl: 'tmpls/users/lists.html',

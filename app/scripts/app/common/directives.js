@@ -7,7 +7,7 @@ angular.module('CommonModule')  // change page title
     return {
       link: function (scope, element) {
         var listener = function (event, toState) {
-          var title = 'Yoruba Names Admin';
+          var title = `${$rootScope.siteDisplayName} Admin`;
           if (toState.page_title) {
             title = toState.page_title;
           }

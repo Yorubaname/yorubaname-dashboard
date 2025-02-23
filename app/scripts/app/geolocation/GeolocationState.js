@@ -2,8 +2,9 @@
 
 /* States */
 angular.module('GeolocationModule').config([
-  '$stateProvider',
-  function ($stateProvider) {
+  '$stateProvider', 'DomainConfigProvider',
+  function ($stateProvider, DomainConfigProvider) {
+    var domainConfig = DomainConfigProvider.$get();
 
     // State Configurations
     $stateProvider
@@ -18,7 +19,7 @@ angular.module('GeolocationModule').config([
       })
 
       .state('auth.geolocation.list_geolocation', {
-        page_title: 'Yoruba Names Admin - Geolocation',
+        page_title: `${domainConfig.siteDisplayName} Admin - Geolocation`,
         ncyBreadcrumb: {label: 'All Geolocations'},
         url: '/list',
         templateUrl: 'tmpls/geolocation/list.html',

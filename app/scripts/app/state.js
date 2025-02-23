@@ -3,11 +3,13 @@
 angular.module('dashboardappApp').config([
   '$stateProvider',
   '$urlRouterProvider',
-  function ($stateProvider, $urlRouterProvider) {
+  'DomainConfigProvider',
+  function ($stateProvider, $urlRouterProvider, DomainConfigProvider) {
 
     // Use $urlRouterProvider to configure any redirects (when) and invalid urls (otherwise).
     $urlRouterProvider.when('/home', '/').otherwise('/login');
 
+    var domainConfig = DomainConfigProvider.$get();
     // State Configurations
     $stateProvider
 
@@ -20,7 +22,7 @@ angular.module('dashboardappApp').config([
 
       // Errors > 404
       .state('error.404', {
-        page_title: 'Yoruba Names - Admin - Error 404',
+        page_title: `${domainConfig.siteDisplayName} - Admin - Error 404`,
         url: '/404',
         templateUrl: 'tmpls/error.404.html'
       });

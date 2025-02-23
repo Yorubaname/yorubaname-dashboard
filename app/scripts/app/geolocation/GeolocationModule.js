@@ -1,3 +1,3 @@
 'use strict';
 
-angular.module('GeolocationModule', ['ui.router', 'toastr', 'ngStorage']);
+angular.module('GeolocationModule', ['ui.router', 'toastr', 'ngStorage', 'domainConfigModule']);
