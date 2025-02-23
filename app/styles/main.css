@@ -1985,6 +1985,15 @@ h5 {
   margin: 4px 0 0 40px;
   float: left;
 }
+
+#main_header .yoruba-theme {
+  background-color: #20638f;
+}
+
+#main_header .igbo-theme {
+  background-color: green;
+}
+
 /* -- 6. Breadcrumbs -- */
 #breadcrumbs {
   height: 32px;
