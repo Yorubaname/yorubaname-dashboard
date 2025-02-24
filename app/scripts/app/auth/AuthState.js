@@ -1,14 +1,16 @@
 'use strict';
 /* States */
 angular.module('AuthModule').config([
-  '$stateProvider',
-  function ($stateProvider) {
+  '$stateProvider', 'DomainConfigProvider',
+  function ($stateProvider, DomainConfigProvider) {
+    var domainConfig = DomainConfigProvider.$get();
+
     // State Configurations
     $stateProvider
 
       // Login Page
       .state('login', {
-        page_title: 'Yoruba Names - Admin - Login',
+        page_title: `${domainConfig.siteDisplayName} - Admin - Login`,
         url: '/login',
         templateUrl: 'tmpls/login.html',
         controller: 'AuthController',
@@ -29,7 +31,7 @@ angular.module('AuthModule').config([
 
       // Dashboard
       .state('auth.home', {
-        page_title: 'Yoruba Names - Admin - Dashboard',
+        page_title: `${domainConfig.siteDisplayName} - Admin - Dashboard`,
         url: '/',
         templateUrl: 'tmpls/dashboard.html',
         ncyBreadcrumb: {label: 'Home'},

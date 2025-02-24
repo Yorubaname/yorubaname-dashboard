@@ -2,8 +2,10 @@
 
 /* States */
 angular.module('NamesModule').config([
-  '$stateProvider',
-  function ($stateProvider) {
+  '$stateProvider', 'DomainConfigProvider',
+  function ($stateProvider, DomainConfigProvider) {
+    var domainConfig = DomainConfigProvider.$get();
+    
     // State Configurations
     $stateProvider
 
@@ -19,7 +21,7 @@ angular.module('NamesModule').config([
 
     // Names > New Entries
       .state('auth.names.add_entries', {
-        page_title: 'Yoruba Names - Admin - Add Name Entries',
+        page_title: `${domainConfig.siteDisplayName} - Admin - Add Name Entries`,
         ncyBreadcrumb: { label: 'Add Name Entries' },
         url: '/new',
         templateUrl: 'tmpls/names/new.html',
@@ -28,7 +30,7 @@ angular.module('NamesModule').config([
 
     // Edit Name Entry
       .state('auth.names.edit_entries', {
-        page_title: 'Yoruba Names - Admin - Edit Entry',
+        page_title: `${domainConfig.siteDisplayName} - Admin - Edit Entry`,
         ncyBreadcrumb: { label: 'Edit Entry' },
         url: '/edit/:entry',
         templateUrl: 'tmpls/names/edit.html',
@@ -37,7 +39,7 @@ angular.module('NamesModule').config([
 
     // Names > Published Names
       .state('auth.names.list_entries', {
-        page_title: 'Yoruba Names - Admin - Names',
+        page_title: `${domainConfig.siteDisplayName} - Admin - Names`,
         ncyBreadcrumb: { label: 'Names Entries' },
         url: '/lists/:status?:submmittedBy',
         templateUrl: 'tmpls/names/lists.html',
@@ -46,7 +48,7 @@ angular.module('NamesModule').config([
 
     // Names > Name Search
       .state('auth.names.search', {
-        page_title: 'Yoruba Names - Admin - Name Search',
+        page_title: `${domainConfig.siteDisplayName} - Admin - Name Search`,
         ncyBreadcrumb: { label: 'Search' },
         url: '/search/:entry',
         templateUrl: 'tmpls/names/search.html',
@@ -56,7 +58,7 @@ angular.module('NamesModule').config([
 
     // All Names Feedback
       .state('auth.names.feedbacks', {
-        page_title: 'Yoruba Names - Admin - Feedbacks',
+        page_title: `${domainConfig.siteDisplayName} - Admin - Feedbacks`,
         ncyBreadcrumb: { label: 'Names Feedbacks' },
         url: '/feedbacks',
         templateUrl: 'tmpls/names/feedbacks-list.html',

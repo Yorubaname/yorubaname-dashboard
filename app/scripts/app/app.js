@@ -21,6 +21,7 @@ angular.module('dashboardappApp', [
   'underscore',
   'angularUtils.directives.dirPagination',
   // application modules
+  'domainConfigModule',
   'AuthModule'
 ])  /* Config Block */.config([
   '$provide',
@@ -79,9 +80,10 @@ angular.module('dashboardappApp', [
 })  /* bootstrap-ui tooltips */.config(function ($tooltipProvider) {
   $tooltipProvider.options({ appendToBody: true });
 })  /* Prefix ng-storage with application name for new change's sakes */.config([
-  '$localStorageProvider',
-  function ($localStorageProvider) {
-    $localStorageProvider.setKeyPrefix('Yoruba::Dictionary::App::v0.0.1-');
+  '$localStorageProvider', 'DomainConfigProvider',
+  function ($localStorageProvider, DomainConfigProvider) {
+    var domainConfig = DomainConfigProvider.$get();
+    $localStorageProvider.setKeyPrefix(`${domainConfig.language}::Dictionary::App::v0.0.1-`);
   }
 ])  /* Run Block */.run([
   '$rootScope',
@@ -89,7 +91,8 @@ angular.module('dashboardappApp', [
   '$stateParams',
   '$localStorage',
   'toastr',
-  function ($rootScope, $state, $stateParams, $localStorage, toastr) {
+  'DomainConfig',
+  function ($rootScope, $state, $stateParams, $localStorage, toastr, DomainConfig) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
     var is_logged_in = function () {
@@ -145,6 +148,10 @@ angular.module('dashboardappApp', [
     $rootScope.sideMenuAct = false;
     $rootScope.topMenuAct = true;
     $rootScope.fixedLayout = true;
+
+    $rootScope.siteDisplayName = DomainConfig.siteDisplayName;
+    $rootScope.topBarColor = DomainConfig.topBarColor;
+    $rootScope.logoUrl = DomainConfig.logoUrl;
   }
 ])  /* filters */
   // https://github.com/angular-ui/ui-utils

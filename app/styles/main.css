@@ -1797,7 +1797,6 @@ h5 {
 /* -- 5. Header -- */
 #main_header {
   height: 48px;
-  background: #20638f;
   position: fixed;
   top: 0;
   left: 0;
@@ -1985,6 +1984,15 @@ h5 {
   margin: 4px 0 0 40px;
   float: left;
 }
+
+.yoruba-theme {
+  background-color: #20638f;
+}
+
+.igbo-theme {
+  background: green;
+}
+
 /* -- 6. Breadcrumbs -- */
 #breadcrumbs {
   height: 32px;
