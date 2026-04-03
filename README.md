@@ -1,11 +1,10 @@
 # dashboardapp
 
-## Yorubaname Dashboard App
+## Yorubaname Dashboard App (Admin Portal)
 
-The Yorubaname Dashboard application is a stand alone AngularJs that interacts with the backend services.
+The Yorubaname Dashboard application is a standalone AngularJS application that serves as the **Admin Portal** for managing name entries in the Yoruba Name Dictionary.
 
-To function, it needs to be able to send requests to a running backend. The backend source and
-the instructions on how to run it can be found here https://github.com/Yorubaname/yorubaname-website
+To function, it needs to be able to send requests to a running backend service. This dashboard is compatible with both the legacy Java backend and the [modern .NET API](https://github.com/Yorubaname/YorubaNameDictionary).
 
 ### Prerequisites
 
