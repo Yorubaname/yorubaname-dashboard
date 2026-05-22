@@ -2,19 +2,83 @@
 
 'use strict';
 
+var GLOSSARY_REGENERATE_PROMPT = "Do you want to automatically generate gloss from this morphology value?\nSelect Cancel/No to leave as is.";
+var GLOSSARY_RECHECK_WARNING = "Please, re-check gloss before saving/publishing as some parts might have been removed/changed.";
+var GLOSSARY_FETCH_SUCCESS = 'Successfully fetched English definitions for glossary parts.';
+var GLOSSARY_FETCH_ERROR = 'Error fetching English definitions for glossary parts.';
+
+function notifySubmittedMeanings(toastr, namesEtymologyWorkflow, submissionResult) {
+  var message = namesEtymologyWorkflow.formatSubmittedMeaningsMessage(submissionResult);
+  if (message) {
+    toastr.info(message);
+  }
+}
+
+function submitMissingDefinitionsWithNotify(scope, etymologyService, namesEtymologyWorkflow, toastr) {
+  return etymologyService.submitMissingDefinitions(scope.name.etymology)
+    .then(function (submissionResult) {
+      notifySubmittedMeanings(toastr, namesEtymologyWorkflow, submissionResult);
+      return submissionResult;
+    });
+}
+
+function generateGlossary(scope, etymologyService, namesEtymologyWorkflow, toastr) {
+  var regenerate = confirm(GLOSSARY_REGENERATE_PROMPT);
+
+  if (!regenerate) {
+    return;
+  }
+
+  if (!scope.name.morphology) {
+    scope.name.etymology = [];
+    return;
+  }
+
+  namesEtymologyWorkflow.prepareGlossary(scope.name.morphology, etymologyService)
+    .then(function (result) {
+      scope.name.morphology = result.normalizedMorphology;
+      scope.name.etymology = result.etymology;
+      toastr.success(GLOSSARY_FETCH_SUCCESS);
+    })
+    .catch(function (error) {
+      toastr.error(GLOSSARY_FETCH_ERROR);
+      console.error(GLOSSARY_FETCH_ERROR + ':', error);
+    });
+
+  toastr.warning(GLOSSARY_RECHECK_WARNING);
+}
+
 /* Controllers */
 angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
   '$rootScope',
   '$scope',
   'NamesService',
-  function ($rootScope, $scope, namesService) {
+  'EtymologyService',
+  'NamesEtymologyWorkflow',
+  'toastr',
+  function ($rootScope, $scope, namesService, etymologyService, namesEtymologyWorkflow, toastr) {
     $scope.new = true;
     $scope.name = {};
+
+    $scope.generate_glossary = function () {
+      generateGlossary($scope, etymologyService, namesEtymologyWorkflow, toastr);
+    };
+
     $scope.submit = function () {
-      return namesService.addName($scope.name, function () {
-        // reset the form models fields
-        $scope.name = {};
-      });
+      if (!Array.isArray($scope.name.etymology) || $scope.name.etymology.length === 0) {
+        return namesService.addName($scope.name, function () {
+          // reset the form models fields
+          $scope.name = {};
+        });
+      }
+
+      return submitMissingDefinitionsWithNotify($scope, etymologyService, namesEtymologyWorkflow, toastr)
+        .then(function () {
+          return namesService.addName($scope.name, function () {
+            // reset the form models fields
+            $scope.name = {};
+          });
+        });
     };
   }
 ]).controller('namesEditEntryCtrl', [
@@ -23,9 +87,10 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
   '$state',
   'NamesService',
   'EtymologyService',
+  'NamesEtymologyWorkflow',
   'toastr',
   '$window',
-  function ($scope, $stateParams, $state, namesService, etymologyService, toastr, $window) {
+  function ($scope, $stateParams, $state, namesService, etymologyService, namesEtymologyWorkflow, toastr, $window) {
     var originalName = null;
     namesService.prevAndNextNames($stateParams.entry, function (prev, next) {
       $scope.prev = prev;
@@ -36,114 +101,33 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
       originalName = resp.name;
     });
 
-    const mapExistingPartMeanings = (etymology) => {
-      return etymology.reduce((map, item) => {
-        map[item.part.toLowerCase().normalize('NFC')] = item.meaning;
-        return map;
-      }, {});
-    };
-
-    const identifyPartsToFetch = (etymologyParts, existingPartMeanings) => {
-      const partsToFetch = [];
-      const alreadyAdded = {}; // To prevent duplicates
-
-      etymologyParts.forEach(part => {
-        if (!alreadyAdded[part] && !existingPartMeanings[part]) {
-          partsToFetch.push(part);
-          alreadyAdded[part] = true;
-        }
-      });
-
-      return partsToFetch;
-    };
-
-    const updateEtymology = (etymologyParts, partMeaningDict, etymology) => {
-      const alreadyAdded = {};
-      let etymologyCounter = 0;
-
-      etymologyParts.forEach(part => {
-        if (!alreadyAdded[part]) {
-          const newEty = {
-            part: part,
-            meaning: partMeaningDict[part] || ''
-          };
-
-          if (etymology[etymologyCounter]) {
-            etymology[etymologyCounter] = newEty;
-          } else {
-            etymology.push(newEty);
-          }
-
-          etymologyCounter++;
-          alreadyAdded[part] = true;
-        }
-      });
-
-      return etymology.slice(0, etymologyCounter);
-    };
-
     $scope.generate_glossary = function () {
-      var regenerate = confirm("Do you want to automatically generate gloss from this morphology value?"+
-        "\nSelect Cancel/No to leave as is.");
-
-      if (!regenerate){
-        return;
-      }
-
-      if (!$scope.name.morphology) {
-        $scope.name.etymology = [];
-        return;
-      }
-
-      $scope.name.morphology = $scope.name.morphology.toLowerCase().normalize('NFC');
-
-      let etymology = $scope.name.etymology;
-      const partMeaningDict = mapExistingPartMeanings(etymology);
-      const etymologyParts = $scope.name.morphology
-        .split(',')
-        .flatMap(value => value.trim().split('-'))
-        .filter(Boolean);
-      const partsToFetch = identifyPartsToFetch(etymologyParts, partMeaningDict);
-
-      if (partsToFetch.length > 0) {
-        etymologyService.getLatestMeaning(partsToFetch)
-          .then(function (data) {
-            for (var key in data) {
-              if (data.hasOwnProperty(key)) {
-                partMeaningDict[key.normalize('NFC')] = data[key];
-              }
-            }
-            $scope.name.etymology = updateEtymology(etymologyParts, partMeaningDict, etymology);
-            toastr.success('Successfully fetched etymology meanings from previous words.');
-          })
-          .catch(function (error) {
-            toastr.error('Error fetching latest etymology part meanings.');
-            console.error('Error fetching latest etymology part meanings:', error);
-          });
-      } else {
-        $scope.name.etymology = updateEtymology(etymologyParts, partMeaningDict, etymology);
-      }
-      
-      toastr.warning("Please, re-check gloss before saving/publishing as some parts might have been removed/changed.");
+      generateGlossary($scope, etymologyService, namesEtymologyWorkflow, toastr);
     };
 
     $scope.publish = function () {
       // update name first, then publish
-      return namesService.updateName(originalName, $scope.name, function () {
-        // Publish the name
-        return namesService.addNameToIndex($scope.name.name).success(function () {
-          $scope.name.state = 'PUBLISHED';
-          $scope.name.indexed = true;
-          toastr.info($scope.name.name + ' has been published');
-          return $window.history.back();
+      return submitMissingDefinitionsWithNotify($scope, etymologyService, namesEtymologyWorkflow, toastr)
+        .then(function () {
+          return namesService.updateName(originalName, $scope.name, function () {
+            // Publish the name
+            return namesService.addNameToIndex($scope.name.name).success(function () {
+              $scope.name.state = 'PUBLISHED';
+              $scope.name.indexed = true;
+              toastr.info($scope.name.name + ' has been published');
+              return $window.history.back();
+            });
+          });
         });
-      });
     };
     $scope.goto = function (entry) {
       return $state.go('auth.names.edit_entries', { entry: entry });
     };
     $scope.submit = function () {
-      return namesService.updateName(originalName, $scope.name);
+      return submitMissingDefinitionsWithNotify($scope, etymologyService, namesEtymologyWorkflow, toastr)
+        .then(function () {
+          return namesService.updateName(originalName, $scope.name);
+        });
     };
     $scope.delete = function () {
       if ($window.confirm('Are you sure you want to delete ' + $scope.name.name + '?')) {
