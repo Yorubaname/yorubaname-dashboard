@@ -111,6 +111,17 @@ form .etymology:hover .remove {
   display: block;
 }
 
+form .etymology .etymology-cycle {
+  min-width: 34px;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+form .etymology .etymology-cycle-count {
+  min-width: 52px;
+  text-align: center;
+}
+
 span.help-block {
   margin-bottom: 10px;
 }

@@ -47,29 +47,196 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
   ])  // Directive adds array of Etymology fields to the Name Form
   .directive('etymology', [
     '$stateParams',
-    function ($stateParams) {
+    'EtymologyService',
+    'toastr',
+    function ($stateParams, etymologyService, toastr) {
       return {
         replace: true,
         restrict: 'E',
         templateUrl: 'tmpls/names/directives/etymology.html',
         link: function (scope) {
-          if (!$stateParams.entry) {
+          var hasNameModel = function () {
+            return !!scope.name;
+          };
+
+          var ensureEtymologyArray = function () {
+            if (!hasNameModel()) {
+              return false;
+            }
+
+            if (!Array.isArray(scope.name.etymology)) {
+              scope.name.etymology = [];
+            }
+
+            return true;
+          };
+
+          var normalizePart = function (part) {
+            return (part || '').toLowerCase().normalize('NFC').trim();
+          };
+
+          var findDuplicateIndex = function (part, currentIndex) {
+            if (!ensureEtymologyArray() || !part) {
+              return -1;
+            }
+
+            for (var i = 0; i < scope.name.etymology.length; i++) {
+              if (i === currentIndex) {
+                continue;
+              }
+
+              if (normalizePart(scope.name.etymology[i] && scope.name.etymology[i].part) === part) {
+                return i;
+              }
+            }
+
+            return -1;
+          };
+
+          var ensureDefinitionState = function (item) {
+            if (!Array.isArray(item.definitions)) {
+              item.definitions = [];
+            }
+
+            if (typeof item.selectedDefinitionIndex !== 'number') {
+              item.selectedDefinitionIndex = item.definitions.indexOf(item.meaning);
+            }
+
+            if (item.selectedDefinitionIndex < 0 || item.selectedDefinitionIndex >= item.definitions.length) {
+              item.selectedDefinitionIndex = -1;
+            }
+          };
+
+          var applyFetchedDefinitions = function (item, definitions) {
+            item.definitions = (definitions || []).filter(Boolean);
+
+            if (item.definitions.length === 0) {
+              item.selectedDefinitionIndex = -1;
+              item.meaning = item.meaning || '';
+              return;
+            }
+
+            item.selectedDefinitionIndex = 0;
+            item.meaning = item.definitions[0];
+          };
+
+          if (!$stateParams.entry && ensureEtymologyArray()) {
             scope.name.etymology = [];
           }
 
           scope.add_etymology = function () {
+            if (!ensureEtymologyArray()) {
+              return;
+            }
+
             return scope.name.etymology.push({
               part: '',
               meaning: '',
+              definitions: [],
+              selectedDefinitionIndex: -1,
               isFresh: true
             });
           };
 
+          scope.fetch_definitions = function (etymology) {
+            if (!etymology || !etymology.isFresh) {
+              return;
+            }
+
+            var currentIndex = ensureEtymologyArray() ? scope.name.etymology.indexOf(etymology) : -1;
+
+            var normalizedPart = normalizePart(etymology.part);
+            if (!normalizedPart) {
+              etymology.definitions = [];
+              etymology.selectedDefinitionIndex = -1;
+              etymology.meaning = '';
+              return;
+            }
+
+            if (findDuplicateIndex(normalizedPart, currentIndex) >= 0) {
+              if (currentIndex >= 0) {
+                scope.name.etymology.splice(currentIndex, 1);
+              }
+              toastr.warning('Duplicate etymology part "' + normalizedPart + '" was removed.');
+              return;
+            }
+
+            etymology.part = normalizedPart;
+
+            etymologyService.getMeanings([normalizedPart])
+              .then(function (data) {
+                var definitions = data && (data[normalizedPart] || data[etymology.part]) || [];
+                applyFetchedDefinitions(etymology, definitions);
+              })
+              .catch(function () {
+                toastr.error('Could not fetch English definitions for this etymology part.');
+              });
+          };
+
+          scope.can_cycle = function (index) {
+            var item = scope.name.etymology[index];
+            if (!item) {
+              return false;
+            }
+
+            ensureDefinitionState(item);
+            return item.definitions.length > 1;
+          };
+
+          scope.cycle_meaning = function (index) {
+            var item = scope.name.etymology[index];
+            if (!item) {
+              return;
+            }
+
+            ensureDefinitionState(item);
+            if (item.definitions.length <= 1) {
+              return;
+            }
+
+            item.selectedDefinitionIndex = (item.selectedDefinitionIndex + 1) % item.definitions.length;
+            item.meaning = item.definitions[item.selectedDefinitionIndex];
+          };
+
+          scope.definition_position = function (index) {
+            var item = scope.name.etymology[index];
+            if (!item) {
+              return 0;
+            }
+
+            ensureDefinitionState(item);
+            return item.selectedDefinitionIndex >= 0 ? item.selectedDefinitionIndex + 1 : 0;
+          };
+
+          scope.definition_total = function (index) {
+            var item = scope.name.etymology[index];
+            if (!item) {
+              return 0;
+            }
+
+            ensureDefinitionState(item);
+            return item.definitions.length;
+          };
+
           scope.remove_etymology = function (index) {
+            if (!ensureEtymologyArray()) {
+              return;
+            }
+
             scope.name.etymology.splice(index, 1);
           };
+
           scope.$watch('name.etymology', function () {
-            scope.form.$dirty = true;
+            if (!ensureEtymologyArray()) {
+              return;
+            }
+
+            if (Array.isArray(scope.name.etymology)) {
+              scope.name.etymology.forEach(ensureDefinitionState);
+            }
+            if (scope.form) {
+              scope.form.$dirty = true;
+            }
           }, true);
         }
       };

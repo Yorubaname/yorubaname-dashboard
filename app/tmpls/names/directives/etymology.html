@@ -1,13 +1,22 @@
 <div class="row etymology" ng-repeat="etymology in name.etymology track by $index">
     <div class="col-sm-4">
         <label>Part</label>
-        <input type="text" ng-disabled="!etymology.isFresh" class="form-control" name="part[{{$index}}]" ng-model="etymology.part" required>
+        <input type="text" ng-disabled="!etymology.isFresh" class="form-control" name="part[{{$index}}]" ng-model="etymology.part" ng-blur="fetch_definitions(etymology)" required>
         <span ng-show="form.part[{{$index}}].$invalid && !form.part[{{$index}}].$pristine"
             class="help-block text-danger">This etymology part is required</span>
     </div>
     <div class="col-sm-8">
         <label>Meaning</label>
-        <input type="text" class="form-control" name="meaning[{{$index}}]" ng-model="etymology.meaning" required>
+        <div class="input-group">
+            <input type="text" class="form-control" name="meaning[{{$index}}]" ng-model="etymology.meaning" required>
+            <span class="input-group-addon etymology-cycle-count" ng-if="definition_total($index) > 0">{{definition_position($index)}} / {{definition_total($index)}}</span>
+            <span class="input-group-btn" ng-if="can_cycle($index)">
+                <button type="button" class="btn btn-default etymology-cycle" ng-click="cycle_meaning($index)" title="Show next definition">
+                    <i class="glyphicon glyphicon-refresh" aria-hidden="true"></i>
+                    <span class="sr-only">Show next definition</span>
+                </button>
+            </span>
+        </div>
         <span ng-show="form.meaning[{{$index}}].$invalid && !form.meaning[{{$index}}].$pristine"
             class="help-block text-danger">This etymology meaning is required</span>
     </div>
