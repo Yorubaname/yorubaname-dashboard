@@ -10,7 +10,12 @@ var GLOSSARY_FETCH_ERROR = 'Error fetching English definitions for glossary part
 function notifySubmittedMeanings(toastr, namesEtymologyWorkflow, submissionResult) {
   var message = namesEtymologyWorkflow.formatSubmittedMeaningsMessage(submissionResult);
   if (message) {
-    toastr.info(message);
+    toastr.info(message, null, {
+      timeOut: 0,
+      extendedTimeOut: 0,
+      closeButton: true,
+      tapToDismiss: false
+    });
   }
 }
 

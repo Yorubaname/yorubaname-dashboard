@@ -75,6 +75,24 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
             return (part || '').toLowerCase().normalize('NFC').trim();
           };
 
+          var findDuplicateIndex = function (part, currentIndex) {
+            if (!ensureEtymologyArray() || !part) {
+              return -1;
+            }
+
+            for (var i = 0; i < scope.name.etymology.length; i++) {
+              if (i === currentIndex) {
+                continue;
+              }
+
+              if (normalizePart(scope.name.etymology[i] && scope.name.etymology[i].part) === part) {
+                return i;
+              }
+            }
+
+            return -1;
+          };
+
           var ensureDefinitionState = function (item) {
             if (!Array.isArray(item.definitions)) {
               item.definitions = [];
@@ -125,11 +143,21 @@ angular.module('NamesModule')  // Directive adds the geolocation autocompletes o
               return;
             }
 
+            var currentIndex = ensureEtymologyArray() ? scope.name.etymology.indexOf(etymology) : -1;
+
             var normalizedPart = normalizePart(etymology.part);
             if (!normalizedPart) {
               etymology.definitions = [];
               etymology.selectedDefinitionIndex = -1;
               etymology.meaning = '';
+              return;
+            }
+
+            if (findDuplicateIndex(normalizedPart, currentIndex) >= 0) {
+              if (currentIndex >= 0) {
+                scope.name.etymology.splice(currentIndex, 1);
+              }
+              toastr.warning('Duplicate etymology part "' + normalizedPart + '" was removed.');
               return;
             }
 
