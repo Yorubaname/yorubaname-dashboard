@@ -103,7 +103,7 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
     });
     namesService.getName($stateParams.entry, false, function (resp) {
       $scope.name = resp;
-      originalName = resp.name;
+      originalName = resp.key;
     });
 
     $scope.generate_glossary = function () {
@@ -116,7 +116,7 @@ angular.module('NamesModule').controller('NamesAddEntriesCtrl', [
         .then(function () {
           return namesService.updateName(originalName, $scope.name, function () {
             // Publish the name
-            return namesService.addNameToIndex($scope.name.name).success(function () {
+            return namesService.addNameToIndex(originalName).success(function () {
               $scope.name.state = 'PUBLISHED';
               $scope.name.indexed = true;
               toastr.info($scope.name.name + ' has been published');
