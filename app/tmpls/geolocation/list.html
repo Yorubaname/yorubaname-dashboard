@@ -4,6 +4,7 @@
             <tr>
                 <th>Place</th>
                 <th>Region</th>
+                <th>Hide on website</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -11,6 +12,10 @@
             <tr ng-repeat="geo in geolocations">
                 <td>{{ geo.place }}</td>
                 <td>{{ geo.region }}</td>
+                <td>
+                    <input type="checkbox" ng-model="geo.hideOnWebsite" ng-change="toggleHide(geo)"
+                           title="Hide this location on the website" aria-label="Hide {{ geo.place }} on the website" />
+                </td>
                 <td>
                     <button class="btn btn-danger" ng-click="deleteGeoLocation(geo.id, geo.place)">Delete</button>
                 </td>
