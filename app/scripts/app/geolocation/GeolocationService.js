@@ -28,6 +28,11 @@ angular.module('dashboardappApp').service('geolocationService', [
       return $http.post(baseUrl, geolocation);
     };
 
+    // Set whether the websites hide a geolocation
+    this.setHideOnWebsite = function (id, hide) {
+      return $http.patch(`${baseUrl}/${id}`, { hideOnWebsite: hide });
+    };
+
     // Delete a geolocation by ID
     this.delete = function (id, place) {
       return $http.delete(`${baseUrl}/${id}/${place}`);

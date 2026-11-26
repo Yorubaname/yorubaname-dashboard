@@ -33,6 +33,20 @@ angular.module('GeolocationModule')
                 });
             };
 
+            // Hide or show a geolocation on the websites; put the checkbox back if the update fails
+            $scope.toggleHide = function (geo) {
+                var hide = geo.hideOnWebsite;
+                GeoLocationService.setHideOnWebsite(geo.id, hide)
+                    .then(function (data) {
+                        toastr.success(data.data.message);
+                    })
+                    .catch(function (error) {
+                        geo.hideOnWebsite = !hide;
+                        var message = error.data && error.data.message;
+                        toastr.error(message || 'Could not update the geolocation.');
+                    });
+            };
+
             // Delete a geolocation
             $scope.deleteGeoLocation = function (id, place) {
                 GeoLocationService.delete(id, place)
