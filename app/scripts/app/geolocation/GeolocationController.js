@@ -42,7 +42,8 @@ angular.module('GeolocationModule')
                     })
                     .catch(function (error) {
                         geo.hideOnWebsite = !hide;
-                        toastr.error((error.data && error.data.message) || 'Could not update the geolocation.');
+                        var message = error.data && error.data.message;
+                        toastr.error(message || 'Could not update the geolocation.');
                     });
             };
 
