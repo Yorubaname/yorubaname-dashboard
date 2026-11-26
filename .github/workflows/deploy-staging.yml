@@ -32,7 +32,9 @@ jobs:
           bower install --allow-root
 
       - name: Build staging dashboard
-        run: npx grunt devbuild
+        # `stage` builds with the staging API URL. In this dashboard `devbuild` is the local build (localhost:9001),
+        # unlike the dictionary dashboard, where `devbuild` is the staging build.
+        run: npx grunt stage
 
       - name: Deploy to EC2
         env:
