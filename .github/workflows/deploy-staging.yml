@@ -1,0 +1,50 @@
+﻿name: Deploy Names Dashboard to staging
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        env:
+          # phantomjs-prebuilt's install script builds its temp path from
+          # TMPDIR/TEMP/npm_config_tmp and crashes when none is set (Linux runners).
+          TMPDIR: ${{ runner.temp }}
+        run: |
+          npm ci --legacy-peer-deps
+          npm install --global bower
+          bower install --allow-root
+
+      - name: Build staging dashboard
+        run: npx grunt devbuild
+
+      - name: Deploy to EC2
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_KEY }}
+          EC2_INSTANCE_IP: ${{ vars.EC2_INSTANCE_IP }}
+        run: |
+          set -euo pipefail
+          test -n "$SSH_PRIVATE_KEY"
+          test -n "$EC2_INSTANCE_IP"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > private_key
+          chmod 600 private_key
+          rsync -avz --exclude='.htaccess' -e 'ssh -i private_key -o StrictHostKeyChecking=no' dist/ "ec2-user@$EC2_INSTANCE_IP:/var/www/dashboard-staging/"
+
+
+
